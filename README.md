@@ -2,8 +2,6 @@
 
 # LSTAR - Aggressor
 
-**A plug-in realizes intranet roaming from online to domain controller**
-
 **For the purpose of simplifying CS right-click and facilitating self-integration, refer to a large number of post-infiltration plugins**
 
 **Refactored and enriched host-related credential acquisition, multi-level intranet penetration, hidden scheduled tasks, anti-kill Mimikatz and cloning to add users and other functions**
@@ -14,7 +12,7 @@
 - **Provide multiple anti-kill execution methods for RDP-related, AddUser, LsassDump and other functions to deal with unpopular environments**
 - **Integrate multiple anti-kill functions such as shadow users running in WinAPI or Assembly memory loading mode, hidden scheduled tasks, etc. **
 
-**Mainly include the following functional modules:**
+**Among others include the following functional modules:**
 
 ![image](https://github.com/shorefall/LSTAR-EN/assets/72578879/8f49cbc3-dda2-4cac-9f48-b9b65c31e57c)
 
