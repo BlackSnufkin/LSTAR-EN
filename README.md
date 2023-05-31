@@ -1,7 +1,5 @@
 # LSTAR - Aggressor Translated to English! By Google Translate and Deepl
 
-# LSTAR - Aggressor
-
 **For the purpose of simplifying CS right-click and facilitating self-integration, refer to a large number of post-infiltration plugins**
 
 **Refactored and enriched host-related credential acquisition, multi-level intranet penetration, hidden scheduled tasks, anti-kill Mimikatz and cloning to add users and other functions**
