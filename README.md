@@ -16,7 +16,7 @@
 
 **Mainly include the following functional modules:**
 
-![image-20220115184528161](image/image-20220115184528161.png)
+![image](https://github.com/shorefall/LSTAR-EN/assets/72578879/8f49cbc3-dda2-4cac-9f48-b9b65c31e57c)
 
 **Each module is added with a green dividing line before running to facilitate positioning and display information and improve collaboration efficiency**
 
