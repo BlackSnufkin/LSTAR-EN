@@ -235,12 +235,11 @@ item "WinPEAS" {
     local('$bid');
     foreach $bid ($1){
         binput($1, "powershell-import WinPEAS.ps1");
-        bpowershell_import($1, script_resource("/scripts/InfoCollect/WinPEAS.ps1"));
+        bpowershell_import($1, script_resource("/scripts/AuthPromote/WinPEAS.ps1"));
         binput($1, "powershell allchecks");
         bpowershell($1, "allchecks");
     }
 }
-
 
   item "RCE_BY_CURRENT_USER" {
 				blog($1, "\c9=========== RCE_BY_CURRENT_USER ==========");
