@@ -230,6 +230,22 @@ menu "Priv Escalation" {
 
     }
 
+item "WinPEAS Enumeration" { 
+    blog($1, "\c9=========== WinPEAS Enumeration =========="); 
+    $bid = $1['@']; 
+    $dialog = dialog("WinPEAS", %(exec => "all checks", bid => $bid), &winpeas_enum); 
+    dialog_description($dialog, "WinPEAS Enumeration");
+    drow_text($dialog, "exec", "Parameters："); 
+    dbutton_action($dialog, "Run"); 
+    dialog_show($dialog); 
+} 
+
+sub winpeas_enum {
+    $arg = join(' ', @($3['exec'])); 
+    bexecute_assembly($bid, script_resource("/scripts/AuthPromote/WinPeAS.exe"), $arg); 
+}
+#Beacon crashes when increasing max size and running this. Why?
+
   item "RCE_BY_CURRENT_USER" {
 				blog($1, "\c9=========== RCE_BY_CURRENT_USER ==========");
         $bid = $1['@'];
